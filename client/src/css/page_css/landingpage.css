@@ -1,0 +1,369 @@
+.container {
+    scroll-snap-type: y mandatory;
+    overflow-y: scroll;
+    height: 100vh;
+    scroll-behavior: smooth; /* Enable smooth scrolling */
+}
+section {
+    height: 100vh;
+    display: flex;
+    scroll-snap-align: start;
+    flex-direction: column;
+}
+
+
+.landingpage-header {
+    height: 150px;
+    width: 100%;
+
+    display: flex;
+    position: relative;
+    align-items: center;
+    justify-content: space-between;
+}
+header img {
+    width: 212px;
+    height: 66px;
+    cursor: pointer;
+}
+.first-section{
+    padding-left: 175px;
+    padding-right: 175px;
+}
+
+.login-button{
+    font-size: 20px;
+    border-radius: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    height: 50px;
+    width: 200px;
+}
+
+.pick-button{
+    font-size: 20px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    height: 50px;
+    width: 200px;
+    margin-top: 20px;
+    color: white;
+}
+
+.landing-page-1{
+    width: 100%;
+    height: 80%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.landing-img{
+    width: 543px;
+    filter: drop-shadow(5px 5px 4px rgba(0,0,0,0.2));
+}
+
+.landing-page-1 h1 {
+    font-size: 65px;
+}
+
+.landing-page-1 p {
+    font-size: 30px;
+    width: 500px;
+    font-weight: 300 !important;
+}
+
+.landing-text{
+    width: 50%;
+}
+.landing-page-2-container{
+    flex-direction: column;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.landing-page-2{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+    background-color: #133D94;
+}
+
+.page2-header{
+    display: flex;
+    justify-content: center;
+}
+
+.landing-page-2 h1{
+    font-size: 50px;
+}
+
+.card-container {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.card {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #F9F9F9;
+    width: 350px;
+    height: 500px;
+    margin: 20px;
+    border-radius: 30px;
+    text-align: center;
+    flex-direction: column;
+    cursor: pointer;
+}
+
+.card img {
+    width: 300px;
+    height: 300px;
+    padding: 20px;
+    border-radius: 20px;
+}
+
+.card p {
+    font-size: 30px;
+}
+
+
+.card .info {
+    width: 80%;
+    color: rgb(44, 44, 44);
+    font-size: 20px;
+    height: 90px;
+}
+
+.card:hover {
+    transition: ease-in-out .3s;
+    scale: 1.05;
+}
+
+.card :active{
+    transition: ease-in-out .3s;
+    scale: 0.8;
+}
+
+.landing-page-3 {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    margin: 0;
+}
+
+.page3{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin: 50px;
+}
+.page3-container{
+    display: flex;
+    width: 1500px;
+    height: 700px;
+    border-radius: 30px;
+    flex-direction: row;
+}
+
+.create_ticket_header{
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    font-size: 40px;
+}
+.page3 h1{
+    text-align: center;
+}
+
+.page3-container .left-side{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40%;
+    height: 100%;
+    border-bottom-left-radius: 30px;
+    border-top-left-radius: 30px;
+    background-color: #133D94;
+
+}
+
+.page3-container .right-side{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 60%;
+    height: 100%;
+    border-bottom-right-radius: 30px;
+    border-top-right-radius: 30px;
+    background-color: #133D94;
+}
+
+.inner-box1{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    border: 50px solid #133D94;
+    border-radius: 90px;
+    background-color: #F9F9F9;
+}
+
+
+.inner-box2{
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    border: 50px solid #133D94;
+    border-radius: 90px;
+    background-color: #F9F9F9;
+}
+.inner-box1 img {
+    width: 500px;
+    height: 500px;
+}
+
+.submitForm{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.submitForm input[type="text"],.submitForm input[type="email"]{
+    width:   90%;
+    padding: 25px;
+    border-radius: 10px;
+    margin: 15px;
+    font-size: 18px;
+    border: 0.5px solid #393939;
+
+}
+.submitForm textarea{
+    width:   90%;
+    padding: 25px;
+    padding-bottom: 50px;
+    border-radius: 10px;
+    margin: 20px;
+  
+    font-size: 18px;
+    border:0.5px solid #393939;
+}
+
+.topic {
+    display: flex;
+    padding-top: 25px;
+    font-size: 30px;
+}
+
+.image-input{
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    width:   90%;
+    border-radius: 10px;
+
+    margin-bottom: 15px;
+    font-size: 15px;
+    padding: 5px;
+
+}
+
+
+.image-input img{
+    width: 40px;
+    height: 40px;
+}
+
+.file-name.hidden {
+    display: none;
+  }
+
+  .input-activity-img{
+    border: 1px solid #0a0f157a;
+    height: 40px;
+    margin-bottom: 10px;
+    width: 30%;
+    margin-left: 70%;
+    color: #263A50 !important;
+    
+    
+}
+
+.submitForm input[type="file"]{
+    display: none;
+}
+
+.submitForm label {
+    margin-right: 5px;
+    border-radius: 5px;
+    
+}
+
+.img-button{
+    color: #F9F9F9;
+
+    cursor: pointer;
+    padding: 8px;
+}
+
+.select-image{
+    width: 80%;
+    justify-content: flex-end;
+    align-items: center;
+    display: flex;
+}
+
+.filename{
+    margin-right: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    border: #393939 solid 1px;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-radius: 20px;
+    color: white;
+    overflow-x: hidden;
+    max-width: 400px;
+}
+.filename p{
+    max-width: 400px;
+    overflow-x: hidden;
+}
+.filename img {
+    filter: brightness(100);
+    margin-right: 10px;
+}
+
+.submit-button{
+    border: none;
+    width:   90%;
+    height: 50px;
+    border-radius: 10px;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+}
