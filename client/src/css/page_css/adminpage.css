@@ -1,0 +1,87 @@
+.adminpage-header{
+    width: 100%;
+    height: 300px;
+    z-index: 0;
+    position: absolute;
+}
+.admin-container{
+    height: 100vh;
+    background-color: #f8f9fa;
+}
+
+.summary-status-container{
+    display: flex;
+    justify-content: center;
+    height: 140px;
+    flex-wrap: wrap;
+    align-items: stretch; 
+    z-index: 2;
+    margin-top: 70px;
+}
+.leftside{
+    width: auto;
+    display: flex;
+    flex-direction: column;
+
+    align-self: center;
+    height: 100%;
+    margin-left: 17.125rem;
+    z-index: 200;
+}
+
+.summary-status-card{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 20%;
+    margin: 20px;
+    padding: 20px;
+    background-color: white;
+    border-radius: 15px;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.096);
+}
+.info span{
+    font-size: 20px;
+}
+.status-img img{
+    width: 35px; 
+    height: 35px;
+}
+.status-img {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 70px;
+    height: 70px;
+    clip-path: circle(40%);
+}
+
+.pending{
+   
+    background-color: #646464;
+    background-image: linear-gradient(62deg, #646464 0%, #867b7b 100%);    
+}
+
+.accept{
+   
+    background-color: #FBAB7E;
+    background-image: linear-gradient(62deg, #FBAB7E 0%, #F7CE68 100%);    
+}
+
+.success {
+    background-color: #85FFBD;
+background-image: linear-gradient(45deg, #85FFBD 0%, #adff7d 100%);
+
+}
+
+
+
+.reject{
+
+        background-color: rgba(226,24,24,1);
+    background-image: linear-gradient(45deg, rgba(226, 24, 24, 0.76) 0%, rgba(160, 6, 6, 0.644) 100%);
+    
+    
+    
+
+}

@@ -1,0 +1,94 @@
+.loginpopup-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    z-index: 1;
+    background-color: rgba(0, 0, 0, 0.116);
+    
+}
+.login-header{
+    width: 100%;
+}
+.login-header h1 {
+    font-size: 30px;
+}
+
+
+
+.login-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+    width: 600px;
+    height: 600px;
+    border-radius: 20px;
+    background-color: white;
+    animation: fadeIn 0.3s ease-in;
+}
+.login-input{
+    text-align: left;
+    font-size: 20px;
+    width: 80%;
+    margin: 10px;
+}
+
+.login-input input{
+    width: 100%;
+    font-size: 15px;
+    height: 50px;
+    padding: 20px;
+}
+
+.nipa-logo{
+    width: 200px;
+}
+
+.button-login{
+    width: 80%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    height: 50px;
+    color: white;
+    border-radius: 10px;
+    margin-top: 15px;
+    font-size: 20px;
+    cursor: pointer;
+}
+.circle-exit{
+    position: fixed;
+    width: 40px;
+    font-size: 25px;
+    color: white;
+    height: 40px;
+    border-radius: 10px;
+    margin-right: 30px;
+    margin-bottom: 30px;
+    cursor: pointer;
+}
+.circle-container{
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: right;
+    text-align: center;
+}
+
+@keyframes fadeIn {
+    from {
+      opacity: 0;
+      scale: 0.8;
+      transform: translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      scale: 1;
+      transform: translateY(0);
+    }
+  }
