@@ -1,4 +1,4 @@
-.navbar-container{
+.navbar-container {
     display: block;
     align-items: center;
     justify-content: center;
@@ -8,6 +8,8 @@
     left: 0;
     margin: 24px;
     z-index: 1;
+    text-decoration: none;
+    transition: all 100ms cubic-bezier(0, 0, 0.58, 1) 0s;
 }
 
 .navbar {
@@ -22,52 +24,98 @@
     box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.096);
 }
 
-.top{
+.top {
     width: 100%;
     height: 100%;
 }
 
-.nipa-logo-navbar{
+.navbar-list {
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    padding: 20px;
+    padding-top: 0px;
+}
+
+.nipa-logo-navbar {
     margin-top: 10px;
     width: 150px;
 }
 
-.profile-img{
+.profile-img {
     width: 80px;
     height: 80px;
     margin-top: 20px;
 }
 
-.navbar-center{
+.navbar-center {
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
 }
 
-.navbar-dashboard img{
+.hover-list {
+    width: auto;
+    position: absolute;
+    height: 50px;
+    width: 190px;
+    z-index: 0;
+    border-radius: 10px;
+    transition: all 100ms cubic-bezier(0, 0, 0.58, 1) 0s;
+}
+
+.hover1 {
+    background-image: linear-gradient(120deg, #f093fb 0%, #f5576c 100%);
+
+
+    transition: all 100ms cubic-bezier(0, 0, 0.58, 1) 0s;
+}
+
+.hover2 {
+    transform: translateY(50px);
+    background-image: linear-gradient(120deg, #f093fb 0%, #f5576c 100%);
+
+
+    transition: all 100ms cubic-bezier(0, 0, 0.58, 1) 0s;
+}
+
+.hover3 {
+    transform: translateY(100px);
+    background-image: linear-gradient(120deg, #f093fb 0%, #f5576c 100%);
+
+    transition: all 100ms cubic-bezier(0, 0, 0.58, 1) 0s;
+}
+
+.navbar-dashboard img {
     width: 30px;
     height: 30px;
 }
+
 .navbar-dashboard {
     display: flex;
     align-items: center;
     justify-content: left;
-    margin-left: 25px;
     font-size: 15px;
     color: #67748e;
-    padding: 20px;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    margin: 10px;
+    padding: 10px;
+    z-index: 1;
+    text-decoration:none;
+    cursor: pointer;
+    user-select: none;
 }
-.navbar-dashboard:hover{
+
+.navbar-dashboard:hover {
     border-radius: 10px;
+    color: white;
     font-weight: 300 !important;
-    color: #3f4655;
-    background-color: #c0c5ce41;
 }
-.navbar-line{
+
+.navbar-dashboard:hover img {
+    filter: brightness(100)
+}
+
+.navbar-line {
     margin-top: 20px;
     margin-bottom: 20px;
     width: 80%;
@@ -76,10 +124,37 @@
 }
 
 .navbar-dashboard img {
-    margin-right: 20px; /* Adjust the margin as needed */
+    margin-right: 20px;
+    /* Adjust the margin as needed */
 }
 
-.summary-status-container{
+.summary-status-container {
     display: flex;
     flex-wrap: wrap;
+}
+
+.bottom{
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+}
+.logout-button{
+    border: none;
+    border-radius: 10px;
+    width:90%;
+    padding: 20px;
+    color: white;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.096);
+    background-color: rgba(226,24,24,1);
+    background-image: linear-gradient(45deg, rgba(226, 24, 24, 0.76) 0%, rgba(160, 6, 6, 0.644) 100%);
+}
+
+@media (max-width: 860px) {
+    .navbar-container {
+        transform: translateX(-120%);
+    }
 }

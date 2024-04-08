@@ -33,7 +33,6 @@ const LoginPopup = ({ open, onClose }) => {
         if (result.isConfirmed) {
             navigate('/homepage');
         } else {
-          navigate('/homepage');
         }
       });
     } else {

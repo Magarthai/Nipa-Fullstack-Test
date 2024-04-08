@@ -367,3 +367,11 @@ header img {
     font-size: 20px;
     cursor: pointer;
 }
+
+.info{
+    user-select: none;
+}
+.info img{
+    user-select: none;
+}
+

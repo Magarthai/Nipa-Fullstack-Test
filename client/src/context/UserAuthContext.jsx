@@ -3,7 +3,7 @@ import axios from 'axios';
 const userAuthContext = createContext();
 
 export function UserAuthContextProvider({ children }) {
-    const [userData, setUserData] = useState(null);
+    const [userData, setUserData] = useState("");
 
     const checkToken = async() => {
         const response = await axios.get('http://localhost:5000/api/user/refresh', {
@@ -16,11 +16,14 @@ export function UserAuthContextProvider({ children }) {
         console.log(response.data)
       }
 
+      const logout_global = async() => {
+        setUserData("");
+      };
 
 
 
   useEffect(() => {
-    document.title = 'Health Care Unit';
+    document.title = 'Nipa Cloud';
     if(!userData){
     checkToken();
     }
@@ -29,7 +32,7 @@ export function UserAuthContextProvider({ children }) {
 
 
   return (
-    <userAuthContext.Provider value={{ checkToken,userData }}>
+    <userAuthContext.Provider value={{ checkToken,userData,logout_global }}>
       {children}
     </userAuthContext.Provider>
   );

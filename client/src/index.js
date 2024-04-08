@@ -2,6 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import Landingpage from "./page/LandingPage.js";
 import AdminPage from "./page/AdminPage.js";
+import TicketPage from "./page/TicketPage.js";
 import { UserAuthContextProvider } from "./context/UserAuthContext.jsx"
 import {
   createBrowserRouter,
@@ -19,6 +20,10 @@ const router = createBrowserRouter([
   {
     path: "/homepage",
     element: <ProtectRoute><AdminPage /></ProtectRoute>
+  },
+  {
+    path: "/ticket",
+    element: <ProtectRoute><TicketPage /></ProtectRoute>
   },
 ])
 
