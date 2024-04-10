@@ -1,0 +1,97 @@
+.hamberger-container{
+    width: 100%;
+    height: 100%;
+    display: none;
+    justify-content: right;
+    position: fixed;
+    z-index: 5;
+}
+
+.hamberger {
+    width: 50px;
+    height: 50px;
+    background-color: #133D94;
+    margin: 20px;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.329);
+    transition: 0.2s ease-in-out;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    flex-direction: column;
+    position: fixed;
+    z-index: 5;
+    transition: transform 0.2s ease-in-out;
+}
+
+.menu-clicked {
+    width: 80%;
+    height: 3px;
+    background-color: rgb(255, 255, 255);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transition: transform 0.2s ease-in-out;
+    transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.menu.line2-clicked {
+    display: none;
+    transition: transform 0.2s ease-in-out;
+}
+
+.menu.line1-clicked,
+.menu.line3-clicked {
+    width: 100%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(45deg);
+    transition: transform 0.2s ease-in-out;
+}
+
+.menu.line3-clicked {
+    transform: translate(-50%, -50%) rotate(-45deg);
+    transition: transform 0.2s ease-in-out;
+}
+
+
+.menu {
+    width: 80%;
+    height: 3px;
+    background-color: white;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(0);
+}
+
+.menu.line2 {
+    width: 80%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, 0) rotate(0);
+    transition: transform 0.2s ease-in-out;
+}
+
+.menu.line1,
+.menu.line3 {
+    width: 80%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -12px) rotate(0);
+    transition: transform 0.2s ease-in-out;
+}
+
+.menu.line3 {
+    transform: translate(-50%, 12px) rotate(0);
+}
+
+@media (max-width: 860px) {
+    .hamberger-container {
+        display: flex;
+    }
+}

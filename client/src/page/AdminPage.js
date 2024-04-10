@@ -5,30 +5,35 @@ import axios from 'axios'
 import '../css/page_css/adminpage.css';
 import GraphSkeleton from '../utils/graphSkeleton.js';
 import CountSkeleton from '../utils/CountSkeleton.js';
+import HambergerBar from '../utils/HambergerBar.js';
 import { AreaChart, Area, Tooltip, ResponsiveContainer, Cell, XAxis, YAxis, CartesianGrid, Legend, BarChart, Bar } from 'recharts'
+
 function AdminPage() {
   const [isLoading, setIsLoading] = useState(true);
   const { userData } = useUserAuth();
   const [data, setData] = useState([]);
   const [data2, setData2] = useState([]);
   const [statusInfo, setStatusInfo] = useState({});
+  const [clicked, setClicked] = useState(false); 
   const API = process.env.REACT_APP_API
-  useEffect(() => {
 
-  }, [])
+  useEffect(() => {
+    fetchStatusInfo();
+  }, []); 
+
   const fetchStatusInfo = async () => {
     try {
-      const respone = await axios.get(`${API}/dashboard/getStatusCount`);
-      if (respone.data) {
-        setStatusInfo(respone.data);
+      const response = await axios.get(`${API}/dashboard/getStatusCount`);
+      if (response.data) {
+        setStatusInfo(response.data);
       }
-      const respone2 = await axios.get(`${API}/dashboard/getMonthTicket`);
-      if (respone2.data) {
-        setData(respone2.data);
+      const response2 = await axios.get(`${API}/dashboard/getMonthTicket`);
+      if (response2.data) {
+        setData(response2.data);
       }
-      const respone3 = await axios.get(`${API}/dashboard/getSuccessErrorCount`);
-      if (respone3.data) {
-        setData2(respone3.data);
+      const response3 = await axios.get(`${API}/dashboard/getSuccessErrorCount`);
+      if (response3.data) {
+        setData2(response3.data);
       }
       setTimeout(() => {
         setIsLoading(false)
@@ -38,15 +43,14 @@ function AdminPage() {
     }
   };
 
-
-
-  useEffect(() => {
-    fetchStatusInfo();
-  }, []); // Empty dependency array to run effect only once
+  const toggleClicked = () => {
+    setClicked(!clicked);
+  };
 
   return (
     <div className="admin-container">
-      <AdminNavbar userData={userData} />
+      <HambergerBar clicked={clicked} toggleClicked={toggleClicked} />
+      <AdminNavbar clicked={clicked} userData={userData} />
       <div className='adminpage-header background-color'></div>
       <div className="leftside">
         {isLoading ? <CountSkeleton></CountSkeleton> : (

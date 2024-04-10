@@ -4,7 +4,7 @@ import axios from 'axios';
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom"
 import { useUserAuth } from '../context/UserAuthContext';
-const AdminNavbar = ({ userData }) => {
+const AdminNavbar = ({ userData,clicked }) => {
   const normal_profile = "https://cdn.discordapp.com/attachments/445928139021877259/1226572102023249981/Profile_1.png?ex=66254149&is=6612cc49&hm=9011b51c7fbd8cdc9261af8451eecd56f74e1133f18788965b0c229d276d7d95&";
   const navigate = useNavigate()
   const { logout_global } = useUserAuth();
@@ -66,7 +66,7 @@ const AdminNavbar = ({ userData }) => {
   };
 
   return (
-    <div className="navbar-container">
+    <div className={ clicked ? "navbar-container-clicked" :"navbar-container"}>
       <div className="navbar">
         <div className="top">
           <div className='navbar-center'>
