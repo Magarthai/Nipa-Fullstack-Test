@@ -89,7 +89,7 @@ const AdminNavbar = ({ userData }) => {
               <img src="https://media.discordapp.net/attachments/445928139021877259/1226575387979677726/Charity_Box.png?ex=66254459&is=6612cf59&hm=63e4956b9bfbc721d3f5b7d3600252e42ac0359601278af6d1b658a5780d12fe&=&format=webp&quality=lossless" alt="ticket" />
               <p>Ticket</p>
             </a>
-            <a className="light navbar-dashboard" id="nav-3" onMouseEnter={() => hoverHandle("nav-3")} onMouseLeave={() => hoverHandle("nav-32")}>
+            <a href='/ticketHistory' className="light navbar-dashboard" id="nav-3" onMouseEnter={() => hoverHandle("nav-3")} onMouseLeave={() => hoverHandle("nav-32")}>
               <img src="https://media.discordapp.net/attachments/445928139021877259/1226575388675932230/Admin_Settings_Male.png?ex=66254459&is=6612cf59&hm=fac01dd7acf69fbb8019cd9e2ba197fe020ecf9c0309f6aae20672126279cbf0&=&format=webp&quality=lossless" alt="admin manager" />
               <p>History</p>
             </a>

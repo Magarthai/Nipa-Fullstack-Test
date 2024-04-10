@@ -38,8 +38,8 @@ const LoginPopup = ({ open, onClose }) => {
     } else {
       Swal.fire({
         icon: "error",
-        title: "ล็อคอินสําเร็จ",
-        text: "ยินดีต้อนรับเข้าสู่เว็ปไซต์ Nipa Cloud!",
+        title: "ล็อคอินไม่สําเร็จ",
+        text: "กรุณาลองใหม่อีกครั้ง!",
         confirmButtonText: "ตกลง",
         confirmButtonColor: 'red',
       })

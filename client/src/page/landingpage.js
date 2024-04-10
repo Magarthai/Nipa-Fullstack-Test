@@ -220,7 +220,7 @@ const API = process.env.REACT_APP_API
           <div className='page2-header'>
             <h1>เลือกหัวข้อแจ้งปัญหา</h1>
           </div>
-          <div className='card-container'>
+          <div className='card-container con'>
             <div className='card font-primary' onClick={() => handleSelectTopic("ปัญหาด้านเว็ปไซต์")}>
               <img src='https://firebasestorage.googleapis.com/v0/b/nipa-test-5fe81.appspot.com/o/website-image%2Fwebsite_issue_1.png?alt=media&token=9f6a2c32-a030-4738-90ac-2e9fcea34b95' alt='website problem'></img>
               <p className='medium'>ปัญหาด้านเว็ปไซต์</p>
@@ -245,6 +245,7 @@ const API = process.env.REACT_APP_API
         </div>
       </section>
       <section className='landing-page-3'>
+        
         <div id='3' className='page3'>
           <div className='create_ticket_header font-primary'>
             <h1>CREATE TICKET</h1>

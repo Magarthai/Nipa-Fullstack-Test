@@ -82,7 +82,6 @@ const handleRefreshToken = asyncHandler(async (req, res) => {
   });
 });
 
-// logout user
 
 const logoutUserCtrl = asyncHandler(async (req, res) => {
   const cookie = req.cookies;
@@ -110,7 +109,6 @@ const logoutUserCtrl = asyncHandler(async (req, res) => {
   res.send("success")
 });
 
-// get all user
 const getAllUser = asyncHandler(async (req, res) => {
   try {
     const getUser = await User.find();
@@ -120,63 +118,14 @@ const getAllUser = asyncHandler(async (req, res) => {
   }
 });
 
-// get a single users
 
-const getSingleUser = asyncHandler(async (req, res) => {
-  const phone = req.params.phone;
-  try {
-    const getUser = await User.findOne({ phone: phone });
-    res.json(getUser);
-  } catch (error) {
-    throw new Error(error);
-  }
-});
 
-// delete single user
 
-const deleteUser = asyncHandler(async (req, res) => {
-  const phone = req.params.phone;
-  try {
-    const deleteUser = await User.findOneAndDelete({ phone: phone });
-    res.json(deleteUser);
-    console.log("User deleted successfully");
-  } catch (error) {
-    throw new Error(error);
-  }
-});
-
-// update user details except password
-
-const updateUser = asyncHandler(async (req, res) => {
-  const phone = req.params.phone;
-  try {
-    const updateUser = await User.findOneAndUpdate(
-      { phone: phone },
-      {
-        fname: req.body.fname,
-        lname: req.body.lname,
-        address: req.body.address,
-        age: req.body.age,
-        email: req.body.email,
-        gender: req.body.gender,
-      },
-      {
-        new: true,
-      }
-    );
-    res.json(updateUser);
-  } catch (error) {
-    throw new Error(error);
-  }
-});
 
 module.exports = {
   createUser,
   loginUserCtrl,
   logoutUserCtrl,
   getAllUser,
-  getSingleUser,
-  deleteUser,
-  updateUser,
   handleRefreshToken,
 };

@@ -1,0 +1,123 @@
+.ticket-info-container{
+    width: 100%;
+
+    margin-top: 25px;
+    display: flex;
+    justify-content: center;
+    height: auto !important;
+    padding-bottom: 20px;
+
+}
+
+.ticket-info{
+    position:  relative;
+    display: flex;
+    min-height:792px;
+    width: 80%;
+    flex-direction: column;
+    border-radius: 20px;
+    background-color: white;
+    z-index: 2;
+    height: auto;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.096);
+}
+
+.ticket-info-img-container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    border-radius: 20px;
+    margin-top: 40px;
+}
+
+.img-wrapper-container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.ticket-info-img-container img {
+    width: 80%; 
+    max-height: 530px;
+    max-width: 950px;
+    object-fit: contain;
+    margin-bottom: 20px;
+}
+
+.ticket-info-img-containers {
+    width: 80%; 
+    max-height: 530px;
+    max-width: 950px;
+    object-fit: contain;
+    margin-bottom: 20px;
+}
+.ticketinfo-img{
+    border-radius: 20px;
+    width: 100%;
+    max-width: 1070px;
+    max-height: 600px;
+    box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.196);
+
+}
+
+.ticket-info-text{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+.ticketinfo-detail{
+    width: 85%;
+    word-wrap: break-word;
+    height: 150px;
+    padding: 10px;
+    padding-top: 4px;
+    border-radius: 10px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    overflow-y: scroll;
+    border: 1px solid rgba(22, 22, 22, 0.384);
+}
+
+#solve{
+    margin-bottom: 20px;
+}
+.solvedetail{
+    width: 85%;
+    height: 100px;
+    border-radius: 10px;
+    padding: 10px;
+    padding-top: 5px;
+    word-wrap: break-word;
+}
+
+.ticket-info-button{
+    width: 100%;
+    justify-content: center;
+    display: flex;
+}
+.ticket-info-button button{
+    width: 41%;
+    margin: 20px;
+    padding: 20px;
+    border: none;
+    cursor: pointer;
+    color: white;
+    border-radius: 10px;
+    font-size: 20px;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.096);
+}
+
+.ticketinfo-detail::-webkit-scrollbar {
+    width: 5px; 
+}
+
+.ticketinfo-detail::-webkit-scrollbar-thumb {
+    background-color: #67748e;
+    border-radius: 20px; 
+}
+
+.ticketinfo-detail::-webkit-scrollbar-track {
+    background: none;    
+  }

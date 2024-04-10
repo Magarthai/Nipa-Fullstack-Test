@@ -19,11 +19,21 @@ let ticketSchema = new mongoose.Schema({
     },
     selectTopic:{
         type: String,
-        default: "pending"
+        required: true
     },
     img: {
         type: String,
     },
+    status: {
+        type: String,
+        default: "pending"
+    },
+    solve: {
+        type: String,
+    },
+    recipient: {
+        type: String
+    }
 }, { timestamps: true });
 
 module.exports = mongoose.model('Ticket', ticketSchema);

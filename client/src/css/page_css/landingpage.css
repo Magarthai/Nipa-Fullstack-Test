@@ -63,7 +63,8 @@ header img {
     align-items: center;
 }
 .landing-img{
-    width: 543px;
+    max-width: 543px;
+    width: 40%;
     filter: drop-shadow(5px 5px 4px rgba(0,0,0,0.2));
 }
 
@@ -106,10 +107,11 @@ header img {
 }
 
 .card-container {
-    margin: 0;
+    margin: 20px;
     padding: 0;
     width: 100%;
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
 }
@@ -367,7 +369,12 @@ header img {
     font-size: 20px;
     cursor: pointer;
 }
-
+.con {
+    flex-grow: 0;
+    flex-shrink: 0;
+    flex-basis: 100%;
+  }
+  
 .info{
     user-select: none;
 }
@@ -375,3 +382,135 @@ header img {
     user-select: none;
 }
 
+@media (max-height: 860px) {
+    .card-container{
+
+        scale: 0.5;
+        margin: 0;
+    }
+    .page2-header h1{
+        display: none;
+    }
+    .landing-page-2-container{
+        height: 50%;
+    }
+    .landing-page-2 {
+        display: flex !important;
+        justify-content: none !important;
+        align-items: none !important;
+    }
+    section {
+        height: 100vh;
+        display: flex;
+        scroll-snap-align: start;
+        flex-direction: column;
+    }
+}
+
+@media only screen and (max-width: 1600px){
+    .card-container{
+
+        zoom: 0.5;
+        margin: 0;
+    }
+    .landing-text{
+        zoom: 0.8;
+    }
+    .page3{
+        scale: 0.65;
+    }
+  }
+
+  
+  
+  @media only screen and (max-width: 1024px){
+    .con{ flex-basis: 25%; }
+    .landing-img{
+        display: none;
+    }
+    .landing-text{
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+    .first-section{
+        padding: 20px;
+        padding-right: 20px;
+    }
+    .pick-button{
+        width: 500px;
+    }
+    .page3-container{
+        display: flex;
+        justify-content: center;
+    }
+    .page3-container .left-side{
+        display: none;
+    }
+    .right-side{
+        border-radius: 40px;
+        width: 80%;
+    }
+    .inner-box2{
+        width: 100%;
+    }
+  }
+
+  @media only screen and (max-width: 600px){
+    .card-container{
+
+        zoom: 0.5;
+        margin: 0;
+    }
+    .page2-header h1{
+        font-size: 20px
+    }
+    .landingpage-header{
+        scale: 0.8;
+    }
+    .landing-page-3{
+        width: 100%;
+    }
+    .landing-page-3{
+        width: 100%;
+    }
+    .page3{
+        scale: 0.3;
+    }
+
+  }
+
+  @media only screen and (max-width: 420px){
+    .card-container{
+
+        zoom: 0.3;
+        margin: 0;
+    }
+
+    .landing-text p{
+        width: 90%;
+    }
+    .page2-header h1{
+        font-size: 20px
+    }
+    .landingpage-header{
+        display: flex;
+        flex-direction: column;
+    }
+    .pick-button{
+        width: 90%;
+    }
+  }
+    @media only screen and (max-height: 600px){
+        .landing-page-3{
+            width: 100%;
+        }
+        .landing-page-3{
+            width: 100%;
+        }
+        .page3{
+            scale: 0.3;
+        }
+    }
