@@ -6,6 +6,7 @@ export function UserAuthContextProvider({ children }) {
     const [userData, setUserData] = useState("");
 
     const checkToken = async() => {
+      try{
         const response = await axios.get('http://localhost:5000/api/user/refresh', {
           withCredentials: true 
         });
@@ -14,6 +15,9 @@ export function UserAuthContextProvider({ children }) {
             setUserData(response.data.user);
         }
         console.log(response.data)
+      } catch(err){
+        console.error(err)
+      }
       }
 
       const logout_global = async() => {

@@ -86,7 +86,6 @@ const getMonthTicket = async (req, res) => {
   });
 
   const groupedData = groupBy(Tickets, 'createdAt');
-  console.log(Tickets)
   const data = [];
 
   for (let date = startOfMonth.clone(); date.isBefore(endOfMonth); date.add(1, 'day')) {

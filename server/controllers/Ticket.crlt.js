@@ -30,7 +30,19 @@ const createTicket = async (req, res) => {
 
 const getTicket = async (req, res) => {
     try {
-        const fetchTicket = await Ticket.find();
+        const fetchTicket = await Ticket.find().sort({ updatedAt: -1 });
+        res.json({ message: "Ticket fetch successfully", ticket: fetchTicket });
+        console.log("Ticket created successfully");
+    } catch (err) {
+        console.error("Error creating ticket:", err);
+        res.status(500).json({ error: "Failed to create ticket" });
+    }
+};
+
+const getTicketQuery = async (req, res) => {
+    try {
+        const status = req.body.status
+        const fetchTicket = await Ticket.find({status: status}).sort({ updatedAt: -1 });
         res.json({ message: "Ticket fetch successfully", ticket: fetchTicket });
         console.log("Ticket created successfully");
     } catch (err) {
@@ -178,5 +190,6 @@ module.exports = {
     updateStatusTicket,
     closeTicket,
     sendMail,
-    getTicketByAdmin
+    getTicketByAdmin,
+    getTicketQuery
 };

@@ -7,7 +7,8 @@ const {
     updateStatusTicket,
     closeTicket,
     sendMail,
-    getTicketByAdmin
+    getTicketByAdmin,
+    getTicketQuery,
 } = require("../controllers/Ticket.crlt");
 // const { authMiddleware, isAdmin } = require("../middlewares/authMiddleware");
 
@@ -20,5 +21,6 @@ router.post('/getFilterTicket', getFilterTicket);
 router.put('/updateStatusTicket/:parameter', updateStatusTicket);
 router.put('/closeTicket/:parameter', closeTicket);
 router.post('/sendemail', sendMail);
+router.post('/getTicketQuery', getTicketQuery);
 
 module.exports = router;

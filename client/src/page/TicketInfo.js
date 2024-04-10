@@ -6,6 +6,7 @@ import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import { useLocation, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import HambergerBar from '../utils/HambergerBar.js';
 import axios from 'axios';
 import BarLoaders from '../utils/BarLoader.js';
 function AdminPage() {
@@ -17,6 +18,7 @@ function AdminPage() {
   const { data } = location.state || {};
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
+  const [clicked, setClicked] = useState(false); 
   const API = process.env.REACT_APP_API;
   useEffect(() => {
     console.log(data)
@@ -105,12 +107,17 @@ useEffect(() => {
 } catch(err) {
   console.error(err);
 }
+
   }
+  const toggleClicked = () => {
+    setClicked(!clicked);
+  };
 
   return (
     <div className="admin-container">
       {loader ? <BarLoaders></BarLoaders> : <div></div>}
-      <AdminNavbar userData={userData} />
+      <HambergerBar clicked={clicked} toggleClicked={toggleClicked} />
+      <AdminNavbar clicked={clicked} userData={userData} />
       <div className='adminpage-header background-color'></div>
       <div className="leftside">
         <div className="ticket-info-container">
