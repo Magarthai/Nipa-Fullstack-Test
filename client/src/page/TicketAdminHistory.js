@@ -127,15 +127,7 @@ function AdminPage() {
       {isLoading ? <CountSkeleton></CountSkeleton>: (
       <div className="summary-status-container">
       
-          <div className="summary-status-card">
-            <div className="info">
-              <h1 className='light'>Pending</h1>
-              {statusInfo && <span className='extralight'>{statusInfo.pending}&nbsp;รายการ</span>}
-            </div>
-            <div className="status-img pending">
-              <img src="https://media.discordapp.net/attachments/445928139021877259/1226597902596571216/Group.png?ex=66255951&is=6612e451&hm=c9350934360d3a5cb03d5bab5826e5697b132f68d69b682d7b28b1154b18082d&=&format=webp&quality=lossless" alt="pending" />
-            </div>
-          </div>
+         
           <div className="summary-status-card">
             <div className="info">
               <h1 className='light'>Accepted</h1>
