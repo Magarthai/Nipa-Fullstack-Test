@@ -1,4 +1,4 @@
-# Nipa-Fullstack-Test
+![1](https://github.com/Magarthai/Nipa-Fullstack-Test/assets/132775604/299f6689-e3c4-40a9-ae7c-f0973bbef7da)# Nipa-Fullstack-Test
 
 ## Ticket Management System
 
@@ -42,3 +42,9 @@ The project leverages the MERN stack (MongoDB, Express.js, React.js, Node.js) fo
    - Once logged in, admins can access the admin dashboard.
    - Admins can view incoming tickets, respond to them, and manage their statuses.
    - Additionally, admins can review the history of accepted tickets.
+
+#### User Flow
+![1](https://github.com/Magarthai/Nipa-Fullstack-Test/assets/132775604/64667336-b2c0-4849-8d1f-e63108104540)
+![2](https://github.com/Magarthai/Nipa-Fullstack-Test/assets/132775604/a7a461d2-2a93-48ac-8862-efab99ff5449)
+![3](https://github.com/Magarthai/Nipa-Fullstack-Test/assets/132775604/54ca665f-88bc-48d1-bc80-3d02c8da531e)
+
