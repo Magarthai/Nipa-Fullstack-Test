@@ -11,7 +11,10 @@ section {
     flex-direction: column;
 }
 
-
+.disable {
+    background-color: grey !important;
+    cursor: none;
+}
 .landingpage-header {
     height: 150px;
     width: 100%;

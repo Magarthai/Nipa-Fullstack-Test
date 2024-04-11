@@ -23,7 +23,7 @@ function LandingPage() {
 
 
   const { name, email, detail } = state;
-
+  const IsSubmitEnable = !name || !email || !detail
   useEffect(() => {
     if (userData) {
       navigate("/homepage")
@@ -51,7 +51,8 @@ function LandingPage() {
     let src = ""
     const fileInput = document.querySelector('.input-image-select');
     const file = fileInput?.files[0];
-    console.log(file.name)
+    console.log(IsSubmitEnable)
+   
     if (file) {
       const allowedMimeTypes = ["image/jpeg", "image/png"];
       if (!allowedMimeTypes.includes(file.type)) {
@@ -271,7 +272,13 @@ function LandingPage() {
                           <label for='uploadButton' className='disable-select button-color medium img-button'>เลือกรูปภาพ</label>
                         </div>
                       </div>
-                      <input type='submit' className='regular submit-button bold button-color' value="ส่งแบบฟอร์ม" />
+                      <input 
+  disabled={IsSubmitEnable} // If IsSubmitEnable is true, the button is disabled
+  type='submit' 
+  className={`regular submit-button bold button-color ${IsSubmitEnable ? 'disable' : ''}`} 
+  value="ส่งแบบฟอร์ม" // Text displayed on the button
+/>
+
                     </form>
                   )
                   : (
@@ -287,7 +294,7 @@ function LandingPage() {
                           <label for='uploadButton' className='disable-select button-color medium img-button'>เลือกรูปภาพ</label>
                         </div>
                       </div>
-                      <button onClick={() => slide()} className='regular submit-button bold button-color' >เลือกหัวข้อแจ้งปัญหา</button>
+                      <button  onClick={() => slide()} className='regular submit-button bold button-color' >เลือกหัวข้อแจ้งปัญหา</button>
                     </div>
                   )
                 }

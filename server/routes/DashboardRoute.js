@@ -6,12 +6,12 @@ const {
     getSuccessErrorCount,
     getStatusAdminCount,
 } = require("../controllers/Dashboard.ctrl");
-// const { authMiddleware, isAdmin } = require("../middlewares/authMiddleware");
+const { authMiddleware, isAdmin } = require("../middlewares/authMiddleware");
 
 const router = express.Router();
 
-router.get('/getStatusCount', getStatusCount);
-router.get('/getMonthTicket', getMonthTicket);
-router.get('/getSuccessErrorCount', getSuccessErrorCount);
-router.post('/getStatusAdminCount', getStatusAdminCount);
+router.get('/getStatusCount', authMiddleware,isAdmin,getStatusCount);
+router.get('/getMonthTicket', getMonthTicket,isAdmin,getStatusCount);
+router.get('/getSuccessErrorCount', getSuccessErrorCount,isAdmin,getStatusCount);
+router.post('/getStatusAdminCount', getStatusAdminCount,isAdmin,getStatusCount);
 module.exports = router;

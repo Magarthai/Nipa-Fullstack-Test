@@ -25,7 +25,14 @@ function AdminPage() {
     const info = {
       id: userData._id
     };
-    const respone = await axios.post(`${API}/ticket/getTicketByAdmin`,info);
+    const respone = await axios.post(`${API}/ticket/getTicketByAdmin`, info,
+    {
+        headers: {
+          Authorization: `Bearer ${userData.refreshToken}`,
+          role: userData.role
+          
+      },
+      });
     if (respone.data){
       console.log(respone.data,"XD")
     if(respone.data.message == "Ticket fetch successfully"){
@@ -34,7 +41,14 @@ function AdminPage() {
 
     }
 
-    const respone2 = await axios.post(`${API}/dashboard/getStatusAdminCount`,info)
+    const respone2 = await axios.post(`${API}/dashboard/getStatusAdminCount`, info,
+    {
+        headers: {
+          Authorization: `Bearer ${userData.refreshToken}`,
+          role: userData.role
+          
+      },
+      });
     if(respone2.data){
       console.log(respone2.data,"XD2")
       setStatusInfo(respone2.data);
@@ -79,7 +93,14 @@ function AdminPage() {
       updateStatus: "accepted"
     }
 
-    const updateStatus = await axios.put(`${API}/ticket/updateStatusTicket/:${ticket._id}`,info)
+    const updateStatus = await axios.put(`${API}/ticket/updateStatusTicket/:${ticket._id}`, {
+      headers: {
+          Authorization: `Bearer ${userData.refreshToken}`,
+          role: userData.role
+          
+      },
+      info
+      });
     if(updateStatus.data)
     {
       console.log(updateStatus.data.message)
@@ -89,13 +110,20 @@ function AdminPage() {
           title: "รับเรื่องไม่สําเร็จ",
           text: "มีคนรับเรื่องนี้แล้ว!",
           confirmButtonText: "ตกลง",
-          confirmButtonColor: 'red',
+          confirmButtonColor: '#263A50',
         })
         return;
     } else {
       console.log(updateStatus.data.message)
     setLoader(true);
-    const respone = await axios.post(`${API}/ticket/sendemail`,info);
+    const respone = await axios.post(`${API}/ticket/sendemail`, info,
+    {
+        headers: {
+          Authorization: `Bearer ${userData.refreshToken}`,
+          role: userData.role
+          
+      },
+      });
    
     if(respone.data) {
       if(respone.data.RespCode == 200) {
@@ -118,7 +146,14 @@ function AdminPage() {
     const info = {
       status: e,
     }
-    const respone = await axios.post(`${API}/ticket/getTicketQuery`,info);
+    const respone = await axios.post(`${API}/ticket/getTicketQuery`, info,
+    {
+        headers: {
+          Authorization: `Bearer ${userData.refreshToken}`,
+          role: userData.role
+          
+      },
+      });
     if (respone.data){
     if(respone.data.message == "Ticket fetch successfully"){
       setData(respone.data.ticket)
@@ -228,7 +263,10 @@ function AdminPage() {
                   <p>ชื่อผู้แจ้ง :&nbsp;{ticket.name} </p>
                   {ticket.status === "pending" ?
                     <p>เวลา :&nbsp;{new Date(ticket.createdAt).toLocaleString()} </p> :
+                    <>
+                    <p>ผู้รับเรื่อง : {ticket.recipient_name}</p>
                     <p>อัพเดตเวลา :&nbsp;{new Date(ticket.updatedAt).toLocaleString()}</p>
+                    </>
                   }
                   
                   <p>Email :&nbsp;{ticket.email} </p>

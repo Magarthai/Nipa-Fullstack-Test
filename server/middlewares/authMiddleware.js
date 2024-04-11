@@ -4,6 +4,7 @@ const asyncHandler = require("express-async-handler");
 
 const authMiddleware = asyncHandler(async (req, res, next) => {
     let token;
+    console.log(req.headers.role)
     if (req.headers.authorization && req.headers.authorization.startsWith("Bearer")) {
       try {
         token = req.headers.authorization.split(" ")[1];
@@ -17,9 +18,11 @@ const authMiddleware = asyncHandler(async (req, res, next) => {
         req.user = user;
         next();
       } catch (error) {
+        console.log(error)
         res.status(401).json({ message: 'Not authorized, token failed' });
       }
     } else {
+      console.log("no token")
       res.status(401).json({ message: 'Not authorized, no token' });
     }
   });
@@ -27,9 +30,11 @@ const authMiddleware = asyncHandler(async (req, res, next) => {
 
 // if admin
 const isAdmin = asyncHandler(async (req, res, next) => {
-    if (req.user && req.user.role === "admin") {
+  console.log(req.headers.role)
+    if (req.headers && req.headers.role === "admin") {
       next();
     } else {
+      console.log('You are not authorized')
       res.status(401).json({ message: "You are not authorized" });
     }
   });

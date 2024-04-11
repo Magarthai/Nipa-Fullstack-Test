@@ -33,6 +33,9 @@ let ticketSchema = new mongoose.Schema({
     },
     recipient: {
         type: String
+    },
+    recipient_name: {
+        type: String
     }
 }, { timestamps: true });
 

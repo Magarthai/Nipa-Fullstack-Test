@@ -55,14 +55,12 @@ const loginUserCtrl = asyncHandler(async (req, res) => {
 // handle refresh token
 const handleRefreshToken = asyncHandler(async (req, res) => {
   const cookie = req.cookies;
-  console.log(cookie);
   if (!cookie.refreshToken) {
     res.json({message:"Refresh Token Not Found"})
     return;
   }
   const refreshToken = cookie.refreshToken;
 
-  console.log(refreshToken);
   
   jwt.verify(refreshToken, process.env.JWT_SECRET, async(err, decode) => {
     if (err || !decode.id) {
@@ -71,7 +69,6 @@ const handleRefreshToken = asyncHandler(async (req, res) => {
 
     }
     const id = decode.id 
-    console.log(id)
       const user = await User.findOne({ _id: id });
     if (!user) {
       res.json({message:"User not found"}) ;

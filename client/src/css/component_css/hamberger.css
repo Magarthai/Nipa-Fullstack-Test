@@ -1,6 +1,5 @@
 .hamberger-container{
-    width: 100%;
-    height: 100%;
+    right: 0;
     display: none;
     justify-content: right;
     position: fixed;

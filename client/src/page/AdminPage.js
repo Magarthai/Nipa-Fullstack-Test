@@ -7,31 +7,52 @@ import GraphSkeleton from '../utils/graphSkeleton.js';
 import CountSkeleton from '../utils/CountSkeleton.js';
 import HambergerBar from '../utils/HambergerBar.js';
 import { AreaChart, Area, Tooltip, ResponsiveContainer, Cell, XAxis, YAxis, CartesianGrid, Legend, BarChart, Bar } from 'recharts'
-
+import { useNavigate } from "react-router-dom"
 function AdminPage() {
   const [isLoading, setIsLoading] = useState(true);
-  const { userData } = useUserAuth();
+  const { userData,logout_global } = useUserAuth();
   const [data, setData] = useState([]);
   const [data2, setData2] = useState([]);
   const [statusInfo, setStatusInfo] = useState({});
   const [clicked, setClicked] = useState(false); 
   const API = process.env.REACT_APP_API
-
+  const navigate = useNavigate()
   useEffect(() => {
+    if(userData) {
     fetchStatusInfo();
-  }, []); 
+    }
+  }, [userData]); 
 
   const fetchStatusInfo = async () => {
     try {
-      const response = await axios.get(`${API}/dashboard/getStatusCount`);
+      const response = await axios.get(`${API}/dashboard/getStatusCount`, {
+        headers: {
+            Authorization: `Bearer ${userData.refreshToken}`,
+            role: userData.role
+            
+        }
+        });
       if (response.data) {
         setStatusInfo(response.data);
       }
-      const response2 = await axios.get(`${API}/dashboard/getMonthTicket`);
+      const response2 = await axios.get(`${API}/dashboard/getMonthTicket`, {
+        headers: {
+            Authorization: `Bearer ${userData.refreshToken}`,
+            role: userData.role
+            
+        }
+        });
       if (response2.data) {
         setData(response2.data);
       }
-      const response3 = await axios.get(`${API}/dashboard/getSuccessErrorCount`);
+      const response3 = await axios.get(`${API}/dashboard/getSuccessErrorCount`, {
+        headers: {
+            Authorization: `Bearer ${userData.refreshToken}`,
+            role: userData.role
+            
+        }
+        });
+        
       if (response3.data) {
         setData2(response3.data);
       }
@@ -39,7 +60,14 @@ function AdminPage() {
         setIsLoading(false)
       }, 1000);
     } catch (err) {
-      console.error(err);
+      if(err.response.status === 401) {
+        navigate('/')
+        logout_global();
+        console.log("You are not admin")
+        
+      } else {
+      console.error(err)
+      }
     }
   };
 

@@ -31,7 +31,8 @@ const LoginPopup = ({ open, onClose }) => {
         confirmButtonColor: '#263A50',
       }).then((result) => {
         if (result.isConfirmed) {
-            navigate('/homepage');
+          window.location.href = '/homepage';
+
         } else {
         }
       });
@@ -41,7 +42,7 @@ const LoginPopup = ({ open, onClose }) => {
         title: "ล็อคอินไม่สําเร็จ",
         text: "กรุณาลองใหม่อีกครั้ง!",
         confirmButtonText: "ตกลง",
-        confirmButtonColor: 'red',
+        confirmButtonColor: '#263A50',
       })
     }
     

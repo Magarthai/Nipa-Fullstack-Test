@@ -112,7 +112,6 @@ const sortedData = data.sort((a, b) => {
     const dateB = new Date(b.date.split('/').reverse().join('-'));
     return dateA - dateB;
 });
-console.log(sortedData)
 res.json(sortedData);
 
 } catch (err) {

@@ -10,7 +10,7 @@ import HambergerBar from '../utils/HambergerBar.js';
 import axios from 'axios';
 import BarLoaders from '../utils/BarLoader.js';
 function AdminPage() {
-  const { userData } = useUserAuth();
+  const { userData ,logout_global } = useUserAuth();
   const location = useLocation();
   const [statusInfo, setStatusInfo] = useState({});
   const [loader, setLoader] = useState(false);
@@ -58,15 +58,22 @@ useEffect(() => {
       email: data.email,
       topic: data.selectTopic,
       time: new Date(data.createdAt).toLocaleString(),
-      recipient: data.recipient,
       status: statuText,
       recipientId: userData._id,
       updateStatus: status,
       solve: solve,
-      recipient: data.recipient + " " + userData.lname,
+      recipient: userData.fname + " " + userData.lname,
     }
     console.log(info)
-    const updateStatus = await axios.put(`${API}/ticket/closeTicket/:${data._id}`,info)
+    const updateStatus = await axios.put(`${API}/ticket/closeTicket/:${data._id}`,
+    info ,
+   {
+     headers: {
+       Authorization: `Bearer ${userData.refreshToken}`,
+       role: userData.role
+     }
+   }
+ );
     if(updateStatus.data)
     {
       console.log(updateStatus.data.message)
@@ -76,13 +83,20 @@ useEffect(() => {
           title: "รับเรื่องไม่สําเร็จ",
           text: "มีคนรับเรื่องนี้แล้ว!",
           confirmButtonText: "ตกลง",
-          confirmButtonColor: 'red',
+          confirmButtonColor: '#263A50',
         })
         return;
     } else {
       console.log(updateStatus.data.message)
     setLoader(true);
-    const respone = await axios.post(`${API}/ticket/sendemail`,info);
+    const respone = await axios.post(`${API}/ticket/sendemail`, info,
+    {
+        headers: {
+          Authorization: `Bearer ${userData.refreshToken}`,
+          role: userData.role
+          
+      },
+      });
    
     if(respone.data) {
       if(respone.data.RespCode == 200) {
@@ -104,8 +118,15 @@ useEffect(() => {
     }
     }
   }
-} catch(err) {
-  console.error(err);
+}catch (err) {
+  if(err.response.status === 401) {
+    navigate('/')
+    logout_global();
+    console.log("You are not admin")
+    
+  } else {
+  console.error(err)
+  }
 }
 
   }
@@ -159,7 +180,7 @@ useEffect(() => {
                 <div className="solvedetail"><p>{data && data.solve}</p></div>
               )}
 
-              {data && userData && (data.status === "pending" || data.status === "accepted" || data.status === userData._id) ? (
+              {data && userData && (data.status === "pending" || data.status === "accepted" && data.recipient === userData._id) ? (
                 <div className="ticket-info-button">
                   <button className='bold' id='success' onClick={() => handleSubmit("success")}>SUCCESS</button>
                   <button className='bold' id='reject' onClick={() => handleSubmit("reject")}>REJECT</button>

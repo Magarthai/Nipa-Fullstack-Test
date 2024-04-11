@@ -10,17 +10,17 @@ const {
     getTicketByAdmin,
     getTicketQuery,
 } = require("../controllers/Ticket.crlt");
-// const { authMiddleware, isAdmin } = require("../middlewares/authMiddleware");
+const { authMiddleware, isAdmin } = require("../middlewares/authMiddleware");
 
 const router = express.Router();
 
 router.post('/createTicket', createTicket);
-router.get('/getTicket', getTicket);
-router.post('/getTicketByAdmin', getTicketByAdmin);
+router.get('/getTicket', authMiddleware,isAdmin, getTicket);
+router.post('/getTicketByAdmin', authMiddleware,isAdmin, getTicketByAdmin);
 router.post('/getFilterTicket', getFilterTicket);
-router.put('/updateStatusTicket/:parameter', updateStatusTicket);
-router.put('/closeTicket/:parameter', closeTicket);
+router.put('/updateStatusTicket/:parameter', authMiddleware,isAdmin, updateStatusTicket);
+router.put('/closeTicket/:parameter', authMiddleware,isAdmin, closeTicket);
 router.post('/sendemail', sendMail);
-router.post('/getTicketQuery', getTicketQuery);
+router.post('/getTicketQuery', authMiddleware,isAdmin, getTicketQuery);
 
 module.exports = router;

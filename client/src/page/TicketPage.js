@@ -9,7 +9,7 @@ import HambergerBar from '../utils/HambergerBar.js';
 import Swal from 'sweetalert2';
 import axios from 'axios'
 function AdminPage() {
-  const { userData } = useUserAuth();
+  const { userData,logout_global } = useUserAuth();
   const navigate = useNavigate();
   const [data, setData] = useState({});
   const [loader, setLoader] = useState(false);
@@ -22,7 +22,13 @@ function AdminPage() {
   const fetchData = async() => {
     try{
     console.log('xd') 
-    const respone = await axios.get(`${API}/ticket/getTicket`);
+    const respone = await axios.get(`${API}/ticket/getTicket`, {
+      headers: {
+          Authorization: `Bearer ${userData.refreshToken}`,
+          role: userData.role
+          
+      },
+      });
     if (respone.data){
     if(respone.data.message == "Ticket fetch successfully"){
       setData(respone.data.ticket)
@@ -44,7 +50,21 @@ function AdminPage() {
     const info = {
       status: e,
     }
-    const respone = await axios.post(`${API}/ticket/getTicketQuery`,info);
+    const headers = {
+      Authorization: `Bearer ${userData.refreshToken}`,
+      role: userData.role
+      
+    } 
+    console.log(headers)
+    const respone = await axios.post(`${API}/ticket/getTicketQuery`, info,
+    {
+        headers: {
+          Authorization: `Bearer ${userData.refreshToken}`,
+          role: userData.role
+          
+      },
+      });
+
     if (respone.data){
     if(respone.data.message == "Ticket fetch successfully"){
       setData(respone.data.ticket)
@@ -86,12 +106,21 @@ function AdminPage() {
       topic: ticket.selectTopic,
       time: new Date(ticket.createdAt).toLocaleString(),
       recipient: userData.fname + " " + userData.lname,
-      status: "รับเรื่องแล้ว",
+      status: "ได้รับเรื่องแล้ว",
       recipientId: userData._id,
+      solve:"ตอนนี้ทางเราได้รับเรื่องแล้วถ้าหากปัญหาถูกแก้ไข้ หรือ ไม่สามารถแก้ไข้ได้จะตอบกลับไป ครับ/ค่ะ",
       updateStatus: "accepted"
     }
 
-    const updateStatus = await axios.put(`${API}/ticket/updateStatusTicket/:${ticket._id}`,info)
+    const updateStatus = await axios.put(`${API}/ticket/updateStatusTicket/:${ticket._id}`,
+     info ,
+    {
+      headers: {
+        Authorization: `Bearer ${userData.refreshToken}`,
+        role: userData.role
+      }
+    }
+  );
     if(updateStatus.data)
     {
       console.log(updateStatus.data.message)
@@ -101,13 +130,20 @@ function AdminPage() {
           title: "รับเรื่องไม่สําเร็จ",
           text: "มีคนรับเรื่องนี้แล้ว!",
           confirmButtonText: "ตกลง",
-          confirmButtonColor: 'red',
+          confirmButtonColor: '#263A50',
         })
         return;
     } else {
       console.log(updateStatus.data.message)
     setLoader(true);
-    const respone = await axios.post(`${API}/ticket/sendemail`,info);
+    const respone = await axios.post(`${API}/ticket/sendemail`, info,
+    {
+        headers: {
+          Authorization: `Bearer ${userData.refreshToken}`,
+          role: userData.role
+          
+      },
+      });
    
     if(respone.data) {
       if(respone.data.RespCode == 200) {
@@ -118,24 +154,34 @@ function AdminPage() {
     }
   }
 } catch(err) {
-  console.error(err);
+  if(err.response.status === 401) {
+    navigate('/')
+    logout_global();
+    console.log("You are not admin")
+    
+  }else {
+    console.error(err)
+    }
 }
   }
 
 
 
   useEffect(() => {
+    if(userData) {
     fetchData();
-  }, []); 
+    }
+  }, [userData]); 
 
   return (
     <div className="admin-container" >
-      <HambergerBar clicked={clicked} toggleClicked={toggleClicked} />
+      
       {loader ? <BarLoaders></BarLoaders> : <div></div>}
       <AdminNavbar clicked={clicked} userData={userData} />
   
       <div className='adminpage-header background-color'></div>
       <div className="leftside">
+      <HambergerBar clicked={clicked} toggleClicked={toggleClicked} />
       <div className="filter-container">
         <div className="filter-box">
           <div className="box-status-img" onClick={() => fetchDataQuery("pending")}>
@@ -182,7 +228,11 @@ function AdminPage() {
                   <p>ชื่อผู้แจ้ง :&nbsp;{ticket.name} </p>
                   {ticket.status === "pending" ?
                     <p>เวลา :&nbsp;{new Date(ticket.createdAt).toLocaleString()} </p> :
+                    <>
+                    <p>ผู้รับเรื่อง : {ticket.recipient_name}</p>
                     <p>อัพเดตเวลา :&nbsp;{new Date(ticket.updatedAt).toLocaleString()}</p>
+                    </>
+                    
                   }
                   
                   <p>Email :&nbsp;{ticket.email} </p>
