@@ -81,30 +81,42 @@ const handleRefreshToken = asyncHandler(async (req, res) => {
 
 
 const logoutUserCtrl = asyncHandler(async (req, res) => {
-  const cookie = req.cookies;
-  console.log(cookie);
-  if (!cookie.refreshToken) {
-    res.json("not found token")
-    return;
+  const refreshToken = req.cookies.refreshToken;
+
+  if (!refreshToken) {
+    return res.status(400).json({ message: "Refresh token not found" });
   }
-  const refreshToken = cookie.refreshToken;
-  const user = await User.findOne({ refreshToken });
-  if (!user) {
+
+  try {
+    const user = await User.findOne({ refreshToken });
+
+    if (!user) {
+
+      res.clearCookie("refreshToken", {
+        httpOnly: true,
+        secure: true,
+      });
+      return res.sendStatus(204); // No Content
+    }
+
+    user.refreshToken = "";
+    await user.save();
+
+
     res.clearCookie("refreshToken", {
       httpOnly: true,
       secure: true,
     });
-    return res.sendStatus(204); // No Content
+
+    // Send success response
+    return res.status(200).json({ message: "Logout successful" });
+  } catch (error) {
+
+    console.error("Error logging out:", error);
+    return res.status(500).json({ message: "Internal server error" });
   }
-
-  await User.findByIdAndUpdate(user._id, { refreshToken: "" });
-
-  res.clearCookie("refreshToken", {
-    httpOnly: true,
-    secure: true,
-  });
-  res.send("success")
 });
+
 
 const getAllUser = asyncHandler(async (req, res) => {
   try {
