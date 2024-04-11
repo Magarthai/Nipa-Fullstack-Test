@@ -1,4 +1,4 @@
-![1](https://github.com/Magarthai/Nipa-Fullstack-Test/assets/132775604/299f6689-e3c4-40a9-ae7c-f0973bbef7da)# Nipa-Fullstack-Test
+# Nipa-Fullstack-Test
 
 ## Ticket Management System
 
