@@ -22,6 +22,14 @@ export function UserAuthContextProvider({ children }) {
 
       const logout_global = async() => {
         setUserData("");
+        try{
+          const logout = await axios.get(`${API}/user/logout`, {
+            withCredentials: true 
+        });
+      } catch(err) {
+        console.log(err)
+      }
+       
       };
 
       
