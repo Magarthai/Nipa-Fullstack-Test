@@ -4,10 +4,10 @@ const userAuthContext = createContext();
 
 export function UserAuthContextProvider({ children }) {
     const [userData, setUserData] = useState("");
-
+    const API = process.env.REACT_APP_API
     const checkToken = async() => {
       try{
-        const response = await axios.get('http://localhost:5000/api/user/refresh', {
+        const response = await axios.get(`${API}/user/refresh`, {
           withCredentials: true 
         });
 
