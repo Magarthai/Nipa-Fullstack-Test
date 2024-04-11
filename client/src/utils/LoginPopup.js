@@ -17,8 +17,9 @@ const LoginPopup = ({ open, onClose }) => {
       email: email,
       password: password
     };
+    const API = process.env.REACT_APP_API
     console.log(login_info);
-    const response = await axios.post('http://localhost:5000/api/user/login', login_info, {
+    const response = await axios.post(`${API}/api/user/login`, login_info, {
       withCredentials: true 
     });
 
