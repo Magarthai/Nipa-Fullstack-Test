@@ -65,7 +65,7 @@ useEffect(() => {
       recipient: userData.fname + " " + userData.lname,
     }
     console.log(info)
-    const updateStatus = await axios.put(`${API}/ticket/closeTicket/:${data._id}`,
+    const updateStatus = await axios.put(`${API}/tickets/byId/:${data._id}/close`,
     info ,
    {
      headers: {
@@ -89,7 +89,7 @@ useEffect(() => {
     } else {
       console.log(updateStatus.data.message)
     setLoader(true);
-    const respone = await axios.post(`${API}/ticket/sendemail`, info,
+    const respone = await axios.post(`${API}/sendemail`, info,
     {
         headers: {
           Authorization: `Bearer ${userData.refreshToken}`,

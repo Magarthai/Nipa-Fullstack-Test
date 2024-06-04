@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import Landingpage from "./page/LandingPage.js";
+import Landingpage from "./page/Landingpage.js";
 import TicketInfo from "./page/TicketInfo.js";
 import AdminPage from "./page/AdminPage.js";
 import TicketPage from "./page/TicketPage.js";

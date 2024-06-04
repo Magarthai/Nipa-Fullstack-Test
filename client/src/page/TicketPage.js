@@ -22,7 +22,7 @@ function AdminPage() {
   const fetchData = async() => {
     try{
     console.log('xd') 
-    const respone = await axios.get(`${API}/ticket/getTicket`, {
+    const respone = await axios.get(`${API}/ticket`, {
       headers: {
           Authorization: `Bearer ${userData.refreshToken}`,
           role: userData.role
@@ -43,27 +43,16 @@ function AdminPage() {
   }
   };
 
-  const fetchDataQuery = async(e) => {
+  const fetchDataQuery = async(status) => {
     try{
       setIsLoading(true);
-    console.log('xd') 
-    const info = {
-      status: e,
-    }
     const headers = {
       Authorization: `Bearer ${userData.refreshToken}`,
       role: userData.role
       
     } 
     console.log(headers)
-    const respone = await axios.post(`${API}/ticket/getTicketQuery`, info,
-    {
-        headers: {
-          Authorization: `Bearer ${userData.refreshToken}`,
-          role: userData.role
-          
-      },
-      });
+    const respone = await axios.get(`${API}/tickets/byStatus/${status}`);
 
     if (respone.data){
     if(respone.data.message == "Ticket fetch successfully"){
@@ -112,7 +101,7 @@ function AdminPage() {
       updateStatus: "accepted"
     }
 
-    const updateStatus = await axios.put(`${API}/ticket/updateStatusTicket/:${ticket._id}`,
+    const updateStatus = await axios.put(`${API}/tickets/byId/:${ticket._id}`,
      info ,
     {
       headers: {
@@ -136,7 +125,7 @@ function AdminPage() {
     } else {
       console.log(updateStatus.data.message)
     setLoader(true);
-    const respone = await axios.post(`${API}/ticket/sendemail`, info,
+    const respone = await axios.post(`${API}/sendemail`, info,
     {
         headers: {
           Authorization: `Bearer ${userData.refreshToken}`,

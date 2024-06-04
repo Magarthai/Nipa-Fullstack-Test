@@ -7,7 +7,7 @@ export function UserAuthContextProvider({ children }) {
     const API = process.env.REACT_APP_API
     const checkToken = async() => {
       try{
-        const response = await axios.get(`${API}/user/refresh`, {
+        const response = await axios.get(`${API}/refresh`, {
           withCredentials: true 
         });
 
@@ -23,7 +23,7 @@ export function UserAuthContextProvider({ children }) {
       const logout_global = async() => {
         setUserData("");
         try{
-          const logout = await axios.get(`${API}/user/logout`, {
+          const logout = await axios.get(`${API}/logout`, {
             withCredentials: true 
         });
       } catch(err) {

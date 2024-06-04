@@ -25,14 +25,7 @@ function AdminPage() {
     const info = {
       id: userData._id
     };
-    const respone = await axios.post(`${API}/ticket/getTicketByAdmin`, info,
-    {
-        headers: {
-          Authorization: `Bearer ${userData.refreshToken}`,
-          role: userData.role
-          
-      },
-      });
+    const respone = await axios.get(`${API}/tickets/byId/${info.id}`);
     if (respone.data){
       console.log(respone.data,"XD")
     if(respone.data.message == "Ticket fetch successfully"){
@@ -41,7 +34,7 @@ function AdminPage() {
 
     }
 
-    const respone2 = await axios.post(`${API}/dashboard/getStatusAdminCount`, info,
+    const respone2 = await axios.get(`${API}/dashboards/${userData._id}`,
     {
         headers: {
           Authorization: `Bearer ${userData.refreshToken}`,
@@ -93,7 +86,7 @@ function AdminPage() {
       updateStatus: "accepted"
     }
 
-    const updateStatus = await axios.put(`${API}/ticket/updateStatusTicket/:${ticket._id}`, {
+    const updateStatus = await axios.put(`${API}/tickets/byId/:${ticket._id}`, {
       headers: {
           Authorization: `Bearer ${userData.refreshToken}`,
           role: userData.role
@@ -116,7 +109,7 @@ function AdminPage() {
     } else {
       console.log(updateStatus.data.message)
     setLoader(true);
-    const respone = await axios.post(`${API}/ticket/sendemail`, info,
+    const respone = await axios.post(`${API}/sendemail`, info,
     {
         headers: {
           Authorization: `Bearer ${userData.refreshToken}`,
@@ -139,21 +132,11 @@ function AdminPage() {
   }
 
 
-  const fetchDataQuery = async(e) => {
+  const fetchDataQuery = async(status) => {
     try{
       setIsLoading(true);
     console.log('xd') 
-    const info = {
-      status: e,
-    }
-    const respone = await axios.post(`${API}/ticket/getTicketQuery`, info,
-    {
-        headers: {
-          Authorization: `Bearer ${userData.refreshToken}`,
-          role: userData.role
-          
-      },
-      });
+    const respone = await axios.get(`${API}/tickets/byStatus/${status}`);
     if (respone.data){
     if(respone.data.message == "Ticket fetch successfully"){
       setData(respone.data.ticket)
@@ -169,6 +152,7 @@ function AdminPage() {
   };
   useEffect(() => {
     if(userData) {
+      console.log("test")
       fetchData();
     }
    

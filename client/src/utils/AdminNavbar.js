@@ -28,7 +28,7 @@ const AdminNavbar = ({ userData,clicked }) => {
   const API = process.env.REACT_APP_API;
   const logout = async() => {
     try{
-      const logout = await axios.get(`${API}/user/logout`, {
+      const logout = await axios.get(`${API}/logout`, {
         withCredentials: true 
     });
     logout_global();

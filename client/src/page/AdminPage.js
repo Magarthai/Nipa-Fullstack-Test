@@ -25,7 +25,7 @@ function AdminPage() {
 
   const fetchStatusInfo = async () => {
     try {
-      const response = await axios.get(`${API}/dashboard/getStatusCount`, {
+      const response = await axios.get(`${API}/dashboards/count`, {
         headers: {
             Authorization: `Bearer ${userData.refreshToken}`,
             role: userData.role
@@ -35,7 +35,7 @@ function AdminPage() {
       if (response.data) {
         setStatusInfo(response.data);
       }
-      const response2 = await axios.get(`${API}/dashboard/getMonthTicket`, {
+      const response2 = await axios.get(`${API}/dashboards`, {
         headers: {
             Authorization: `Bearer ${userData.refreshToken}`,
             role: userData.role
@@ -45,7 +45,7 @@ function AdminPage() {
       if (response2.data) {
         setData(response2.data);
       }
-      const response3 = await axios.get(`${API}/dashboard/getSuccessErrorCount`, {
+      const response3 = await axios.get(`${API}/dashboards/counts`, {
         headers: {
             Authorization: `Bearer ${userData.refreshToken}`,
             role: userData.role

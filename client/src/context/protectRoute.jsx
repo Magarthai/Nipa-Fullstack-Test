@@ -16,7 +16,7 @@ function ProtectRoute({ children }) {
     const API = process.env.REACT_APP_API
     const checkToken = async () => {
         try {
-            const response = await axios.get(`${API}/user/refresh`, {
+            const response = await axios.get(`${API}/refresh`, {
                 withCredentials: true 
             });
 

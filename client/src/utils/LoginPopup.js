@@ -19,7 +19,7 @@ const LoginPopup = ({ open, onClose }) => {
     };
     const API = process.env.REACT_APP_API
     console.log(login_info);
-    const response = await axios.post(`${API}/user/login`, login_info, {
+    const response = await axios.post(`${API}/login`, login_info, {
       withCredentials: true 
     });
 
