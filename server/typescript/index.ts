@@ -1,7 +1,10 @@
 import express, { Express, Request, Response } from "express";
 const dbConnect = require('./config/db.connect');
 const dotenv = require('dotenv').config();
-const app: Express = express();
+import { createExpressServer } from 'routing-controllers';
+import 'reflect-metadata';
+import { UserController } from "./routes/dashboardRoute";
+// const app: Express = express();
 const port = process.env.PORT || 3000;
 const morgan = require('morgan');
 const cors = require('cors');
@@ -11,12 +14,21 @@ const cookieParser = require('cookie-parser');
 const userRoute = require('./routes/userRoute');
 const dashboardRoute = require('./routes/dashboardRoute');
 const ticketRoute = require('./routes/ticketRoute');
-app.use(cors(
-    {
-        credentials:true,
-        origin: ['http://localhost:3000']
-    }
-));
+
+const app = createExpressServer({
+   cors: {
+      credentials:true,
+      origin: ['http://localhost:3000']
+    },
+   controllers: [UserController],
+ });
+ 
+// app.use(cors(
+//     {
+//         credentials:true,
+//         origin: ['http://localhost:3000']
+//     }
+// ));
 
 
 dbConnect();
@@ -29,9 +41,9 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 
-app.use('/', userRoute);
-app.use('/', ticketRoute);
-app.use('/', dashboardRoute)
+// app.use('/', userRoute);
+// app.use('/', ticketRoute);
+// app.use('/', dashboardRoute)
 app.listen(port, () => {
   console.log(`Server is running at http://localhost:${port}`);
 });
