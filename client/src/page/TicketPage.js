@@ -22,7 +22,7 @@ function AdminPage() {
   const fetchData = async() => {
     try{
     console.log('xd') 
-    const respone = await axios.get(`${API}/ticket`, {
+    const respone = await axios.get(`${API}/tickets`, {
       headers: {
           Authorization: `Bearer ${userData.refreshToken}`,
           role: userData.role
@@ -52,7 +52,7 @@ function AdminPage() {
       
     } 
     console.log(headers)
-    const respone = await axios.get(`${API}/tickets/byStatus/${status}`);
+    const respone = await axios.get(`${API}/tickets/status/${status}`);
 
     if (respone.data){
     if(respone.data.message == "Ticket fetch successfully"){

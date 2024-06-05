@@ -25,7 +25,7 @@ function AdminPage() {
     const info = {
       id: userData._id
     };
-    const respone = await axios.get(`${API}/tickets/byId/${info.id}`);
+    const respone = await axios.get(`${API}/tickets/${info.id}`);
     if (respone.data){
       console.log(respone.data,"XD")
     if(respone.data.message == "Ticket fetch successfully"){
@@ -86,7 +86,7 @@ function AdminPage() {
       updateStatus: "accepted"
     }
 
-    const updateStatus = await axios.put(`${API}/tickets/byId/:${ticket._id}`, {
+    const updateStatus = await axios.put(`${API}/tickets/:${ticket._id}`, {
       headers: {
           Authorization: `Bearer ${userData.refreshToken}`,
           role: userData.role
@@ -136,7 +136,7 @@ function AdminPage() {
     try{
       setIsLoading(true);
     console.log('xd') 
-    const respone = await axios.get(`${API}/tickets/byStatus/${status}`);
+    const respone = await axios.get(`${API}/tickets/status/${status}`);
     if (respone.data){
     if(respone.data.message == "Ticket fetch successfully"){
       setData(respone.data.ticket)

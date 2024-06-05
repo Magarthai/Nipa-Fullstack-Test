@@ -10,8 +10,8 @@ export function UserAuthContextProvider({ children }) {
         const response = await axios.get(`${API}/refresh`, {
           withCredentials: true 
         });
-
         if(response.data.message == "success") {
+          console.log(response.data.user,"testz")
             setUserData(response.data.user);
         }
         console.log(response.data)
@@ -34,7 +34,9 @@ export function UserAuthContextProvider({ children }) {
 
       
 
-
+  useEffect(() => {
+    console.log(userData,"global")
+  },[userData])
 
   useEffect(() => {
     document.title = 'Nipa Cloud';

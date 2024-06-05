@@ -65,7 +65,7 @@ useEffect(() => {
       recipient: userData.fname + " " + userData.lname,
     }
     console.log(info)
-    const updateStatus = await axios.put(`${API}/tickets/byId/:${data._id}/close`,
+    const updateStatus = await axios.put(`${API}/tickets/close/${data._id}`,
     info ,
    {
      headers: {

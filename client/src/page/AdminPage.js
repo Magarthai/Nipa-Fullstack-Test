@@ -45,7 +45,7 @@ function AdminPage() {
       if (response2.data) {
         setData(response2.data);
       }
-      const response3 = await axios.get(`${API}/dashboards/counts`, {
+      const response3 = await axios.get(`${API}/dashboard/success_error `, {
         headers: {
             Authorization: `Bearer ${userData.refreshToken}`,
             role: userData.role
@@ -54,6 +54,7 @@ function AdminPage() {
         });
         
       if (response3.data) {
+        console.log(response3.data,"data2")
         setData2(response3.data);
       }
       setTimeout(() => {

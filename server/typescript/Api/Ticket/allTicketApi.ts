@@ -28,13 +28,13 @@ const createTicket = async(req: Request, res: Response) => {
         const transporter = nodemailer.createTransport({
             service: 'gmail',
             auth: {
-                user: 'nipafullstacktest@gmail.com',
-                pass: 'csqj mgrh mqev sxmf'
+                user: 'kmutthealthcareunit@gmail.com',
+                pass: 'vqos ixxk pscf bqwm'
             }
         });
         const time = new Date(createdTicket.createdAt).toLocaleString()
         const option = {
-            from: 'nipafullstacktest@gmail.com',
+            from: 'kmutthealthcareunit@gmail.com',
             to: `${req.body.email}`,
             subject: `[ได้รับเรื่องแล้ว]`,
             html: `

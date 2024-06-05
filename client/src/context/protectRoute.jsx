@@ -6,22 +6,21 @@ import Swal from 'sweetalert2';
 
 function ProtectRoute({ children }) {
     const navigate = useNavigate();
-    const [userData, setUserData] = useState("");
+    const {userData} = useUserAuth();
     useEffect(() => {
-        console.log(userData);
-        if (!userData) {
-            checkToken();
+        console.log("check data", userData)
+        if (!userData.fname) {
+            // checkToken();
         }
     }, [userData]); 
     const API = process.env.REACT_APP_API
     const checkToken = async () => {
         try {
-            const response = await axios.get(`${API}/refresh`, {
-                withCredentials: true 
-            });
-
-            if(response.data.message === "success") {
-                setUserData(response.data.user);
+            const response = await axios.get(`${API}/refresh`)
+            console.log(response.data)
+            if(!userData) 
+            if(response.data.user) {
+                console.log("success");
             } else {
                 navigate('/');
             }

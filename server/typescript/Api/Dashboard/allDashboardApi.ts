@@ -162,7 +162,6 @@ const getStatusAdminCount = async(req: Request, res: Response) => {
     reject: 0
   }
   const fetchTicket = await Ticket.find({recipient: req.body.id});
-  console.log()
   if(fetchTicket) {
     fetchTicket.forEach((ticket:{status:string}) => {
       if(ticket.status == "pending") {

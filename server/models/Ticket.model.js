@@ -17,10 +17,6 @@ let ticketSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    selectTopic:{
-        type: String,
-        required: true
-    },
     img: {
         type: String,
     },

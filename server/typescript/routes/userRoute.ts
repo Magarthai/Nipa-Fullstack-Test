@@ -2,7 +2,9 @@ import { response } from "express";
 import { Controller, Param, Body, Get, Post, Put, Delete, JsonController, Res, Req, CookieParam } from "routing-controllers";
 const allUserData = require("../Api/User/alluser");
 const User = require("../../models/User.model");
-const jwt = require("jsonwebtoken");
+import jwt from 'jsonwebtoken'
+
+const secret = process.env.JWT_SECRET || "secret";
 
 export class Users {
     fname: string | undefined;
@@ -12,6 +14,12 @@ export class Users {
     role: string | undefined;
     _id: string | undefined;
     __v: number | undefined
+}
+
+interface Payload {
+    id: string | undefined;
+
+
 }
 
 export interface IUers {
@@ -25,7 +33,7 @@ export interface IUers {
 }
 
 const generateRefreshToken = (id:string) => {
-    return jwt.sign({ id }, process.env.JWT_SECRET, {
+    return jwt.sign({ id }, secret, {
       expiresIn: "1d",
     });
   };
@@ -39,6 +47,18 @@ export class UserController {
             const data = await User.find();
             console.log(data)
             return data
+        } catch (err) {
+            return (err)
+        }
+    }
+
+    @Get("/users/:id")
+    async getOne(@Param("id") id:string) {
+        try {
+            console.log(id)
+            const data:IUers = await User.findOne({_id:id});
+            console.log(data)
+            return response.send(data)
         } catch (err) {
             return (err)
         }
@@ -68,9 +88,7 @@ export class UserController {
             console.log(err)
             return err
         }
-    }
-
-    
+    };
 
     @Post("/login")
     async login(@Body() user:IUers , @Res() response:any) {
@@ -123,21 +141,16 @@ export class UserController {
                 }
             }
 
-            jwt.verify(refreshToken, process.env.JWT_SECRET, async(err:string, decode:{id:string}) => {
-                if (err || !decode.id) {
-                  return {message:"Invalid refresh token"}
-            
+            const decode:Payload = jwt.verify(refreshToken, secret) as Payload
+
+            if(decode.id) {
+                const userData = await User.findOne({_id:decode.id});
+                if(userData) {
+                    return response.send({message:"success", user:userData});
                 }
-                const id = decode.id 
-                  const user = await User.findOne({ _id: id });
-                if (!user) {
-                    return{message:"User not found"}
+            }
+
             
-                }
-                    return{user:user, message:"success"}
-              });
-            
-            return refreshToken
         } catch(err) {
             console.log(err)
             response.send(err)
