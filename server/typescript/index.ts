@@ -3,7 +3,8 @@ const dbConnect = require('./config/db.connect');
 const dotenv = require('dotenv').config();
 import { createExpressServer } from 'routing-controllers';
 import 'reflect-metadata';
-import { UserController } from "./routes/dashboardRoute";
+import { UserController } from "./routes/userRoute";
+
 // const app: Express = express();
 const port = process.env.PORT || 3000;
 const morgan = require('morgan');

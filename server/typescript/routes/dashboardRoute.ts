@@ -1,38 +1,45 @@
-import {Controller, Param, Body, Get, Post, Put, Delete, JsonController} from "routing-controllers";
-const allUserData = require("../Api/User/alluser");
-const User = require("../../models/User.model");
-@Controller()
-export class UserController {
+// import {Controller, Param, Body, Get, Post, Put, Delete, JsonController} from "routing-controllers";
+// const allUserData = require("../Api/User/alluser");
+// const User = require("../../models/User.model");
 
-    @Get("/users")
-    async  getAll() {
-      try {
-      const data =  await User.find();
-      console.log(data)
-      return data
-      } catch(err) {
-         return(err)
-      }
-    }
+// export class Users {
+//    firstname: string | undefined;
+//    lastname: string | undefined;
+// }
 
-    @Get("/users/:id")
-    getOne(@Param("id") id: number) {
-       return "This action returns user #" + id;
-    }
+// @JsonController()
+// export class UserController {
 
-    @Post("/users")
-    post(@Body() user: any) {
-       return "Saving user...";
-    }
+//     @Get("/users")
+//     async  getAll() {
+//       try {
+//       const data =  await User.find();
+//       console.log(data)
+//       return data
+//       } catch(err) {
+//          return(err)
+//       }
+//     }
 
-    @Put("/users/:id")
-    put(@Param("id") id: number, @Body() user: any) {
-       return "Updating a user...";
-    }
+//     @Get("/users/:id")
+//     getOne(@Param("id") id: number) {
+//        return "This action returns user #" + id;
+//     }
 
-    @Delete("/users/:id")
-    remove(@Param("id") id: number) {
-       return "Removing user...";
-    }
+//     @Post("/users")
+//     post(@Body() message: Users) {
+//          console.log('saving user ' + JSON.stringify(message.firstname));
+//        return `Saving user... ${JSON.stringify(message.firstname)}`;
+//     }
 
-}
+//     @Put("/users/:id")
+//     put(@Param("id") id: number, @Body() user: any) {
+//        return "Updating a user...";
+//     }
+
+//     @Delete("/users/:id")
+//     remove(@Param("id") id: number) {
+//        return "Removing user...";
+//     }
+
+// }
