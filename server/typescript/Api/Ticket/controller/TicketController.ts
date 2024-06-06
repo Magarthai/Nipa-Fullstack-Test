@@ -12,22 +12,25 @@ import {
   Req,
   CookieParam,
 } from "routing-controllers";
+
 import { ITicketCreateRequest } from "./ITicketCreateRequest";
 import { TicketService } from "../view/TicketService";
 import { ITicketUpdateRequest } from "../repository/ITicketUpdateRequest";
 import { ObjectId } from "mongodb";
 import { ITicketCloseRequest } from "../repository/ITicketCloseRequest";
 import { ITicketSendEmailNotificationRequest } from "../repository/ITicketSendEmailNotificationRequest";
-const Ticket = require("../../../../models/Ticket.model");
-
-const TicketServices = new TicketService();
 
 @JsonController("/tickets")
 export class TicketController {
+  ticketService: TicketService;
+  constructor() {
+    this.ticketService = new TicketService();
+  }
   @Get("/")
-  async getAllTicket() {
+  async getAllTicket(@Res() response: any) {
     try {
-      const data = await TicketServices.useGetAllTicket();
+      const data = await this.ticketService.useGetAllTicket();
+      console.log("test");
       return response.send({
         message: "Ticket fetch successfully",
         ticket: data,
@@ -40,7 +43,7 @@ export class TicketController {
   @Post("/")
   async createTicket(@Body() ticket: ITicketCreateRequest) {
     try {
-      const create = await TicketServices.useCreateTicket(ticket);
+      const create = await this.ticketService.useCreateTicket(ticket);
       if (create.data) {
         return response.send(create.data);
       } else {
@@ -58,7 +61,7 @@ export class TicketController {
   ) {
     try {
       console.log(status);
-      const fetchTicketByStatus = await TicketServices.useGetTicketByStatus(
+      const fetchTicketByStatus = await this.ticketService.useGetTicketByStatus(
         status
       );
       return response.send({
@@ -74,7 +77,9 @@ export class TicketController {
   @Get("/:id")
   async getTicketByRecipient(@Param("id") id: string, @Res() response: any) {
     try {
-      const fetchTicketById = await TicketServices.useGetTicketByRecipient(id);
+      const fetchTicketById = await this.ticketService.useGetTicketByRecipient(
+        id
+      );
       return response.send({
         message: "Ticket fetch successfully",
         ticket: fetchTicketById,
@@ -98,7 +103,9 @@ export class TicketController {
         recipient_name: ticket.recipient,
         id: id,
       } as ITicketUpdateRequest;
-      const updateStatus = await TicketServices.useUpdateStatusTicket(update);
+      const updateStatus = await this.ticketService.useUpdateStatusTicket(
+        update
+      );
       if (updateStatus.message == "Not found") {
         return response.status(404).send({ error: "Ticket not found" });
       } else if (updateStatus.message == "Success") {
@@ -128,7 +135,7 @@ export class TicketController {
         solve: ticket.solve,
         id: id,
       } as ITicketCloseRequest;
-      const closeTicket = await TicketServices.useCloseTicket(update);
+      const closeTicket = await this.ticketService.useCloseTicket(update);
 
       if (closeTicket.message == "Not found") {
         return response.status(404).send({ error: "Ticket not found" });
@@ -152,7 +159,7 @@ export class TicketController {
     @Res() response: any
   ) {
     try {
-      const closeTicket = await TicketServices.useSendEmail(ticket);
+      const closeTicket = await this.ticketService.useSendEmail(ticket);
       return response.status.closeTicket;
     } catch (err) {
       console.error("Error updating ticket:", err);

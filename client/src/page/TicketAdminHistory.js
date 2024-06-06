@@ -9,6 +9,10 @@ import Swal from 'sweetalert2';
 import CountSkeleton from '../utils/CountSkeleton.js';
 import HambergerBar from '../utils/HambergerBar.js';
 import axios from 'axios'
+import Cancel from '../img/Cancel.png'
+import Group from '../img/Group.png'
+import Meeting_Time from '../img/Meeting_Time.png'
+import Ok from '../img/Ok.png'
 function AdminPage() {
   const { userData } = useUserAuth();
   const navigate = useNavigate();
@@ -62,14 +66,14 @@ function AdminPage() {
   const img_status = (e) => {
     console.log(e);
     if(e === "pending") {
-      return "https://cdn.discordapp.com/attachments/445928139021877259/1226597902596571216/Group.png?ex=66255951&is=6612e451&hm=c9350934360d3a5cb03d5bab5826e5697b132f68d69b682d7b28b1154b18082d&";
+      return Group;
     }
     else if(e === "accepted"){
-      return "https://cdn.discordapp.com/attachments/445928139021877259/1226597902856749106/Meeting_Time.png?ex=66255951&is=6612e451&hm=0a5b210c2b113d9c2e614aa32283892babf8fc730ffc3be764725f05460410a0&"
+      return Meeting_Time
     } else if(e === "success") {
-      return "https://cdn.discordapp.com/attachments/445928139021877259/1226597903087308842/Ok.png?ex=66255951&is=6612e451&hm=577726e0f2a2f13cee08eb34845a52b1f62bafa7a42e10ff0a4c44f6fa310c73&"
+      return Ok
     } else {
-      return "https://cdn.discordapp.com/attachments/445928139021877259/1226597902349111336/Cancel.png?ex=66255951&is=6612e451&hm=68b3f78ea5d25528c45496163533d5a1e38537531fc5852fe41ad5cf8af9f178&"
+      return Cancel
     }
   };
 
@@ -146,7 +150,7 @@ function AdminPage() {
     }
 
     }
-  } catch(err) {
+  } catch(err) {  
     console.error(err)
   }
   };
@@ -171,23 +175,23 @@ function AdminPage() {
         <div className="filter-box">
           <div className="box-status-img" onClick={() => fetchDataQuery("pending")}>
             <div className="box-circle-status-img pending">
-            < img src="https://media.discordapp.net/attachments/445928139021877259/1226597902596571216/Group.png?ex=66255951&is=6612e451&hm=c9350934360d3a5cb03d5bab5826e5697b132f68d69b682d7b28b1154b18082d&=&format=webp&quality=lossless" alt="" />
+            < img src={Group} alt="" />
             </div>
             
           </div>
           <div className="box-status-img" onClick={() => fetchDataQuery("accepted")}>
           <div className="box-circle-status-img accepted">
-            < img src="https://media.discordapp.net/attachments/445928139021877259/1226597902856749106/Meeting_Time.png?ex=66255951&is=6612e451&hm=0a5b210c2b113d9c2e614aa32283892babf8fc730ffc3be764725f05460410a0&=&format=webp&quality=lossless" alt="" />
+            < img src={Meeting_Time} alt="" />
             </div>
           </div>
           <div className="box-status-img" onClick={() => fetchDataQuery("success")}>
           <div className="box-circle-status-img success">
-            < img src="https://media.discordapp.net/attachments/445928139021877259/1226597903087308842/Ok.png?ex=66255951&is=6612e451&hm=577726e0f2a2f13cee08eb34845a52b1f62bafa7a42e10ff0a4c44f6fa310c73&=&format=webp&quality=lossless" alt="" />
+            < img src={Ok} alt="" />
             </div>
           </div>
           <div className="box-status-img" onClick={() => fetchDataQuery("reject")}>
           <div className="box-circle-status-img reject">
-            < img src="https://media.discordapp.net/attachments/445928139021877259/1226597902349111336/Cancel.png?ex=66255951&is=6612e451&hm=68b3f78ea5d25528c45496163533d5a1e38537531fc5852fe41ad5cf8af9f178&=&format=webp&quality=lossless" alt="" />
+            < img src={Cancel} alt="" />
             </div>
           </div>
         </div>
@@ -202,7 +206,7 @@ function AdminPage() {
               {statusInfo && <span className='extralight'>{statusInfo.accepted}&nbsp;รายการ</span>}
             </div>
             <div className="status-img accepted">
-              <img src="https://media.discordapp.net/attachments/445928139021877259/1226597902856749106/Meeting_Time.png?ex=66255951&is=6612e451&hm=0a5b210c2b113d9c2e614aa32283892babf8fc730ffc3be764725f05460410a0&=&format=webp&quality=lossless" alt="accepted" />
+              <img src={Meeting_Time} alt="accepted" />
             </div>
 
           </div>
@@ -212,7 +216,7 @@ function AdminPage() {
               {statusInfo && <span className='extralight'>{statusInfo.success}&nbsp;รายการ</span>}
             </div>
             <div className="status-img success">
-              <img src="https://media.discordapp.net/attachments/445928139021877259/1226597903087308842/Ok.png?ex=66255951&is=6612e451&hm=577726e0f2a2f13cee08eb34845a52b1f62bafa7a42e10ff0a4c44f6fa310c73&=&format=webp&quality=lossless" alt="success" />
+              <img src={Ok} alt="success" />
             </div>
           </div>
           <div className="summary-status-card">
@@ -221,7 +225,7 @@ function AdminPage() {
               {statusInfo && <span className='extralight'>{statusInfo.reject}&nbsp;รายการ</span>}
             </div>
             <div className="status-img reject">
-              <img src="https://media.discordapp.net/attachments/445928139021877259/1226597902349111336/Cancel.png?ex=66255951&is=6612e451&hm=68b3f78ea5d25528c45496163533d5a1e38537531fc5852fe41ad5cf8af9f178&=&format=webp&quality=lossless" alt="reject" />
+              <img src={Cancel} alt="reject" />
             </div>
           </div>
         </div>

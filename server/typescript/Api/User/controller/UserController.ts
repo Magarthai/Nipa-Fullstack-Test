@@ -15,18 +15,21 @@ import {
 const User = require("../../../../models/User.model");
 import { IUser } from "../repository/IUser";
 import { ICreateUserRequest } from "./ICreateUserRequest";
-import { UserView } from "../view/UserView";
+import { UserService } from "../view/UserService";
 import { ICreateUserRespone } from "./ICreateUserRespone";
 import { ILoginUserRequest } from "./ILoginUserRequest";
 
-const UserViews = new UserView();
-
 @JsonController()
 export class UserController {
+  userService: UserService;
+
+  constructor() {
+    this.userService = new UserService();
+  }
   @Get("/users")
   async getAllUser(@Res() response: any) {
     try {
-      const data = await UserViews.useGetAllUserData();
+      const data = await this.userService.useGetAllUserData();
       return response.send(data);
     } catch (err) {
       return err;
@@ -51,7 +54,7 @@ export class UserController {
     @Res() response: any
   ): Promise<ICreateUserRespone> {
     try {
-      const create = await UserViews.useCreateUser(user);
+      const create = await this.userService.useCreateUser(user);
       return response.send(create);
     } catch (err) {
       console.log(err);
@@ -62,7 +65,7 @@ export class UserController {
   @Post("/login")
   async login(@Body() user: ILoginUserRequest, @Res() response: any) {
     try {
-      const login = await UserViews.useLoginUser(user);
+      const login = await this.userService.useLoginUser(user);
 
       if (login.message == "password matched") {
         response.cookie("refreshToken", login.refreshToken, {
@@ -94,7 +97,9 @@ export class UserController {
           message: "Refresh Token Not Found",
         };
       } else {
-        const refresh = await UserViews.useRefreshTokenUser(refreshToken);
+        const refresh = await this.userService.useRefreshTokenUser(
+          refreshToken
+        );
         return response.send({ message: "success", user: refresh });
       }
     } catch (err) {
@@ -109,7 +114,7 @@ export class UserController {
     @Res() response: any
   ) {
     try {
-      const logout = await UserViews.useLogoutUser(refreshToken);
+      const logout = await this.userService.useLogoutUser(refreshToken);
       if (logout == "not found token") {
         return "not found token";
       } else if (logout == "not found data") {

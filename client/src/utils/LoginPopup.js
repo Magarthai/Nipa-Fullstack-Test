@@ -4,6 +4,12 @@ import { useState } from 'react';
 import axios from 'axios'
 import { useNavigate } from "react-router-dom"
 import Swal from 'sweetalert2';
+import profile from '../img/Profile_1.png'
+import nipalogo from '../img/R_1.png'
+import nipalogo2 from '../img/Logo-EPc-2_-_Copy.png'
+import Dashboard from '../img/Control_Panel.png'
+import Ticket from '../img/Charity_Box.png'
+import History from '../img/Admin_Settings_Male.png'
 const LoginPopup = ({ open, onClose }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -61,7 +67,7 @@ const LoginPopup = ({ open, onClose }) => {
           <div className='circle-container' onClick={() => onClose()}>
             <div className="circle-exit button-color bold">X</div>
           </div>
-          <img className='nipa-logo' src="https://cdn.discordapp.com/attachments/445928139021877259/1226426762737745950/R_1.png?ex=6624b9ee&is=661244ee&hm=beb4109323bcf822143a95053ccbee2a07a0dd8e55d4ba716a3d1c3cd8fb848c&" alt="nipa logo" />
+          <img className='nipa-logo' src={nipalogo} alt="nipa logo" />
          <h1 className='font-primary'>เข้าสู่ระบบ Admin</h1>
         </div>
         <div className="login-input font-primary">

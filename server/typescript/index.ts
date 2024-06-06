@@ -4,8 +4,10 @@ const dotenv = require("dotenv").config();
 import { createExpressServer } from "routing-controllers";
 import "reflect-metadata";
 import { UserController } from "./Api/User/controller/UserController";
-import { TicketController } from "./routes/ticket";
+
 import { DashboardController } from "./routes/dashboard";
+import { DashboardControllers } from "./Api/Dashboard/controller/DashboardController";
+import { TicketController } from "./Api/Ticket/controller/TicketController";
 
 // const app: Express = express();
 const port = process.env.PORT || 3000;
@@ -23,7 +25,7 @@ const app = createExpressServer({
     credentials: true,
     origin: ["http://localhost:3000"],
   },
-  controllers: [UserController, TicketController, DashboardController],
+  controllers: [UserController, TicketController, DashboardControllers],
 });
 
 // app.use(cors(

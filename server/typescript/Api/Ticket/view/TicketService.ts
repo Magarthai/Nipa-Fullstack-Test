@@ -5,39 +5,43 @@ import { ITicketUpdateRequest } from "../repository/ITicketUpdateRequest";
 import { TicketRepository } from "../repository/TicketRepository";
 import { ITicketGetTicketByStatusRequest } from "./ITicketGetTicketByStatusRequest";
 const nodemailer = require("nodemailer");
-const TicketRepositorys = new TicketRepository();
+
 export class TicketService {
+  ticketRepositorys: TicketRepository;
+  constructor() {
+    this.ticketRepositorys = new TicketRepository();
+  }
   async useGetAllTicket() {
-    const data = await TicketRepositorys.getAllTicket;
+    const data = await this.ticketRepositorys.getAllTicket();
     return data;
   }
   async useCreateTicket(ticket: ITicketCreateRequest) {
-    const data = await TicketRepositorys.createTicket(ticket);
+    const data = await this.ticketRepositorys.createTicket(ticket);
     return { message: "success", data: data };
   }
 
   async useGetTicketByStatus(status: string) {
-    const data = await TicketRepositorys.getTicketByStatus(status);
+    const data = await this.ticketRepositorys.getTicketByStatus(status);
     return { message: "success", data: data };
   }
 
   async useGetTicketByRecipient(id: string) {
-    const data = await TicketRepositorys.getTicketByRecipient(id);
+    const data = await this.ticketRepositorys.getTicketByRecipient(id);
     return { message: "success", data: data };
   }
 
   async useUpdateStatusTicket(data: ITicketUpdateRequest) {
-    const update = TicketRepositorys.updateStatusTicket(data);
+    const update = await this.ticketRepositorys.updateStatusTicket(data);
     return update;
   }
 
   async useCloseTicket(data: ITicketCloseRequest) {
-    const update = TicketRepositorys.closeTicket(data);
+    const update = await this.ticketRepositorys.closeTicket(data);
     return update;
   }
 
   async useSendEmail(data: ITicketSendEmailNotificationRequest) {
-    const sendEmail = TicketRepositorys.sendMailNotification(data);
+    const sendEmail = await this.ticketRepositorys.sendMailNotification(data);
     return sendEmail;
   }
 }

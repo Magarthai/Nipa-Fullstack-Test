@@ -4,8 +4,14 @@ import axios from 'axios';
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom"
 import { useUserAuth } from '../context/UserAuthContext';
+import profile from '../img/Profile_1.png'
+import nipalogo from '../img/R_1.png'
+import nipalogo2 from '../img/Logo-EPc-2_-_Copy.png'
+import Dashboard from '../img/Control_Panel.png'
+import Ticket from '../img/Charity_Box.png'
+import History from '../img/Admin_Settings_Male.png'
 const AdminNavbar = ({ userData,clicked }) => {
-  const normal_profile = "https://cdn.discordapp.com/attachments/445928139021877259/1226572102023249981/Profile_1.png?ex=66254149&is=6612cc49&hm=9011b51c7fbd8cdc9261af8451eecd56f74e1133f18788965b0c229d276d7d95&";
+  const normal_profile = profile;
   const navigate = useNavigate()
   const { logout_global } = useUserAuth();
   const hoverHandle = (e) => {
@@ -70,7 +76,7 @@ const AdminNavbar = ({ userData,clicked }) => {
       <div className="navbar">
         <div className="top">
           <div className='navbar-center'>
-            <img className='nipa-logo-navbar' src="https://cdn.discordapp.com/attachments/445928139021877259/1226566889216675890/Logo-EPc-2_-_Copy.png?ex=66253c6e&is=6612c76e&hm=f736d22ba75f77beb89bd98dcf300f9d185f781f0298d68ad4300eca996904bb&" alt="nipa logo" />
+            <img className='nipa-logo-navbar' src={nipalogo} alt="nipa logo" />
           </div>
           <div className="navbar-profile navbar-center">
             <img className='profile-img' src={userData.img === undefined ? normal_profile : ""} alt="" />
@@ -82,15 +88,15 @@ const AdminNavbar = ({ userData,clicked }) => {
           <div className="navbar-list">
             <div className="hover-list"></div>
             <a href='/homepage' className="light navbar-dashboard" id="nav-1" onMouseEnter={() => hoverHandle("nav-1")} onMouseLeave={() => hoverHandle("nav-12")}>
-              <img src="https://cdn.discordapp.com/attachments/445928139021877259/1226575388310900927/Control_Panel.png?ex=66254459&is=6612cf59&hm=1e820415fd7c19ed16c7585fa6dfb9f9cb268b21e887c979cff9e06df191291e&" alt="dashboard" />
+              <img src={Dashboard} alt="dashboard" />
               <p>Dashboard</p>
             </a>
             <a href='/ticket' className="light navbar-dashboard" id="nav-2" onMouseEnter={() => hoverHandle("nav-2")} onMouseLeave={() => hoverHandle("nav-22")}>
-              <img src="https://media.discordapp.net/attachments/445928139021877259/1226575387979677726/Charity_Box.png?ex=66254459&is=6612cf59&hm=63e4956b9bfbc721d3f5b7d3600252e42ac0359601278af6d1b658a5780d12fe&=&format=webp&quality=lossless" alt="ticket" />
+              <img src={Ticket} alt="ticket" />
               <p>Ticket</p>
             </a>
             <a href='/ticketHistory' className="light navbar-dashboard" id="nav-3" onMouseEnter={() => hoverHandle("nav-3")} onMouseLeave={() => hoverHandle("nav-32")}>
-              <img src="https://media.discordapp.net/attachments/445928139021877259/1226575388675932230/Admin_Settings_Male.png?ex=66254459&is=6612cf59&hm=fac01dd7acf69fbb8019cd9e2ba197fe020ecf9c0309f6aae20672126279cbf0&=&format=webp&quality=lossless" alt="admin manager" />
+              <img src={History} alt="admin manager" />
               <p>History</p>
             </a>
           </div>
