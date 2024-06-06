@@ -136,7 +136,7 @@ function LandingPage() {
         selectTopic: selectTopic,
         file: src
       }
-      const respone = await axios.post(`${API}/createTicket`, info)
+      const respone = await axios.post(`${API}/tickets`, info)
       if (respone.data.message == "Ticket created successfully") {
         Swal.fire({
           title: 'สร้างรายการสําเร็จ',

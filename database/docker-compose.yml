@@ -1,0 +1,25 @@
+version: '3'
+services:
+  server:
+    build: ./
+    ports:
+      - "4000:4000"
+
+  postgres:
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: nipa-database
+    ports:
+      - "5432:5432"
+    volumes:
+      - "./nipa-database.sql:/docker-entrypoint-initdb.d/1.sql"
+
+networks:
+  default:
+    driver: bridge
+
+volumes:
+  mongo-data:
