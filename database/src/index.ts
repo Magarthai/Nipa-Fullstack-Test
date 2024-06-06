@@ -1,59 +1,34 @@
 import express, { Express, Request, Response } from "express";
-const dotenv = require("dotenv").config();
+import dotenv from "dotenv";
+dotenv.config();
 
-import bcrypt = require("bcrypt");
-// const app: Express = express();
+import bcrypt from "bcrypt";
 import { createExpressServer } from "routing-controllers";
+import knex from "knex";
+const knexfile = require("./db/knexfile");
+import { UserController } from "./API/User/controller/UserController";
+import { TicketController } from "./API/Ticket/controller/TicketController";
+
 const port = process.env.PORT || 3000;
 const morgan = require("morgan");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 import "reflect-metadata";
-import { UserController } from "./API/User/controller/UserController";
-import { TicketController } from "./API/Ticket/controller/TicketController";
-const db = require("./db/db");
-// const createUser = async () => {
-//   try {
-//     const data = {
-//       fname: "test",
-//       lname: "test",
-//       email: "test@gmail.com",
-//       password: "xd",
-//     };
-//     const salt = bcrypt.genSaltSync(10);
-//     const hash = bcrypt.hashSync(data.password, salt);
-//     const encryptedData = {
-//       fname: "test",
-//       lname: "test",
-//       email: "testz@gmail.com",
-//       password: hash,
-//     };
-//     const selectUserData = await db("user")
-//       .insert([encryptedData])
-//       .returning([
-//         "id",
-//         "fname",
-//         "lname",
-//         "email",
-//         "password",
-//         "role",
-//         "created_at",
-//         "updated_at",
-//       ]);
-//     console.log("created", selectUserData);
-//   } catch (err: any) {
-//     console.log(err.detail);
-//   }
-// };
 
-// const app = express();
-// app.use(express.json());
+// Initialize Knex
+const environment = process.env.NODE_ENV || "development";
+const config = knexfile[environment];
+const db = knex(config);
 
-// app.use(morgan("dev"));
-// app.use(bodyParser.json());
-// app.use(bodyParser.urlencoded({ extended: false }));
-// app.use(cookieParser());
+// Run migrations
+db.migrate.latest()
+  .then(() => {
+    console.log('Migrations are up to date.');
+  })
+  .catch((err: any) => {
+    console.error('Error running migrations:', err);
+  });
 
 const app = createExpressServer({
   cors: {
@@ -72,5 +47,5 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 app.listen(port, () => {
-  console.log(`Database is running at http://localhost:${port}`);
+  console.log(`Server is running at http://localhost:${port}`);
 });

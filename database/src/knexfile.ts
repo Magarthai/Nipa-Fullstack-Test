@@ -3,6 +3,9 @@
 // /**
 //  * @type { Object.<string, import("knex").Knex.Config> }
 //  */
+// knexfile.js
+require('dotenv').config();
+
 module.exports = {
   development: {
     client: process.env.CLIENT,
@@ -15,6 +18,9 @@ module.exports = {
       min: 2,
       max: 10,
     },
-    migrations: { tableName: "knex_migrations" },
+    migrations: {
+      tableName: "knex_migrations",
+      directory: './db'
+    },
   },
 };
