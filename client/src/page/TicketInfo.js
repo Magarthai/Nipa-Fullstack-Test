@@ -89,7 +89,7 @@ useEffect(() => {
     } else {
       console.log(updateStatus.data.message)
     setLoader(true);
-    const respone = await axios.post(`${API}/sendemail`, info,
+    const respone = await axios.post(`${API}/tickets/sendemail`, info,
     {
         headers: {
           Authorization: `Bearer ${userData.refreshToken}`,

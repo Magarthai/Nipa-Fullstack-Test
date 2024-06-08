@@ -9,11 +9,11 @@ export async function up(knex: Knex): Promise<void> {
       table.string("email").notNullable();
       table.string("detail").notNullable();
       table.string("selectTopic").notNullable();
-      table.string("img").defaultTo("");
+      table.string("img");
       table.string("status").defaultTo("pending");
-      table.string("solve").defaultTo("");
-      table.string("recipient").defaultTo("");
-      table.string("recipient_name").defaultTo("");
+      table.string("solve");
+      table.string("recipient");
+      table.string("recipient_name");
       table.timestamp("created_at").defaultTo(knex.fn.now());
       table.timestamp("updated_at").defaultTo(knex.fn.now());
     });

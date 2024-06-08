@@ -3,16 +3,19 @@ import { ITicketUpdateRequest } from "./ITicketUpdateRequest";
 import { ITicketCloseRequest } from "./ITicketCloseRequest";
 import { ITicketSendEmailNotificationRequest } from "./ITicketSendEmailNotificationRequest";
 import { ListTicketDataReturn } from "./ListTicketDataReturn";
+import dotenv from "dotenv";
+dotenv.config();
 const nodemailer = require("nodemailer");
-const db = require("../../../db/db");
+import db from "../../../db/db";
+import { Service } from "typedi";
+import { TicketStatus } from "./TicketStatus";
+
+@Service()
 export class TicketRepository {
-  async getAllTicket() {
-    try {
-      const data = await db("ticket");
-      return data;
-    } catch (err) {
-      throw err;
-    }
+  async listAllTicket() {
+    const data = await db("ticket");
+    console.log(data);
+    return data;
   }
   async getTicketByStatus(status: string) {
     try {
@@ -44,34 +47,11 @@ export class TicketRepository {
   }
   async updateStatusTicket(data: ITicketUpdateRequest) {
     try {
-      const updateData = {
-        status: data.status,
-        recipient: data.recipient,
-        recipient_name: data.recipient,
-      };
+      console.log(data.id);
       const ticketData = await db("ticket").where("id", data.id).first();
       //const ticketData = await Ticket.findOne(filter);
-
-      if (!ticketData) {
-        return { message: "Not found" };
-      } else {
-        if (
-          ticketData.recipient === undefined ||
-          ticketData.recipient === null
-        ) {
-          const updatedTicket = await db("ticket")
-            .return(ListTicketDataReturn)
-            .where({ id: data.id })
-            .update(updateData);
-          // const updatedTicket = await Ticket.updateOne(filter, updateData);
-          return {
-            message: "Success",
-            ticket: updatedTicket,
-          };
-        } else {
-          return { message: "Already accepted" };
-        }
-      }
+      console.log("check");
+      return ticketData;
     } catch (err) {
       throw err;
     }
@@ -79,28 +59,10 @@ export class TicketRepository {
 
   async closeTicket(data: ITicketCloseRequest) {
     try {
-      const update = {
-        status: data.status,
-        solve: data.solve,
-      };
       const ticketData = await db("ticket").where("id", data.id).first();
       // const ticketData = await Ticket.findOne(filter);
-
-      if (!ticketData) {
-        return { message: "Not found" };
-      } else {
-        if (ticketData.status === "accepted") {
-          const updatedTicket = await db("ticket")
-            .where({ id: data.id })
-            .update(update);
-          return {
-            message: "Success",
-            ticket: updatedTicket,
-          };
-        } else {
-          return { message: "Already closed" };
-        }
-      }
+      console.log(ticketData);
+      return ticketData;
     } catch (err) {
       throw err;
     }
@@ -144,6 +106,7 @@ export class TicketRepository {
         };
       }
     });
+    return { RespCode: 200 };
   }
 
   async createTicket(ticket: ITicketCreateRequest) {
@@ -156,36 +119,54 @@ export class TicketRepository {
         selectTopic: ticket.selectTopic,
         img: ticket.file,
       };
+      console.log(data);
+      const create = await db("ticket")
+        .insert([data])
+        .returning([ListTicketDataReturn]);
 
-      const create = await db("ticket").insert([data]);
       // .returning(["name", "id"]);
-
+      console.log(create);
       const transporter = nodemailer.createTransport({
         service: "gmail",
         auth: {
-          user: "nipafullstacktest@gmail.com",
-          pass: "csqj mgrh mqev sxmf",
+          user: "kmutthealthcareunit@gmail.com",
+          pass: "vqos ixxk pscf bqwm",
         },
       });
 
       const time = new Date(create.createdAt).toLocaleString();
       const option = {
-        from: "nipafullstacktest@gmail.com",
-        to: `${create.email}`,
+        from: "kmutthealthcareunit@gmail.com",
+        to: `${ticket.email}`,
         subject: `[ได้รับเรื่องแล้ว]`,
         html: `
 
       <img style="width: 300px;" src="https://cdn.discordapp.com/attachments/445928139021877259/1226566889216675890/Logo-EPc-2_-_Copy.png?ex=66253c6e&is=6612c76e&hm=f736d22ba75f77beb89bd98dcf300f9d185f781f0298d68ad4300eca996904bb&" alt="">
-      <h1 style="margin: 20px;">สวัสดีคุณ ${create.name} ขอบคุณที่แจ้งเรื่องเข้ามา</h1>
-      <p style="margin-left: 20px">หัวข้อที่แจ้ง : ${create.selectTopic}</p>
+      <h1 style="margin: 20px;">สวัสดีคุณ ${ticket.name} ขอบคุณที่แจ้งเรื่องเข้ามา</h1>
+      <p style="margin-left: 20px">หัวข้อที่แจ้ง : ${ticket.selectTopic}</p>
       <p style="margin-left: 20px">วันที่แจ้ง : ${time}</p>
-      <p style="margin-left: 20px">รายละเอียด : ${create.detail}</p>
+      <p style="margin-left: 20px">รายละเอียด : ${ticket.detail}</p>
       `,
       };
 
-      const status = transporter.sendMail(option);
+      transporter.sendMail(option, (err: string, info: any) => {
+        if (err) {
+          console.log("err", err);
+          return {
+            RespCode: 400,
+            RespMessage: "bad",
+            RespError: err,
+          };
+        } else {
+          console.log("Send: " + info.response);
+          return {
+            RespCode: 200,
+            RespMessage: "good",
+          };
+        }
+      });
 
-      return status;
+      return create;
     } catch (err) {
       throw err;
     }

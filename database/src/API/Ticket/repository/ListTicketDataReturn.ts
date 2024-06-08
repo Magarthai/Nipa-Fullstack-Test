@@ -3,7 +3,6 @@ export const ListTicketDataReturn = [
   "name",
   "email",
   "detail",
-  "password",
   "selectTopic",
   "img",
   "status",

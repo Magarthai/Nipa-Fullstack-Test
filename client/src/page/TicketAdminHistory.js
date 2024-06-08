@@ -90,7 +90,7 @@ function AdminPage() {
       updateStatus: "accepted"
     }
 
-    const updateStatus = await axios.put(`${API}/tickets/:${ticket._id}`, {
+    const updateStatus = await axios.put(`${API}/tickets/${ticket._id}`, {
       headers: {
           Authorization: `Bearer ${userData.refreshToken}`,
           role: userData.role
@@ -113,7 +113,7 @@ function AdminPage() {
     } else {
       console.log(updateStatus.data.message)
     setLoader(true);
-    const respone = await axios.post(`${API}/sendemail`, info,
+    const respone = await axios.post(`${API}/tickets/sendemail`, info,
     {
         headers: {
           Authorization: `Bearer ${userData.refreshToken}`,
@@ -121,11 +121,12 @@ function AdminPage() {
           
       },
       });
+    console.log("sendmail",respone)
    
     if(respone.data) {
       if(respone.data.RespCode == 200) {
         setLoader(false);
-        navigate("/ticketinfo", {state: {data: ticket}});
+        navigate("/ticketinfo"  , {state: {data: ticket}});
       }
     }
     }

@@ -105,7 +105,7 @@ function AdminPage() {
       updateStatus: "accepted"
     }
 
-    const updateStatus = await axios.put(`${API}/tickets/byId/:${ticket._id}`,
+    const updateStatus = await axios.put(`${API}/tickets/${ticket.id}`,
      info ,
     {
       headers: {
@@ -129,7 +129,7 @@ function AdminPage() {
     } else {
       console.log(updateStatus.data.message)
     setLoader(true);
-    const respone = await axios.post(`${API}/sendemail`, info,
+    const respone = await axios.post(`${API}/tickets/sendemail`, info,
     {
         headers: {
           Authorization: `Bearer ${userData.refreshToken}`,

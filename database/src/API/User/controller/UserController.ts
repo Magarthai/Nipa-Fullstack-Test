@@ -12,26 +12,23 @@ import {
   Req,
   CookieParam,
 } from "routing-controllers";
-import { IUser } from "../repository/IUser";
 import { ICreateUserRequest } from "./ICreateUserRequest";
 import { UserService } from "../view/UserService";
 import { ICreateUserRespone } from "./ICreateUserRespone";
 import { ILoginUserRequest } from "./ILoginUserRequest";
-
+import { Service, Inject, Container } from "typedi";
+@Service()
 @JsonController()
 export class UserController {
-  userService: UserService;
+  userService = Container.get(UserService);
 
-  constructor() {
-    this.userService = new UserService();
-  }
   @Get("/users")
-  async getAllUser(@Res() response: any) {
-    try {
-      const data = await this.userService.useGetAllUserData();
-      return response.send(data);
-    } catch (err) {
-      return err;
+  async listAllUser() {
+    const data = await this.userService.useListAllUserData();
+    if (data) {
+      return data;
+    } else {
+      return "Not found";
     }
   }
 
@@ -48,13 +45,13 @@ export class UserController {
   // }
 
   @Post("/users")
-  async store(
+  async createUser(
     @Body() user: ICreateUserRequest,
     @Res() response: any
   ): Promise<ICreateUserRespone> {
     try {
       const create = await this.userService.useCreateUser(user);
-      return response.send(create);
+      return create;
     } catch (err) {
       console.log(err);
       throw err;
@@ -63,47 +60,35 @@ export class UserController {
 
   @Post("/login")
   async login(@Body() user: ILoginUserRequest, @Res() response: any) {
-    try {
-      const login = await this.userService.useLoginUser(user);
-
-      if (login.message == "password matched") {
-        response.cookie("refreshToken", login.refreshToken, {
-          httpOnly: true,
-          secure: true,
-          maxAge: 3000000,
-          sameSite: "none",
-        });
-        return response.send("User logged in successfully");
-      } else if (login.message == "Invalid password") {
-        return response.send("Invalid password");
-      } else {
-        return response.send("not found");
-      }
-    } catch (err) {
-      console.log(err);
-      response.send(err);
+    const login = await this.userService.useLoginUser(user);
+    console.log("controller", login);
+    if (login.message == "password matched") {
+      response.cookie("refreshToken", login.refreshToken, {
+        httpOnly: true,
+        secure: true,
+        maxAge: 3000000,
+        sameSite: "none",
+      });
+      return response.send("User logged in successfully");
+    } else if (login.message == "Invalid password") {
+      return "Invalid password";
+    } else {
+      return "Not found";
     }
   }
 
   @Get("/refresh")
-  async refresh(
+  async refreshToken(
     @CookieParam("refreshToken") refreshToken: string,
     @Res() response: any
   ) {
-    try {
-      if (!refreshToken) {
-        return {
-          message: "Refresh Token Not Found",
-        };
-      } else {
-        const refresh = await this.userService.useRefreshTokenUser(
-          refreshToken
-        );
-        return response.send({ message: "success", user: refresh });
-      }
-    } catch (err) {
-      console.log(err);
-      response.send(err);
+    if (!refreshToken) {
+      return {
+        message: "Refresh Token Not Found",
+      };
+    } else {
+      const refresh = await this.userService.useRefreshTokenUser(refreshToken);
+      return { message: "success", user: refresh };
     }
   }
 
@@ -112,25 +97,21 @@ export class UserController {
     @CookieParam("refreshToken") refreshToken: string,
     @Res() response: any
   ) {
-    try {
-      const logout = await this.userService.useLogoutUser(refreshToken);
-      if (logout == "not found token") {
-        return "not found token";
-      } else if (logout == "not found data") {
-        response.clearCookie("refreshToken", {
-          httpOnly: true,
-          secure: true,
-        });
-        return response.sendStatus(204);
-      } else if (logout == "success") {
-        response.clearCookie("refreshToken", {
-          httpOnly: true,
-          secure: true,
-        });
-        return response.send("success");
-      }
-    } catch (err) {
-      return err;
+    const logout = await this.userService.useLogoutUser(refreshToken);
+    if (logout == "not found token") {
+      return "not found token";
+    } else if (logout == "not found data") {
+      response.clearCookie("refreshToken", {
+        httpOnly: true,
+        secure: true,
+      });
+      return response.sendStatus(204);
+    } else if (logout == "success") {
+      response.clearCookie("refreshToken", {
+        httpOnly: true,
+        secure: true,
+      });
+      return "success";
     }
   }
 }

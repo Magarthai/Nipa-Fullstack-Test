@@ -1,19 +1,22 @@
 import jwt from "jsonwebtoken";
 import { Payload } from "../controller/Payload";
-const db = require("../../../db/db");
+import db from "../../../db/db";
 import { ICreateUserRequest } from "../controller/ICreateUserRequest";
 import { ILoginUserRequest } from "../controller/ILoginUserRequest";
 const secret = process.env.JWT_SECRET || "secret";
 import bcrypt = require("bcrypt");
 import { UserDataListReturn } from "./UserDataListReturn";
+import { Service } from "typedi";
 
 const generateRefreshToken = (id: number) => {
   return jwt.sign({ id }, secret, {
     expiresIn: "1d",
   });
 };
+
+@Service()
 export class UserRepository {
-  async getAllUserData() {
+  async listAllUserData() {
     const data = await db("user");
     return data;
   }
@@ -46,21 +49,22 @@ export class UserRepository {
   }
   async loginUser(userData: ILoginUserRequest) {
     try {
-      const findUser = await db("user").where("email", userData.email).first();
-      if (findUser) {
+      const findUser = await db("user").where("email", userData.email);
+      console.log(findUser);
+
+      const user = findUser[0];
+      if (user) {
         const isPasswordMatched = await bcrypt.compare(
           userData.password,
-          findUser.password
+          user.password
         );
-        console.log(findUser);
+        console.log(user);
         if (isPasswordMatched) {
-          const refreshToken = await generateRefreshToken(findUser?.id);
-          const updateUser = await db("user")
-            .where({ id: findUser.id })
-            .update({
-              refreshToken: refreshToken,
-              updated_at: db.fn.now(),
-            });
+          const refreshToken = await generateRefreshToken(user?.id);
+          const updateUser = await db("user").where({ id: user.id }).update({
+            refreshToken: refreshToken,
+            updated_at: db.fn.now(),
+          });
           return { message: "password matched", refreshToken: refreshToken };
         } else {
           return { message: "Invalid password" };
@@ -100,7 +104,6 @@ export class UserRepository {
     const decode: Payload = jwt.verify(refreshToken, secret) as Payload;
 
     if (decode.id) {
-      console.log(decode.id);
       const userData = await db("user").where({ id: decode.id }).first();
       console.log(userData);
       return userData;
