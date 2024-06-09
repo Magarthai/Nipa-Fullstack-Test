@@ -1,27 +1,29 @@
-import { response } from "express";
+import { Response, Request } from "koa";
+
 import {
-  Controller,
-  Param,
-  Body,
+  JsonController,
   Get,
   Post,
-  Put,
+  Param,
   Delete,
-  JsonController,
+  Body,
+  CookieParam,
   Res,
   Req,
-  CookieParam,
+  Ctx,
 } from "routing-controllers";
-import { ICreateUserRequest } from "./ICreateUserRequest";
+import { Service } from "typedi";
 import { UserService } from "../view/UserService";
+import { ICreateUserRequest } from "../repository/ICreateUserRequest";
 import { ICreateUserRespone } from "./ICreateUserRespone";
-import { ILoginUserRequest } from "./ILoginUserRequest";
-import { Service, Inject, Container } from "typedi";
+import { ILoginUserRequest } from "../repository/ILoginUserRequest";
+import { Context } from "koa";
+
 @Service()
 @JsonController()
 export class UserController {
-  userService = Container.get(UserService);
-
+  static DashboardController: string | Function;
+  constructor(private userService: UserService) {}
   @Get("/users")
   async listAllUser() {
     const data = await this.userService.useListAllUserData();
@@ -32,22 +34,9 @@ export class UserController {
     }
   }
 
-  // @Get("/users/:id")
-  // async getOne(@Param("id") id: string) {
-  //   try {
-  //     console.log(id);
-  //     const data: IUser = await User.findOne({ _id: id });
-  //     console.log(data);
-  //     return response.send(data);
-  //   } catch (err) {
-  //     return err;
-  //   }
-  // }
-
   @Post("/users")
   async createUser(
-    @Body() user: ICreateUserRequest,
-    @Res() response: any
+    @Body() user: ICreateUserRequest
   ): Promise<ICreateUserRespone> {
     try {
       const create = await this.userService.useCreateUser(user);
@@ -59,28 +48,27 @@ export class UserController {
   }
 
   @Post("/login")
-  async login(@Body() user: ILoginUserRequest) {
+  async login(@Ctx() ctx: Context, @Body() user: ILoginUserRequest) {
     const login = await this.userService.useLoginUser(user);
     console.log("controller", login);
-    if (login.message == "password matched") {
-      response.cookie("refreshToken", login.refreshToken, {
-        httpOnly: true,
-        secure: true,
-        maxAge: 3000000,
-        sameSite: "none",
-      });
+    if (login.message === "password matched") {
+      try {
+        // Set refreshToken cookie
+        ctx.cookies.set("refreshToken", login.refreshToken);
+      } catch (err) {
+        console.log(err);
+      }
       return "User logged in successfully";
-    } else if (login.message == "Invalid password") {
+    } else if (login.message === "Invalid password") {
       return "Invalid password";
     } else {
       return "Not found";
     }
   }
-
   @Get("/refresh")
   async refreshToken(
     @CookieParam("refreshToken") refreshToken: string,
-    @Res() response: any
+    @Ctx() ctx: Context
   ) {
     if (!refreshToken) {
       return {
@@ -95,22 +83,17 @@ export class UserController {
   @Get("/logout")
   async logout(
     @CookieParam("refreshToken") refreshToken: string,
-    @Res() response: any
+    @Res() response: any,
+    @Ctx() ctx: Context
   ) {
     const logout = await this.userService.useLogoutUser(refreshToken);
     if (logout == "not found token") {
       return "not found token";
     } else if (logout == "not found data") {
-      response.clearCookie("refreshToken", {
-        httpOnly: true,
-        secure: true,
-      });
-      return response.sendStatus(204);
+      ctx.cookies.set("refreshToken", "");
+      return;
     } else if (logout == "success") {
-      response.clearCookie("refreshToken", {
-        httpOnly: true,
-        secure: true,
-      });
+      ctx.cookies.set("refreshToken", "");
       return "success";
     }
   }
