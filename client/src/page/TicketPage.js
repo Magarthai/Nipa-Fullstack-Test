@@ -35,6 +35,7 @@ function AdminPage() {
       if (respone.data) {
         if (respone.data.message == "Ticket fetch successfully") {
           setData(respone.data.ticket);
+          console.log(respone.data.ticket,"ticket")
           setTimeout(() => {
             setIsLoading(false);
           }, 1000);
@@ -92,7 +93,7 @@ function AdminPage() {
         name: ticket.name,
         email: ticket.email,
         topic: ticket.selectTopic,
-        time: new Date(ticket.createdAt).toLocaleString(),
+        time: new Date(ticket.created_at).toLocaleString(),
         recipient: userData.fname + " " + userData.lname,
         status: "ได้รับเรื่องแล้ว",
         recipientId: userData.id,
@@ -240,14 +241,14 @@ function AdminPage() {
                     {ticket.status === "pending" ? (
                       <p>
                         เวลา :&nbsp;
-                        {new Date(ticket.createdAt).toLocaleString()}{" "}
+                        {new Date(ticket.created_at).toLocaleString()}{" "}
                       </p>
                     ) : (
                       <>
                         <p>ผู้รับเรื่อง : {ticket.recipient_name}</p>
                         <p>
                           อัพเดตเวลา :&nbsp;
-                          {new Date(ticket.updatedAt).toLocaleString()}
+                          {new Date(ticket.updated_at).toLocaleString()}
                         </p>
                       </>
                     )}

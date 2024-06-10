@@ -1,8 +1,7 @@
 import jwt from "jsonwebtoken";
-import { secret } from "./UserRepository";
 
 export const generateRefreshToken = (id: number) => {
-  return jwt.sign({ id }, secret, {
+  return jwt.sign({ id }, process.env.JWT_SECRET || "secret", {
     expiresIn: "1d",
   });
 };

@@ -2,7 +2,7 @@ import moment from "moment-timezone";
 import { ITicketEntity } from "./ITicketEntity";
 import { Service } from "typedi";
 import db from "../../../db/db";
-import { TicketStatus } from "@app/API/Ticket/repository/TicketStatus";
+import { TicketStatus } from "@app/API/Ticket/enum/TicketStatus";
 import { groupBy } from "./groupBy.2";
 import { Knex } from "knex";
 export function formatDate(date: string) {

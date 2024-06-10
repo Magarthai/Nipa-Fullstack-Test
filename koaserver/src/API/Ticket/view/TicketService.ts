@@ -1,14 +1,14 @@
 import { Service, Inject, Container } from "typedi";
-import { ITicketCreateRequest } from "../controller/ITicketCreateRequest";
-import { ITicketCloseRequest } from "../repository/ITicketCloseRequest";
-import { ITicketSendEmailNotificationRequest } from "../repository/ITicketSendEmailNotificationRequest";
-import { ITicketUpdateRequest } from "../repository/ITicketUpdateRequest";
+import { ITicketCreateRequest } from "../dto/ITicketCreateRequest";
+import { ITicketCloseRequest } from "../dto/ITicketCloseRequest";
+import { ITicketSendEmailNotificationRequest } from "../dto/ITicketSendEmailNotificationRequest";
+import { ITicketUpdateRequest } from "../dto/ITicketUpdateRequest";
 import { TicketRepository } from "../repository/TicketRepository";
-import { ITicketGetTicketByStatusRequest } from "./ITicketGetTicketByStatusRequest";
-import { TicketStatus } from "../repository/TicketStatus";
+import { ITicketGetTicketByStatusRequest } from "../dto/ITicketGetTicketByStatusRequest";
+import { TicketStatus } from "../enum/TicketStatus";
 const nodemailer = require("nodemailer");
 import db from "../../../db/db";
-import { ListTicketDataReturn } from "../repository/ListTicketDataReturn";
+import { ListTicketDataReturn } from "../dto/ListTicketDataReturn";
 @Service()
 export class TicketService {
   @Inject()

@@ -11,14 +11,16 @@ import {
   Res,
   Req,
   CookieParam,
+  OnUndefined,
 } from "routing-controllers";
 
-import { ITicketCreateRequest } from "./ITicketCreateRequest";
+import { ITicketCreateRequest } from "../dto/ITicketCreateRequest";
 import { TicketService } from "../view/TicketService";
-import { ITicketUpdateRequest } from "../repository/ITicketUpdateRequest";
-import { ITicketCloseRequest } from "../repository/ITicketCloseRequest";
-import { ITicketSendEmailNotificationRequest } from "../repository/ITicketSendEmailNotificationRequest";
+import { ITicketUpdateRequest } from "../dto/ITicketUpdateRequest";
+import { ITicketCloseRequest } from "../dto/ITicketCloseRequest";
+import { ITicketSendEmailNotificationRequest } from "../dto/ITicketSendEmailNotificationRequest";
 import Container, { Inject, Service } from "typedi";
+import { TicketNotFoundError } from "@app/error/TicketNotFound";
 @Service()
 @JsonController("/tickets")
 export class TicketController {
@@ -28,7 +30,6 @@ export class TicketController {
   @Get("/")
   async listAllTicket() {
     const data = await this.ticketService.useListAllTicket();
-    console.log("test");
     return {
       message: "Ticket fetch successfully",
       ticket: data,
@@ -41,13 +42,12 @@ export class TicketController {
     if (create.data) {
       return { message: "Ticket created successfully" };
     } else {
-      return "something went wrong";
+      throw new TicketNotFoundError(404, "Ticket not found !", "Not found");
     }
   }
 
   @Get("/status/:status")
   async getTicketByStatus(@Param("status") status: string) {
-    console.log(status);
     const fetchTicketByStatus = await this.ticketService.useGetTicketByStatus(
       status
     );
@@ -57,10 +57,10 @@ export class TicketController {
     };
   }
 
-  @Get("/:id")
-  async getTicketByRecipient(@Param("id") id: string) {
+  @Get("/:recipient_id") // => /recipients/me/tickets
+  async getTicketByRecipient(@Param("recipient_id") recipient_id: string) {
     const fetchTicketById = await this.ticketService.useGetTicketByRecipient(
-      id
+      recipient_id
     );
     return {
       message: "Ticket fetch successfully",
@@ -81,7 +81,7 @@ export class TicketController {
     } as ITicketUpdateRequest;
     const updateStatus = await this.ticketService.useUpdateStatusTicket(update);
     if (updateStatus.message == "Not found") {
-      return response.status(404).send({ error: "Ticket not found" });
+      throw new TicketNotFoundError(404, "Ticket not found !", "Not found");
     } else if (updateStatus.message == "Success") {
       return {
         message: "Ticket updated successfully",
@@ -101,7 +101,7 @@ export class TicketController {
     const closeTicket = await this.ticketService.useCloseTicket(update);
 
     if (closeTicket.message == "Not found") {
-      return { error: "Ticket not found" };
+      throw new TicketNotFoundError(404, "Ticket not found !", "Not found");
     } else if (closeTicket.message == "Success") {
       return {
         message: "Ticket updated successfully",

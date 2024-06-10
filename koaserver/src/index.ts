@@ -27,7 +27,7 @@ const koaApp = createKoaServer({
 koaApp.use(
   bodyParser({
     enableTypes: ["json", "form"],
-    formLimit: "64kb",
+    formLimit: "100kb",
   })
 );
 

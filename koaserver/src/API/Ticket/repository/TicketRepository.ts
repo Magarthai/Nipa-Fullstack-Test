@@ -1,14 +1,14 @@
-import { ITicketCreateRequest } from "../controller/ITicketCreateRequest";
-import { ITicketUpdateRequest } from "./ITicketUpdateRequest";
-import { ITicketCloseRequest } from "./ITicketCloseRequest";
-import { ITicketSendEmailNotificationRequest } from "./ITicketSendEmailNotificationRequest";
-import { ListTicketDataReturn } from "./ListTicketDataReturn";
+import { ITicketCreateRequest } from "../dto/ITicketCreateRequest";
+import { ITicketUpdateRequest } from "../dto/ITicketUpdateRequest";
+import { ITicketCloseRequest } from "../dto/ITicketCloseRequest";
+import { ITicketSendEmailNotificationRequest } from "../dto/ITicketSendEmailNotificationRequest";
+import { ListTicketDataReturn } from "../dto/ListTicketDataReturn";
 import dotenv from "dotenv";
 dotenv.config();
 const nodemailer = require("nodemailer");
 import db from "../../../db/db";
 import { Service } from "typedi";
-import { TicketStatus } from "./TicketStatus";
+import { TicketStatus } from "../enum/TicketStatus";
 import { Knex } from "knex";
 @Service()
 export class TicketRepository {
@@ -27,10 +27,6 @@ export class TicketRepository {
         .clone()
         .where("status", status)
         .orderBy("updated_at", "desc");
-
-      // const data = await Ticket.find({ status: status }).sort({
-      //   updatedAt: -1,
-      // });
       return data;
     } catch (err) {
       throw err;
@@ -43,9 +39,6 @@ export class TicketRepository {
         .clone()
         .where("recipient", id)
         .orderBy("updated_at", "desc");
-      // const data = await Ticket.find({ recipient: id }).sort({
-      //   updatedAt: -1,
-      // });
       return data;
     } catch (err) {
       throw err;
@@ -55,7 +48,6 @@ export class TicketRepository {
     try {
       console.log(data.id);
       const ticketData = await db("ticket").where("id", data.id).first();
-      //const ticketData = await Ticket.findOne(filter);
       console.log("check");
       return ticketData;
     } catch (err) {
@@ -69,7 +61,7 @@ export class TicketRepository {
         .clone()
         .where("id", data.id)
         .first();
-      // const ticketData = await Ticket.findOne(filter);
+
       console.log(ticketData);
       return ticketData;
     } catch (err) {
@@ -133,8 +125,6 @@ export class TicketRepository {
         .clone()
         .insert([data])
         .returning([ListTicketDataReturn]);
-
-      // .returning(["name", "id"]);
       console.log(create);
       const transporter = nodemailer.createTransport({
         service: "gmail",

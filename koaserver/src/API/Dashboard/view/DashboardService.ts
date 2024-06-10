@@ -6,7 +6,7 @@ import {
 import { ITicketEntity } from "../repository/ITicketEntity";
 import { groupBy } from "../repository/groupBy";
 import moment from "moment-timezone";
-import { TicketStatus } from "@app/API/Ticket/repository/TicketStatus";
+import { TicketStatus } from "@app/API/Ticket/enum/TicketStatus";
 @Service()
 export class DashboardService {
   @Inject()

@@ -11,27 +11,29 @@ import {
   Res,
   Req,
   Ctx,
+  OnUndefined,
 } from "routing-controllers";
 import { Service } from "typedi";
 import { UserService } from "../view/UserService";
-import { ICreateUserRequest } from "../repository/ICreateUserRequest";
-import { ICreateUserRespone } from "./ICreateUserRespone";
-import { ILoginUserRequest } from "../repository/ILoginUserRequest";
+import { ICreateUserRequest } from "../dto/ICreateUserRequest";
+import { ICreateUserRespone } from "../dto/ICreateUserRespone";
+import { ILoginUserRequest } from "../dto/ILoginUserRequest";
 import { Context } from "koa";
-
+import { UserNotFoundError } from "@app/error/UserNotFound";
+import db from "@app/db/db";
+import { TokenNotFoundError } from "@app/error/TokenNotFound";
+import { UserStatus } from "../enum/UserStatus";
 @Service()
 @JsonController()
 export class UserController {
   static DashboardController: string | Function;
   constructor(private userService: UserService) {}
+
   @Get("/users")
+  @OnUndefined(UserNotFoundError)
   async listAllUser() {
     const data = await this.userService.useListAllUserData();
-    if (data) {
-      return data;
-    } else {
-      return "Not found";
-    }
+    return data;
   }
 
   @Post("/users")
@@ -45,33 +47,37 @@ export class UserController {
     }
   }
 
+  @Get("/users/:id")
+  @OnUndefined(UserNotFoundError)
+  async getUser(@Param("id") id: string) {
+    const data = await db("user").where("id", id).first();
+    if (!data) {
+      throw new UserNotFoundError(404, "Not found user!", "Not found");
+    }
+    return data;
+  }
+
   @Post("/login")
   async login(@Ctx() ctx: Context, @Body() user: ILoginUserRequest) {
     const login = await this.userService.useLoginUser(user);
     console.log("controller", login);
-    if (login.message === "password matched") {
+    if (login.message === UserStatus.Password_matched) {
       try {
-        // Set refreshToken cookie
         ctx.cookies.set("refreshToken", login.refreshToken);
       } catch (err) {
         console.log(err);
       }
       return "User logged in successfully";
-    } else if (login.message === "Invalid password") {
+    } else if (login.message === UserStatus.Invalid_password) {
       return "Invalid password";
     } else {
-      return "Not found";
+      throw new UserNotFoundError(404, "Not found user!", "Not found");
     }
   }
   @Get("/refresh")
-  async refreshToken(
-    @CookieParam("refreshToken") refreshToken: string,
-    @Ctx() ctx: Context
-  ) {
+  async refreshToken(@CookieParam("refreshToken") refreshToken: string) {
     if (!refreshToken) {
-      return {
-        message: "Refresh Token Not Found",
-      };
+      throw new TokenNotFoundError(404, "Refresh Token Not Found", "Not found");
     } else {
       const refresh = await this.userService.useRefreshTokenUser(refreshToken);
       return { message: "success", user: refresh };
@@ -81,16 +87,16 @@ export class UserController {
   @Get("/logout")
   async logout(
     @CookieParam("refreshToken") refreshToken: string,
-    @Res() response: any,
     @Ctx() ctx: Context
   ) {
+    if (!refreshToken) {
+      throw new TokenNotFoundError(404, "Not found token!", "Not found");
+    }
     const logout = await this.userService.useLogoutUser(refreshToken);
-    if (logout == "not found token") {
-      return "not found token";
-    } else if (logout == "not found data") {
+    if (logout == UserStatus.Not_found) {
       ctx.cookies.set("refreshToken", "");
       return;
-    } else if (logout == "success") {
+    } else if (logout == UserStatus.Success) {
       ctx.cookies.set("refreshToken", "");
       return "success";
     }

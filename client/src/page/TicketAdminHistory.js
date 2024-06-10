@@ -29,7 +29,7 @@ function AdminPage() {
       const info = {
         id: userData.id,
       };
-      const respone = await axios.get(`${API}/tickets/${info.id}`);
+      const respone = await axios.get(`${API}/recipients/${info.id}`);
       if (respone.data) {
         console.log(respone.data, "XD");
         if (respone.data.message == "Ticket fetch successfully") {
