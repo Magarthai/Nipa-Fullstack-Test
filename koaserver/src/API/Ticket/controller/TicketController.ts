@@ -22,7 +22,8 @@ import Container, { Inject, Service } from "typedi";
 @Service()
 @JsonController("/tickets")
 export class TicketController {
-  ticketService = Container.get(TicketService);
+  @Inject()
+  private ticketService: TicketService;
 
   @Get("/")
   async listAllTicket() {

@@ -9,17 +9,22 @@ const nodemailer = require("nodemailer");
 import db from "../../../db/db";
 import { Service } from "typedi";
 import { TicketStatus } from "./TicketStatus";
-
+import { Knex } from "knex";
 @Service()
 export class TicketRepository {
+  database: any;
+  constructor() {
+    this.database = db("ticket");
+  }
   async listAllTicket() {
-    const data = await db("ticket");
+    const data = await this.database.clone();
     console.log(data);
     return data;
   }
   async getTicketByStatus(status: string) {
     try {
-      const data = await db("ticket")
+      const data = await this.database
+        .clone()
         .where("status", status)
         .orderBy("updated_at", "desc");
 
@@ -34,7 +39,8 @@ export class TicketRepository {
 
   async getTicketByRecipient(id: string) {
     try {
-      const data = await db("ticket")
+      const data = await this.database
+        .clone()
         .where("recipient", id)
         .orderBy("updated_at", "desc");
       // const data = await Ticket.find({ recipient: id }).sort({
@@ -59,7 +65,10 @@ export class TicketRepository {
 
   async closeTicket(data: ITicketCloseRequest) {
     try {
-      const ticketData = await db("ticket").where("id", data.id).first();
+      const ticketData = await this.database
+        .clone()
+        .where("id", data.id)
+        .first();
       // const ticketData = await Ticket.findOne(filter);
       console.log(ticketData);
       return ticketData;
@@ -120,7 +129,8 @@ export class TicketRepository {
         img: ticket.file,
       };
       console.log(data);
-      const create = await db("ticket")
+      const create = await this.database
+        .clone()
         .insert([data])
         .returning([ListTicketDataReturn]);
 
@@ -134,7 +144,7 @@ export class TicketRepository {
         },
       });
 
-      const time = new Date(create.createdAt).toLocaleString();
+      const time = new Date(create.create_at).toLocaleString();
       const option = {
         from: "kmutthealthcareunit@gmail.com",
         to: `${ticket.email}`,

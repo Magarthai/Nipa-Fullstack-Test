@@ -35,9 +35,7 @@ export class UserController {
   }
 
   @Post("/users")
-  async createUser(
-    @Body() user: ICreateUserRequest
-  ): Promise<ICreateUserRespone> {
+  async createUser(@Body() user: ICreateUserRequest) {
     try {
       const create = await this.userService.useCreateUser(user);
       return create;

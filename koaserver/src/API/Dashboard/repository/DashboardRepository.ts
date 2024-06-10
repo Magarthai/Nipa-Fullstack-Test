@@ -4,6 +4,7 @@ import { Service } from "typedi";
 import db from "../../../db/db";
 import { TicketStatus } from "@app/API/Ticket/repository/TicketStatus";
 import { groupBy } from "./groupBy.2";
+import { Knex } from "knex";
 export function formatDate(date: string) {
   const thaiTime = moment(date).tz("Asia/Bangkok");
   const formattedDate = thaiTime.format("วันที่ DD");
@@ -12,6 +13,10 @@ export function formatDate(date: string) {
 
 @Service()
 export class DashboardRepository {
+  database: Knex.QueryBuilder;
+  constructor() {
+    this.database = db("ticket");
+  }
   async listMonthTicket() {
     try {
       let startOfMonth = moment().startOf("month").tz("Asia/Bangkok");
@@ -30,7 +35,7 @@ export class DashboardRepository {
 
   async getSuccessErrorCount() {
     try {
-      const Tickets = await db("ticket");
+      const Tickets = await this.database.clone();
       return Tickets;
     } catch (err) {
       throw err;
@@ -39,7 +44,7 @@ export class DashboardRepository {
 
   async getStatusCount() {
     try {
-      const fetchTicket: ITicketEntity[] = await db("ticket");
+      const fetchTicket: ITicketEntity[] = await this.database.clone();
 
       return fetchTicket;
     } catch (err) {
@@ -50,7 +55,7 @@ export class DashboardRepository {
   async listStatusAdminCount(id: number) {
     try {
       console.log(id);
-      const fetchTicket = await db("ticket").where({ recipient: id });
+      const fetchTicket = await this.database.clone().where({ recipient: id });
 
       return fetchTicket;
     } catch (err) {

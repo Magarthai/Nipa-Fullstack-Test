@@ -31,9 +31,7 @@ koaApp.use(
   })
 );
 
-// Add cookie parsing middleware
 koaApp.use(async (ctx: Koa.Context, next: Koa.Next) => {
-  // Access cookies using ctx.cookies
   await next();
 });
 

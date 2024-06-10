@@ -16,14 +16,18 @@ const generateRefreshToken = (id: number) => {
 
 @Service()
 export class UserRepository {
-  private db: Knex.QueryBuilder;
+  database: Knex.QueryBuilder;
+  constructor() {
+    this.database = db("user");
+  }
   async listAllUserData() {
-    const data = await db("user");
+    const data = await this.database.clone();
     return data;
   }
   async createUserData(userData: ICreateUserRequest) {
     try {
-      const findExitEmail = await db("user")
+      const findExitEmail = await this.database
+        .clone()
         .where("email", userData.email)
         .first();
       if (findExitEmail) {
@@ -39,7 +43,8 @@ export class UserRepository {
           email: userData.email,
           password: hash,
         };
-        const selectUserData = await db("user")
+        const selectUserData = await this.database
+          .clone()
           .insert([encryptedData])
           .returning(UserDataListReturn);
         return selectUserData;
@@ -50,7 +55,9 @@ export class UserRepository {
   }
   async loginUser(userData: ILoginUserRequest) {
     try {
-      const findUser = await db("user").where("email", userData.email);
+      const findUser = await this.database
+        .clone()
+        .where("email", userData.email);
       console.log(findUser);
 
       const user = findUser[0];
@@ -62,10 +69,13 @@ export class UserRepository {
         console.log(user);
         if (isPasswordMatched) {
           const refreshToken = await generateRefreshToken(user?.id);
-          const updateUser = await db("user").where({ id: user.id }).update({
-            refreshToken: refreshToken,
-            updated_at: db.fn.now(),
-          });
+          const updateUser = await this.database
+            .clone()
+            .where({ id: user.id })
+            .update({
+              refreshToken: refreshToken,
+              updated_at: db.fn.now(),
+            });
           return { message: "password matched", refreshToken: refreshToken };
         } else {
           return { message: "Invalid password" };
@@ -82,14 +92,16 @@ export class UserRepository {
       if (!refreshToken) {
         return "not found token";
       }
-      const userData = await db("user")
+      const userData = await this.database
+        .clone()
         .where("refreshToken", refreshToken)
         .first();
       if (!userData) {
         return "not found data";
       }
 
-      const updateRefreshToken = await db("user")
+      const updateRefreshToken = await this.database
+        .clone()
         .where("id", userData.id)
         .update({
           refreshToken: "",
@@ -105,7 +117,10 @@ export class UserRepository {
     const decode: Payload = jwt.verify(refreshToken, secret) as Payload;
 
     if (decode.id) {
-      const userData = await db("user").where({ id: decode.id }).first();
+      const userData = await this.database
+        .clone()
+        .where({ id: decode.id })
+        .first();
       console.log(userData);
       return userData;
     }

@@ -47,7 +47,7 @@ export class TicketService {
       return { message: "Not found" };
     } else {
       console.log(ticketData);
-      if (ticketData.recipient == "" || ticketData.recipient == "") {
+      if (ticketData.recipient == null || ticketData.recipient == null) {
         const updatedTicket = await db("ticket")
           .where({ id: data.id })
           .update(updateData);

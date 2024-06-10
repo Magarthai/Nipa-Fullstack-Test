@@ -18,9 +18,9 @@ import { error } from "console";
 @Service()
 @JsonController("/dashboards")
 export class DashboardControllers {
-  // @Inject()
-  // private dashboardServices: DashboardService;
-  dashboardServices = Container.get(DashboardService);
+  @Inject()
+  private dashboardServices: DashboardService;
+  // dashboardServices = Container.get(DashboardService);
   @Get("/")
   async listMonthTicket() {
     const data = await this.dashboardServices.useListMonthTicket();
