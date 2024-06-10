@@ -3,7 +3,7 @@ import {
   DashboardRepository,
   formatDate,
 } from "../repository/DashboardRepository";
-import { ITicketEntity } from "../repository/ITicketEntity";
+import { ITicketEntity } from "../dto/ITicketEntity";
 import { groupBy } from "../repository/groupBy";
 import moment from "moment-timezone";
 import { TicketStatus } from "@app/API/Ticket/enum/TicketStatus";

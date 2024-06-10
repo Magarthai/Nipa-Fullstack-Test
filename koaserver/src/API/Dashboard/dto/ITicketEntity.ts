@@ -6,8 +6,8 @@ export interface ITicketEntity {
   selectTopic: string;
   img: string;
   status: string;
-  createdAt: Date;
-  updatedAt: Date;
+  created_at: Date;
+  updated_at: Date;
   recipient: Date;
   recipient_name: string;
   solve: string;

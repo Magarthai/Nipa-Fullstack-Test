@@ -9,7 +9,6 @@ import { Knex } from "knex";
 import { generateRefreshToken } from "@app/utils/generateRefreshToken";
 import { Payload } from "../dto/Payload";
 import jwt from "jsonwebtoken";
-import { secret } from "../dto/secret";
 import { UserStatus } from "../enum/UserStatus";
 @Service()
 export class UserService {
@@ -49,7 +48,7 @@ export class UserService {
   }
 
   async useLoginUser(data: ILoginUserRequest) {
-    const findUser = await this.userRepository.loginUser(data);
+    const findUser = await this.userRepository.findByEmail(data.email);
     if (findUser) {
       const isPasswordMatched = await bcrypt.compare(
         data.password,
@@ -57,14 +56,7 @@ export class UserService {
       );
       console.log(findUser);
       if (isPasswordMatched) {
-        const refreshToken = await generateRefreshToken(findUser?.id);
-        const updateUser = await this.database
-          .clone()
-          .where({ id: findUser.id })
-          .update({
-            refreshToken: refreshToken,
-            updated_at: db.fn.now(),
-          });
+        const refreshToken = generateRefreshToken(findUser?.id);
         return {
           message: UserStatus.Password_matched,
           refreshToken: refreshToken,
@@ -78,13 +70,21 @@ export class UserService {
   }
 
   async useLogoutUser(refreshToken: string) {
-    const useLogoutUser = this.userRepository.logoutUser(refreshToken);
+    const decode: Payload = jwt.verify(
+      refreshToken,
+      process.env.JWT_SECRET || "secret"
+    ) as Payload;
+    console.log(decode);
+    const useLogoutUser = this.userRepository.findById(decode.id);
     return useLogoutUser;
   }
 
   async useRefreshTokenUser(refreshToken: string) {
-    const decode: Payload = jwt.verify(refreshToken, secret) as Payload;
-    const useRefreshToken = this.userRepository.refreshTokenUser(decode);
+    const decode: Payload = jwt.verify(
+      refreshToken,
+      process.env.JWT_SECRET || "secret"
+    ) as Payload;
+    const useRefreshToken = this.userRepository.findById(decode.id);
     return useRefreshToken;
   }
 }

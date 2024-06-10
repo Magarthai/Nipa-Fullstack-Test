@@ -14,7 +14,7 @@ export class TicketService {
   @Inject()
   private ticketRepositorys: TicketRepository;
 
-  async useListAllTicket() {
+  async useListAllTicket(): Promise<any> {
     const data = await this.ticketRepositorys.listAllTicket();
     return data;
   }
@@ -23,17 +23,23 @@ export class TicketService {
     return { message: "success", data: data };
   }
 
-  async useGetTicketByStatus(status: string) {
+  async useGetTicketByStatus(
+    status: string
+  ): Promise<{ message: string; data: any }> {
     const data = await this.ticketRepositorys.getTicketByStatus(status);
     return { message: "success", data: data };
   }
 
-  async useGetTicketByRecipient(id: string) {
+  async useGetTicketByRecipient(
+    id: string
+  ): Promise<{ message: string; data: any }> {
     const data = await this.ticketRepositorys.getTicketByRecipient(id);
     return { message: "success", data: data };
   }
 
-  async useUpdateStatusTicket(data: ITicketUpdateRequest) {
+  async useUpdateStatusTicket(
+    data: ITicketUpdateRequest
+  ): Promise<{ message: string }> {
     const ticketData: any = await this.ticketRepositorys.updateStatusTicket(
       data
     );

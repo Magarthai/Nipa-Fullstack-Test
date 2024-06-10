@@ -23,6 +23,7 @@ import { UserNotFoundError } from "@app/error/UserNotFound";
 import db from "@app/db/db";
 import { TokenNotFoundError } from "@app/error/TokenNotFound";
 import { UserStatus } from "../enum/UserStatus";
+import { CreateUserError } from "@app/error/CreateUserError";
 @Service()
 @JsonController()
 export class UserController {
@@ -42,8 +43,7 @@ export class UserController {
       const create = await this.userService.useCreateUser(user);
       return create;
     } catch (err) {
-      console.log(err);
-      throw err;
+      throw new CreateUserError();
     }
   }
 

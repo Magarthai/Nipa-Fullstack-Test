@@ -1,20 +1,11 @@
 import { Service } from "typedi";
 import bcrypt = require("bcrypt");
-import jwt from "jsonwebtoken";
 import db from "../../../db/db";
 import { Knex } from "knex";
 import { ICreateUserRequest } from "../dto/ICreateUserRequest";
-import { UserDataListReturn } from "./UserDataListReturn";
-import { Payload } from "../dto/Payload";
 import { ILoginUserRequest } from "../dto/ILoginUserRequest";
-import { secret } from "../dto/secret";
 import { UserStatus } from "../enum/UserStatus";
-const generateRefreshToken = (id: number) => {
-  return jwt.sign({ id }, secret, {
-    expiresIn: "1d",
-  });
-};
-
+import { IFindByEmail } from "./IFindByEmail";
 @Service()
 export class UserRepository {
   database: Knex.QueryBuilder;
@@ -37,48 +28,30 @@ export class UserRepository {
     }
   }
 
-  async loginUser(userData: ILoginUserRequest) {
+  async findByEmail(email: string) {
     try {
       const findUser = await this.database
         .clone()
-        .where("email", userData.email)
+        .where("email", email)
         .first();
-
+      if (!findUser) {
+        return UserStatus.Not_found;
+      }
       return findUser;
     } catch (err) {
       throw err;
     }
   }
-  async logoutUser(refreshToken: string) {
+
+  async findById(id: string) {
     try {
-      const userData = await this.database
-        .clone()
-        .where("refreshToken", refreshToken)
-        .first();
-      if (!userData) {
+      const findUser = await this.database.clone().where("id", id).first();
+      if (!findUser) {
         return UserStatus.Not_found;
       }
-
-      const updateRefreshToken = await this.database
-        .clone()
-        .where("id", userData.id)
-        .update({
-          refreshToken: "",
-        });
-      return UserStatus.Success;
+      return findUser;
     } catch (err) {
       throw err;
-    }
-  }
-
-  async refreshTokenUser(decode: any) {
-    if (decode.id) {
-      const userData = await this.database
-        .clone()
-        .where({ id: decode.id })
-        .first();
-      console.log(userData);
-      return userData;
     }
   }
 }

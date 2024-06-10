@@ -41,7 +41,6 @@ export class DashboardControllers {
 
   @Get("/:id")
   async getStatusAdminCount(@Param("id") id: number, @Res() response: any) {
-    console.log(id, "idddddddddddddddddddddd");
     const data = await this.dashboardServices.useListStatusAdminCount(id);
     return data;
   }

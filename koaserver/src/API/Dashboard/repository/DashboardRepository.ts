@@ -1,9 +1,9 @@
 import moment from "moment-timezone";
-import { ITicketEntity } from "./ITicketEntity";
+import { ITicketEntity } from "../dto/ITicketEntity";
 import { Service } from "typedi";
 import db from "../../../db/db";
 import { TicketStatus } from "@app/API/Ticket/enum/TicketStatus";
-import { groupBy } from "./groupBy.2";
+import { groupBy } from "./groupBy";
 import { Knex } from "knex";
 export function formatDate(date: string) {
   const thaiTime = moment(date).tz("Asia/Bangkok");
@@ -22,10 +22,9 @@ export class DashboardRepository {
       let startOfMonth = moment().startOf("month").tz("Asia/Bangkok");
       let endOfMonth = moment().endOf("month").tz("Asia/Bangkok");
 
-      const Tickets = await db("ticket").whereBetween("created_at", [
-        startOfMonth,
-        endOfMonth,
-      ]);
+      const Tickets = await this.database
+        .clone()
+        .whereBetween("created_at", [startOfMonth, endOfMonth]);
 
       return Tickets;
     } catch (err) {

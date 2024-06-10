@@ -10,13 +10,14 @@ import db from "../../../db/db";
 import { Service } from "typedi";
 import { TicketStatus } from "../enum/TicketStatus";
 import { Knex } from "knex";
+import { ITicketList } from "../dto/ITicketList";
 @Service()
 export class TicketRepository {
   database: any;
   constructor() {
     this.database = db("ticket");
   }
-  async listAllTicket() {
+  async listAllTicket(): Promise<ITicketList> {
     const data = await this.database.clone();
     console.log(data);
     return data;
@@ -27,6 +28,7 @@ export class TicketRepository {
         .clone()
         .where("status", status)
         .orderBy("updated_at", "desc");
+      console.log(data);
       return data;
     } catch (err) {
       throw err;
@@ -78,7 +80,7 @@ export class TicketRepository {
       },
     });
     const option = {
-      from: "nipafullstacktest@gmail.com",
+      from: process.env.EMAIL_NOTIFICATION,
       to: `${data.email}`,
       subject: `[ปัญหาของคุณที่แจ้งเข้ามา ${data.status}]`,
       html: `
@@ -93,7 +95,7 @@ export class TicketRepository {
       `,
     };
 
-    transporter.sendMail(option, (err: string, info: { response: string }) => {
+    transporter.sendMail(option, (err: string) => {
       if (err) {
         return {
           RespCode: 400,
@@ -112,7 +114,6 @@ export class TicketRepository {
 
   async createTicket(ticket: ITicketCreateRequest) {
     try {
-      console.log(ticket);
       const data = {
         name: ticket.name,
         email: ticket.email,
@@ -120,7 +121,6 @@ export class TicketRepository {
         selectTopic: ticket.selectTopic,
         img: ticket.file,
       };
-      console.log(data);
       const create = await this.database
         .clone()
         .insert([data])
@@ -129,8 +129,8 @@ export class TicketRepository {
       const transporter = nodemailer.createTransport({
         service: "gmail",
         auth: {
-          user: "kmutthealthcareunit@gmail.com",
-          pass: "vqos ixxk pscf bqwm",
+          user: process.env.EMAIL_NOTIFICATION,
+          pass: process.env.PASS_NOTIFICATION,
         },
       });
 

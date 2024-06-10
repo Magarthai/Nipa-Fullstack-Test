@@ -53,20 +53,20 @@ export class TicketController {
     );
     return {
       message: "Ticket fetch successfully",
-      ticket: fetchTicketByStatus,
+      ticket: fetchTicketByStatus.data,
     };
   }
 
-  @Get("/:recipient_id") // => /recipients/me/tickets
-  async getTicketByRecipient(@Param("recipient_id") recipient_id: string) {
-    const fetchTicketById = await this.ticketService.useGetTicketByRecipient(
-      recipient_id
-    );
-    return {
-      message: "Ticket fetch successfully",
-      ticket: fetchTicketById,
-    };
-  }
+  // @Get("/:recipient_id") // => /recipients/me/tickets
+  // async getTicketByRecipient(@Param("recipient_id") recipient_id: string) {
+  //   const fetchTicketById = await this.ticketService.useGetTicketByRecipient(
+  //     recipient_id
+  //   );
+  //   return {
+  //     message: "Ticket fetch successfully",
+  //     ticket: fetchTicketById,
+  //   };
+  // }
 
   @Put("/:id")
   async updateStatus(

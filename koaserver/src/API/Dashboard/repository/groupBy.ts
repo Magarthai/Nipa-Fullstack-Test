@@ -1,5 +1,5 @@
 import { formatDate } from "./DashboardRepository";
-import { ITicketEntity } from "./ITicketEntity";
+import { ITicketEntity } from "../dto/ITicketEntity";
 
 export function groupBy(
   arr: ITicketEntity[] = [
@@ -11,8 +11,8 @@ export function groupBy(
       selectTopic: "",
       img: "",
       status: "",
-      createdAt: new Date(),
-      updatedAt: new Date(),
+      created_at: new Date(),
+      updated_at: new Date(),
       recipient: new Date(),
       recipient_name: "",
       solve: "",

@@ -9,6 +9,7 @@ import bodyParser from "koa-bodyparser";
 import * as Koa from "koa";
 import { DashboardControllers } from "./API/Dashboard/controller/DashboardController";
 import { TicketController } from "./API/Ticket/controller/TicketController";
+import { RecipeintController } from "./API/Ticket/controller/RecipeintController";
 
 dotenv.config();
 const port = process.env.PORT || 3000;
@@ -20,7 +21,12 @@ const koaApp = createKoaServer({
     origin: ["http://localhost:3000"],
   },
   defaultErrorHandler: false,
-  controllers: [UserController, DashboardControllers, TicketController],
+  controllers: [
+    UserController,
+    DashboardControllers,
+    TicketController,
+    RecipeintController,
+  ],
   middlewares: [ErrorMiddleware],
 });
 
