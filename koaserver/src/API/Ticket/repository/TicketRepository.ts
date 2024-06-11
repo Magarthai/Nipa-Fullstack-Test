@@ -12,10 +12,10 @@ import { TicketStatus } from "../enum/TicketStatus";
 import { Knex } from "knex";
 import { ITicketList } from "../dto/ITicketList";
 import { ITicketGetTicketByStatusRequest } from "../dto/ITicketGetTicketByStatusRequest";
-import { FindTicketByIDRespone } from "./FindTicketByIDRespone";
-import { ITicketUpdateRespone } from "./ITicketUpdateRespone";
-import { IGetTicketByRecipientRespone } from "./IGetTicketByRecipientRespone";
-import { ITicketCreateRespone } from "./ITicketCreateRespone";
+import { IFindTicketByIDRespone } from "../dto/IFindTicketByIDRespone";
+import { ITicketUpdateRespone } from "../dto/ITicketUpdateRespone";
+import { IGetTicketByRecipientRespone } from "../dto/IGetTicketByRecipientRespone";
+import { ITicketCreateRespone } from "../dto/ITicketCreateRespone";
 import { ITicketEntity } from "@app/API/Dashboard/dto/ITicketEntity";
 @Service()
 export class TicketRepository {

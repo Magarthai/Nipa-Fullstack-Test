@@ -10,10 +10,10 @@ import { generateRefreshToken } from "@app/utils/generateRefreshToken";
 import { Payload } from "../dto/Payload";
 import jwt from "jsonwebtoken";
 import { UserStatus } from "../enum/UserStatus";
-import { IListAllUserDataRespone } from "../repository/IListAllUserDataRespone";
+import { IListAllUserDataRespone } from "../dto/IListAllUserDataRespone";
 import { ICreateUserRespone } from "../dto/ICreateUserRespone";
-import { IFindByID } from "../repository/IFindByID";
-import { IEncryptedData } from "./IEncryptedData";
+import { IFindByID } from "../dto/IFindByID";
+import { IEncryptedData } from "../dto/IEncryptedData";
 
 @Service()
 export class UserService {

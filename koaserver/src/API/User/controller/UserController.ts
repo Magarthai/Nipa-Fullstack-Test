@@ -20,12 +20,11 @@ import { ICreateUserRespone } from "../dto/ICreateUserRespone";
 import { ILoginUserRequest } from "../dto/ILoginUserRequest";
 import { Context } from "koa";
 import { UserNotFoundError } from "@app/error/UserNotFound";
-import db from "@app/db/db";
 import { TokenNotFoundError } from "@app/error/TokenNotFound";
 import { UserStatus } from "../enum/UserStatus";
 import { CreateUserError } from "@app/error/CreateUserError";
-import { IListAllUserDataRespone } from "../repository/IListAllUserDataRespone";
-import { IFindByID } from "../repository/IFindByID";
+import { IListAllUserDataRespone } from "../dto/IListAllUserDataRespone";
+import { IFindByID } from "../dto/IFindByID";
 @Service()
 @JsonController()
 export class UserController {
@@ -50,16 +49,6 @@ export class UserController {
       throw new CreateUserError();
     }
   }
-
-  // @Get("/users/:id")
-  // @OnUndefined(UserNotFoundError)
-  // async getUser(@Param("id") id: string) {
-  //   const data = await db("user").where("id", id).first();
-  //   if (!data) {
-  //     throw new UserNotFoundError(404, "Not found user!", "Not found");
-  //   }
-  //   return data;
-  // }
 
   @Post("/login")
   async login(

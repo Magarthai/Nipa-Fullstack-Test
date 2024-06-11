@@ -1,8 +1,8 @@
 import { Service } from "typedi";
 import { ITicketSendEmailNotificationRequest } from "../dto/ITicketSendEmailNotificationRequest";
 import { ITicketCreateRequest } from "../dto/ITicketCreateRequest";
-import { ITicketUpdateRespone } from "../repository/ITicketUpdateRespone";
-import { FindTicketByIDRespone } from "../repository/FindTicketByIDRespone";
+import { ITicketUpdateRespone } from "../dto/ITicketUpdateRespone";
+import { IFindTicketByIDRespone } from "../dto/IFindTicketByIDRespone";
 const nodemailer = require("nodemailer");
 @Service()
 export class SendEmailDefination {
@@ -47,7 +47,7 @@ export class SendEmailDefination {
     return { RespCode: 200 };
   }
 
-  async sendCreateTicketNotification(data: FindTicketByIDRespone) {
+  async sendCreateTicketNotification(data: IFindTicketByIDRespone) {
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {

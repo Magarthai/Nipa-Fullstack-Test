@@ -15,15 +15,15 @@ import { ListTicketDataReturn } from "../dto/ListTicketDataReturn";
 
 import { ITicketList } from "../dto/ITicketList";
 import { ITicketGetTicketByRecipient } from "../dto/ITicketGetTicketByRecipient";
-import { IGetTicketByRecipientRespone } from "../repository/IGetTicketByRecipientRespone";
-import { ITicketUpdateRespone } from "../repository/ITicketUpdateRespone";
-import { FindTicketByIDRespone } from "../repository/FindTicketByIDRespone";
+import { IGetTicketByRecipientRespone } from "../dto/IGetTicketByRecipientRespone";
+import { ITicketUpdateRespone } from "../dto/ITicketUpdateRespone";
+import { IFindTicketByIDRespone } from "../dto/IFindTicketByIDRespone";
 import { ITicketEntity } from "@app/API/Dashboard/dto/ITicketEntity";
 import { TicketNotFoundError } from "@app/error/TicketNotFound";
 import { SendEmailDefination } from "../adapter/SendEmailAdapter";
-import { ICloseTicketById } from "./ICloseTicketById";
-import { IMessage } from "./IMessage";
-import { ITicketCreateServiceRespone } from "./ITicketCreateServiceRespone";
+import { ICloseTicketById } from "../dto/ICloseTicketById";
+import { IMessage } from "../dto/IMessage";
+import { ITicketCreateServiceRespone } from "../dto/ITicketCreateServiceRespone";
 import { TicketUpdateStatus } from "../enum/TicketUpdateStatus";
 import { ISendMailRespone } from "../dto/ISendMailRespone";
 @Service()

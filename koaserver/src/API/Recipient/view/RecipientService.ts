@@ -1,7 +1,8 @@
-import { IGetTicketByRecipientRespone } from "@app/API/Ticket/repository/IGetTicketByRecipientRespone";
+import { IGetTicketByRecipientRespone } from "@app/API/Ticket/dto/IGetTicketByRecipientRespone";
 import { TicketRepository } from "@app/API/Ticket/repository/TicketRepository";
 import { Inject, Service } from "typedi";
 import { RecipientRepository } from "../repository/RecipientRepository";
+import { GenericRecipientRespone } from "../dto/GenericRecipientRespone";
 
 @Service()
 export class RecipientService {
@@ -10,7 +11,7 @@ export class RecipientService {
 
   async getTicketByRecipient(
     id: string
-  ): Promise<{ message: string; data: IGetTicketByRecipientRespone }> {
+  ): Promise<GenericRecipientRespone<IGetTicketByRecipientRespone>> {
     const data = await this.recipientRepositorys.findTicketByRecipient(id);
     return { message: "success", data: data };
   }

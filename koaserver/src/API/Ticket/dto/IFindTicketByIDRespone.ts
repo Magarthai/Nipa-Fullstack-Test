@@ -1,4 +1,4 @@
-export interface FindTicketByIDRespone {
+export interface IFindTicketByIDRespone {
   name: string;
   email: string;
   detail: string;

@@ -2,8 +2,10 @@ import { Param, Get, JsonController } from "routing-controllers";
 
 import { TicketService } from "../../Ticket/view/TicketService";
 import { Inject, Service } from "typedi";
-import { IGetTicketByRecipientRespone } from "../../Ticket/repository/IGetTicketByRecipientRespone";
+
 import { RecipientService } from "../view/RecipientService";
+import { IGetTicketByRecipientRespone } from "@app/API/Ticket/dto/IGetTicketByRecipientRespone";
+import { GenericGetTicketByRecipientRespone } from "./GenericGetTicketByRecipientRespone";
 @Service()
 @JsonController("/recipients")
 export class RecipeintController {
@@ -13,10 +15,7 @@ export class RecipeintController {
   @Get("/:recipient_id/tickets")
   async getTicketByRecipient(
     @Param("recipient_id") recipient_id: string
-  ): Promise<{
-    message: string;
-    ticket: { message: string; data: IGetTicketByRecipientRespone };
-  }> {
+  ): Promise<GenericGetTicketByRecipientRespone<IGetTicketByRecipientRespone>> {
     const fetchTicketById = await this.recipientServices.getTicketByRecipient(
       recipient_id
     );

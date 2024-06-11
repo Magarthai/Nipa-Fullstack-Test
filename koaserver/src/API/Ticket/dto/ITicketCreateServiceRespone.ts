@@ -1,4 +1,4 @@
-import { ITicketCreateRespone } from "../repository/ITicketCreateRespone";
+import { ITicketCreateRespone } from "./ITicketCreateRespone";
 
 export interface ITicketCreateServiceRespone {
   message: string;

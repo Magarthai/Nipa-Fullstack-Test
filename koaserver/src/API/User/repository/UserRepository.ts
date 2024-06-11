@@ -5,11 +5,11 @@ import { Knex } from "knex";
 import { ICreateUserRequest } from "../dto/ICreateUserRequest";
 import { ILoginUserRequest } from "../dto/ILoginUserRequest";
 import { UserStatus } from "../enum/UserStatus";
-import { IFindByEmail } from "./IFindByEmail";
-import { IFindByID } from "./IFindByID";
-import { IListAllUserDataRespone } from "./IListAllUserDataRespone";
+import { IFindByEmail } from "../dto/IFindByEmail";
+import { IFindByID } from "../dto/IFindByID";
+import { IListAllUserDataRespone } from "../dto/IListAllUserDataRespone";
 import { ICreateUserRespone } from "../dto/ICreateUserRespone";
-import { IEncryptedData } from "../view/IEncryptedData";
+import { IEncryptedData } from "../dto/IEncryptedData";
 import { UserDataListReturn } from "./UserDataListReturn";
 @Service()
 export class UserRepository {

@@ -1,4 +1,4 @@
-import { IGetTicketByRecipientRespone } from "@app/API/Ticket/repository/IGetTicketByRecipientRespone";
+import { IGetTicketByRecipientRespone } from "@app/API/Ticket/dto/IGetTicketByRecipientRespone";
 import db from "@app/db/db";
 import { Knex } from "knex";
 import { Service } from "typedi";
