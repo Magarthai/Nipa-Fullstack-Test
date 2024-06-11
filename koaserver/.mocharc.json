@@ -1,0 +1,7 @@
+{
+    "spec": "test/**/*.spec.ts",
+    "require": ["ts-node/register", "tsconfig-paths/register", "source-map-support/register", "mocha-suppress-logs"],
+    "extensions": ["ts"],
+    "reporter": "spec",
+    "watch-files": ["test/**/*.*.ts"]
+}   

@@ -36,7 +36,7 @@ export class TicketController {
   private ticketService: TicketService;
 
   @Get("/")
-  async listAllTicket(): Promise<GenericGetTicketResponse<ITicketList>> {
+  async listAllTicket(): Promise<GenericGetTicketResponse<ITicketList[]>> {
     const data = await this.ticketService.useListAllTicket();
     return {
       message: "Ticket fetch successfully",
@@ -56,7 +56,7 @@ export class TicketController {
   @Get("/status/:status")
   async getTicketByStatus(
     @Param("status") status: string
-  ): Promise<GenericGetTicketResponse<ITicketGetTicketByStatusRequest>> {
+  ): Promise<GenericGetTicketResponse<ITicketGetTicketByStatusRequest[]>> {
     const fetchTicketByStatus = await this.ticketService.listTicketByStatus(
       status
     );

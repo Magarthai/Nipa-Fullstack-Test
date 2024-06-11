@@ -34,7 +34,7 @@ export class TicketService {
   @Inject()
   private sendEmailDefination: SendEmailDefination;
 
-  async useListAllTicket(): Promise<ITicketList> {
+  async useListAllTicket(): Promise<ITicketList[]> {
     const data = await this.ticketRepositorys.listAllTicket();
     return data;
   }
@@ -49,7 +49,7 @@ export class TicketService {
 
   async listTicketByStatus(
     status: string
-  ): Promise<GenericResponse<ITicketGetTicketByStatusRequest>> {
+  ): Promise<GenericResponse<ITicketGetTicketByStatusRequest[]>> {
     const data = await this.ticketRepositorys.getTicketByStatus(status);
     return { message: "success", data: data };
   }
