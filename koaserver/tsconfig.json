@@ -27,8 +27,5 @@
       "@app/*": ["./src/*"]
     },
   },
-  "ts-node": {
-    "esm": true
- },
   "include": ["./src/**/*", "./test/**/*", "knexfile.ts"]
 }
