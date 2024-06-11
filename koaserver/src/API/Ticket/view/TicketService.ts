@@ -67,9 +67,10 @@ export class TicketService {
     data: ITicketUpdateRequest
   ): Promise<IMessage> {
     const ticketData = await this.getTicketById(ticketId);
-    if (ticketData.recipient != null || ticketData.recipient_name! == null) {
+    if (ticketData.recipient != null || ticketData.recipient_name != null) {
       return { message: "Already accepted" };
     }
+    console.log(data);
     await this.ticketRepositorys.updateStatusTicket(data);
     console.log("test");
     return {

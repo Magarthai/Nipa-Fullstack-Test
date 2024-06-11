@@ -47,7 +47,6 @@ export class TicketRepository {
     data: ITicketUpdateRequest
   ): Promise<ITicketUpdateRespone> {
     try {
-      delete data.id;
       const ticketData: ITicketUpdateRespone = await db("ticket")
         .update(data)
         .where("id", data.id);

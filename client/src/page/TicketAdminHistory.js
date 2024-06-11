@@ -79,7 +79,7 @@ function AdminPage() {
         name: ticket.name,
         email: ticket.email,
         topic: ticket.selectTopic,
-        time: new Date(ticket.createdAt).toLocaleString(),
+        time: new Date(ticket.created_at).toLocaleString(),
         recipient: userData.fname + " " + userData.lname,
         status: "รับเรื่องแล้ว",
         recipientId: userData.id,
@@ -281,7 +281,7 @@ function AdminPage() {
                     {ticket.status === "pending" ? (
                       <p>
                         เวลา :&nbsp;
-                        {new Date(ticket.createdAt).toLocaleString()}{" "}
+                        {new Date(ticket.created_at).toLocaleString()}{" "}
                       </p>
                     ) : (
                       <>

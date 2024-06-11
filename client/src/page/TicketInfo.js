@@ -197,7 +197,7 @@ function AdminPage() {
               {data && <p>ผู้แจ้ง : {data.name}</p>}
               {data && <p>อีเมล : {data.email}</p>}
               {data && (
-                <p>แจ้งวันที่ : {new Date(data.createdAt).toLocaleString()}</p>
+                <p>แจ้งวันที่ : {new Date(data.created_at).toLocaleString()}</p>
               )}
               <div className="ticketinfo-detail extralight">
                 {data && <p>{data.detail}</p>}
