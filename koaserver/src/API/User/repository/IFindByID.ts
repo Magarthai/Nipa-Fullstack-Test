@@ -1,10 +1,11 @@
-export interface ICreateUserRequest {
+export interface IFindByID {
+  id: number;
   fname: string;
   lname: string;
   email: string;
   password: string;
   role: string;
-  id: number;
+  refreshToken: string;
   created_at: Date;
   updated_at: Date;
 }

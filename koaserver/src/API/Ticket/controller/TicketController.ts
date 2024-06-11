@@ -21,6 +21,14 @@ import { ITicketCloseRequest } from "../dto/ITicketCloseRequest";
 import { ITicketSendEmailNotificationRequest } from "../dto/ITicketSendEmailNotificationRequest";
 import Container, { Inject, Service } from "typedi";
 import { TicketNotFoundError } from "@app/error/TicketNotFound";
+import { ITicketList } from "../dto/ITicketList";
+import { ITicketGetTicketByStatusRequest } from "../dto/ITicketGetTicketByStatusRequest";
+import { ICloseTicketById } from "../view/ICloseTicketById";
+import { IMessage } from "../view/IMessage";
+import { GenericGetTicketResponse } from "../dto/GenericGetTicketResponse";
+import { TicketUpdateStatus } from "../enum/TicketUpdateStatus";
+import { ISendMailRespone } from "../dto/ISendMailRespone";
+
 @Service()
 @JsonController("/tickets")
 export class TicketController {
@@ -28,7 +36,7 @@ export class TicketController {
   private ticketService: TicketService;
 
   @Get("/")
-  async listAllTicket() {
+  async listAllTicket(): Promise<GenericGetTicketResponse<ITicketList>> {
     const data = await this.ticketService.useListAllTicket();
     return {
       message: "Ticket fetch successfully",
@@ -37,18 +45,19 @@ export class TicketController {
   }
 
   @Post("/")
-  async createTicket(@Body() ticket: ITicketCreateRequest) {
-    const create = await this.ticketService.useCreateTicket(ticket);
-    if (create.data) {
-      return { message: "Ticket created successfully" };
-    } else {
-      throw new TicketNotFoundError(404, "Ticket not found !", "Not found");
+  async createTicket(@Body() ticket: ITicketCreateRequest): Promise<IMessage> {
+    const create = await this.ticketService.createTicket(ticket);
+    if (!create.data) {
+      throw new TicketNotFoundError("Ticket not found !");
     }
+    return { message: "Ticket created successfully" };
   }
 
   @Get("/status/:status")
-  async getTicketByStatus(@Param("status") status: string) {
-    const fetchTicketByStatus = await this.ticketService.useGetTicketByStatus(
+  async getTicketByStatus(
+    @Param("status") status: string
+  ): Promise<GenericGetTicketResponse<ITicketGetTicketByStatusRequest>> {
+    const fetchTicketByStatus = await this.ticketService.listTicketByStatus(
       status
     );
     return {
@@ -57,65 +66,62 @@ export class TicketController {
     };
   }
 
-  // @Get("/:recipient_id") // => /recipients/me/tickets
-  // async getTicketByRecipient(@Param("recipient_id") recipient_id: string) {
-  //   const fetchTicketById = await this.ticketService.useGetTicketByRecipient(
-  //     recipient_id
-  //   );
-  //   return {
-  //     message: "Ticket fetch successfully",
-  //     ticket: fetchTicketById,
-  //   };
-  // }
-
   @Put("/:id")
   async updateStatus(
     @Body() ticket: ITicketUpdateRequest,
     @Param("id") id: string
-  ) {
+  ): Promise<IMessage> {
     const update: ITicketUpdateRequest = {
       status: ticket.updateStatus,
       recipient: ticket.recipientId,
       recipient_name: ticket.recipient,
       id: id,
     } as ITicketUpdateRequest;
-    const updateStatus = await this.ticketService.useUpdateStatusTicket(update);
-    if (updateStatus.message == "Not found") {
-      throw new TicketNotFoundError(404, "Ticket not found !", "Not found");
-    } else if (updateStatus.message == "Success") {
+    const updateStatus = await this.ticketService.updateStatusTicket(
+      id,
+      update
+    );
+    if (updateStatus.message == TicketUpdateStatus.NOT_FOUND) {
+      throw new TicketNotFoundError("Ticket not found !");
+    }
+    if (updateStatus.message == TicketUpdateStatus.SUCCESS) {
       return {
         message: "Ticket updated successfully",
       };
-    } else {
-      return { message: "Already accepted" };
     }
+    return { message: "Already accepted" };
   }
 
   @Put("/close/:id")
-  async close(@Body() ticket: ITicketCloseRequest, @Param("id") id: string) {
+  async close(
+    @Body() ticket: ITicketCloseRequest,
+    @Param("id") id: string
+  ): Promise<ICloseTicketById> {
     const update: ITicketCloseRequest = {
       status: ticket.updateStatus,
       solve: ticket.solve,
       id: id,
     } as ITicketCloseRequest;
-    const closeTicket = await this.ticketService.useCloseTicket(update);
+    const closeTicket = await this.ticketService.closeTicketById(id, {
+      data: update,
+    });
 
-    if (closeTicket.message == "Not found") {
-      throw new TicketNotFoundError(404, "Ticket not found !", "Not found");
-    } else if (closeTicket.message == "Success") {
+    if (closeTicket.message == TicketUpdateStatus.NOT_FOUND) {
+      throw new TicketNotFoundError("Ticket not found !");
+    }
+    if (closeTicket.message == TicketUpdateStatus.SUCCESS) {
       return {
         message: "Ticket updated successfully",
         ticket: closeTicket.ticket,
       };
-    } else {
-      return { message: "Already closed" };
     }
+    return { message: "Already closed" };
   }
 
   @Post("/sendemail")
   async sendMailNotification(
     @Body() ticket: ITicketSendEmailNotificationRequest
-  ) {
+  ): Promise<ISendMailRespone> {
     const sendemail = await this.ticketService.useSendEmail(ticket);
     return sendemail;
   }

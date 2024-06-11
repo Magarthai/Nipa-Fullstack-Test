@@ -2,98 +2,115 @@ import { Service, Inject, Container } from "typedi";
 import { ITicketCreateRequest } from "../dto/ITicketCreateRequest";
 import { ITicketCloseRequest } from "../dto/ITicketCloseRequest";
 import { ITicketSendEmailNotificationRequest } from "../dto/ITicketSendEmailNotificationRequest";
-import { ITicketUpdateRequest } from "../dto/ITicketUpdateRequest";
+import {
+  ITicketUpdateRequest,
+  GenericResponse,
+} from "../dto/ITicketUpdateRequest";
 import { TicketRepository } from "../repository/TicketRepository";
 import { ITicketGetTicketByStatusRequest } from "../dto/ITicketGetTicketByStatusRequest";
 import { TicketStatus } from "../enum/TicketStatus";
 const nodemailer = require("nodemailer");
 import db from "../../../db/db";
 import { ListTicketDataReturn } from "../dto/ListTicketDataReturn";
+
+import { ITicketList } from "../dto/ITicketList";
+import { ITicketGetTicketByRecipient } from "../dto/ITicketGetTicketByRecipient";
+import { IGetTicketByRecipientRespone } from "../repository/IGetTicketByRecipientRespone";
+import { ITicketUpdateRespone } from "../repository/ITicketUpdateRespone";
+import { FindTicketByIDRespone } from "../repository/FindTicketByIDRespone";
+import { ITicketEntity } from "@app/API/Dashboard/dto/ITicketEntity";
+import { TicketNotFoundError } from "@app/error/TicketNotFound";
+import { SendEmailDefination } from "../adapter/SendEmailAdapter";
+import { ICloseTicketById } from "./ICloseTicketById";
+import { IMessage } from "./IMessage";
+import { ITicketCreateServiceRespone } from "./ITicketCreateServiceRespone";
+import { TicketUpdateStatus } from "../enum/TicketUpdateStatus";
+import { ISendMailRespone } from "../dto/ISendMailRespone";
 @Service()
 export class TicketService {
   @Inject()
   private ticketRepositorys: TicketRepository;
 
-  async useListAllTicket(): Promise<any> {
+  @Inject()
+  private sendEmailDefination: SendEmailDefination;
+
+  async useListAllTicket(): Promise<ITicketList> {
     const data = await this.ticketRepositorys.listAllTicket();
     return data;
   }
-  async useCreateTicket(ticket: ITicketCreateRequest) {
+  async createTicket(
+    ticket: ITicketCreateRequest
+  ): Promise<ITicketCreateServiceRespone> {
     const data = await this.ticketRepositorys.createTicket(ticket);
+    const sendEmail =
+      await this.sendEmailDefination.sendCreateTicketNotification(data);
     return { message: "success", data: data };
   }
 
-  async useGetTicketByStatus(
+  async listTicketByStatus(
     status: string
-  ): Promise<{ message: string; data: any }> {
+  ): Promise<GenericResponse<ITicketGetTicketByStatusRequest>> {
     const data = await this.ticketRepositorys.getTicketByStatus(status);
     return { message: "success", data: data };
   }
 
-  async useGetTicketByRecipient(
-    id: string
-  ): Promise<{ message: string; data: any }> {
-    const data = await this.ticketRepositorys.getTicketByRecipient(id);
-    return { message: "success", data: data };
-  }
-
-  async useUpdateStatusTicket(
-    data: ITicketUpdateRequest
-  ): Promise<{ message: string }> {
-    const ticketData: any = await this.ticketRepositorys.updateStatusTicket(
-      data
-    );
-    const updateData = {
-      status: data.status,
-      recipient: 1,
-      recipient_name: "test",
-    };
-    console.log(updateData);
-    if (!ticketData) {
-      return { message: "Not found" };
-    } else {
-      console.log(ticketData);
-      if (ticketData.recipient == null || ticketData.recipient == null) {
-        const updatedTicket = await db("ticket")
-          .where({ id: data.id })
-          .update(updateData);
-        console.log("test");
-        return {
-          message: "Success",
-        };
-      } else {
-        return { message: "Already accepted" };
-      }
+  async getTicketById(ticketId: string): Promise<ITicketEntity> {
+    const result = await this.ticketRepositorys.findTicketByID(ticketId);
+    if (!result) {
+      throw new TicketNotFoundError();
     }
+    return result;
   }
 
-  async useCloseTicket(data: ITicketCloseRequest) {
-    const TicketData = await this.ticketRepositorys.closeTicket(data);
+  async updateStatusTicket(
+    ticketId: string,
+    data: ITicketUpdateRequest
+  ): Promise<IMessage> {
+    const ticketData = await this.getTicketById(ticketId);
+    if (ticketData.recipient != null || ticketData.recipient_name! == null) {
+      return { message: "Already accepted" };
+    }
+    await this.ticketRepositorys.updateStatusTicket(data);
+    console.log("test");
+    return {
+      message: "Success",
+    };
+  }
+
+  async closeTicketById(
+    id: string,
+    closingTicket: {
+      data: ITicketCloseRequest;
+    }
+  ): Promise<ICloseTicketById> {
+    const { data } = closingTicket;
+    const TicketData = await this.ticketRepositorys.findTicketByID(id);
+    if (!TicketData) {
+      return { message: TicketUpdateStatus.NOT_FOUND };
+    }
     const update = {
       status: data.status,
       solve: data.solve,
     };
-    console.log(TicketData);
-    if (!TicketData) {
-      return { message: "Not found" };
-    } else {
-      if (TicketData.status === TicketStatus.ACCEPTED) {
-        console.log("check");
-        const updatedTicket = await db("ticket")
-          .where({ id: data.id })
-          .update(update);
-        return {
-          message: "Success",
-          ticket: updatedTicket,
-        };
-      } else {
-        return { message: "Already closed" };
-      }
+    if (TicketData.status != TicketStatus.ACCEPTED) {
+      return { message: TicketUpdateStatus.ALREADY_CLOSE };
     }
+    console.log("check");
+    const updatedTicket = await db("ticket")
+      .where({ id: data.id })
+      .update(update);
+    return {
+      message: TicketUpdateStatus.SUCCESS,
+      ticket: updatedTicket,
+    };
   }
 
-  async useSendEmail(data: ITicketSendEmailNotificationRequest) {
-    const sendEmail = await this.ticketRepositorys.sendMailNotification(data);
+  async useSendEmail(
+    data: ITicketSendEmailNotificationRequest
+  ): Promise<ISendMailRespone> {
+    const sendEmail =
+      await this.sendEmailDefination.sendUpdateEmailNotification(data);
+
     return sendEmail;
   }
 }

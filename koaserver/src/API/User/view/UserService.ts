@@ -10,76 +10,87 @@ import { generateRefreshToken } from "@app/utils/generateRefreshToken";
 import { Payload } from "../dto/Payload";
 import jwt from "jsonwebtoken";
 import { UserStatus } from "../enum/UserStatus";
+import { IListAllUserDataRespone } from "../repository/IListAllUserDataRespone";
+import { ICreateUserRespone } from "../dto/ICreateUserRespone";
+import { IFindByID } from "../repository/IFindByID";
+import { IEncryptedData } from "./IEncryptedData";
+
 @Service()
 export class UserService {
   database: Knex.QueryBuilder;
-  constructor(
-    @Inject(() => UserRepository)
-    private userRepository: UserRepository
-  ) {
+  constructor() {
     this.database = db("user");
   }
 
-  async useListAllUserData() {
+  @Inject(() => UserRepository)
+  private userRepository: UserRepository;
+
+  async useListAllUserData(): Promise<IListAllUserDataRespone> {
     const userData = this.userRepository.listAllUserData();
     return userData;
   }
 
-  async useCreateUser(data: ICreateUserRequest) {
-    const findExitEmail = await this.userRepository.createUserData(data);
+  async useCreateUser(
+    data: ICreateUserRequest
+  ): Promise<"User already exists" | ICreateUserRespone> {
+    const findExitEmail = await this.userRepository.findByEmail(data.email);
     if (findExitEmail) {
       return "User already exists";
     } else {
       const salt = bcrypt.genSaltSync(10);
       const password: any = data.password;
       const hash = bcrypt.hashSync(password, salt);
-      const encryptedData = {
+      const encryptedData: IEncryptedData = {
         fname: data.fname,
         lname: data.lname,
         email: data.email,
         password: hash,
       };
-      const selectUserData = await this.database
-        .clone()
-        .insert([encryptedData])
-        .returning(UserDataListReturn);
-      return selectUserData;
+      const createUser = await this.userRepository.createUserData(
+        encryptedData
+      );
+      return createUser;
     }
   }
 
-  async useLoginUser(data: ILoginUserRequest) {
+  async useLoginUser(
+    data: ILoginUserRequest
+  ): Promise<
+    | { message: UserStatus; refreshToken: string }
+    | { message: string; refreshToken?: undefined }
+  > {
     const findUser = await this.userRepository.findByEmail(data.email);
-    if (findUser) {
-      const isPasswordMatched = await bcrypt.compare(
-        data.password,
-        findUser.password
-      );
-      console.log(findUser);
-      if (isPasswordMatched) {
-        const refreshToken = generateRefreshToken(findUser?.id);
-        return {
-          message: UserStatus.Password_matched,
-          refreshToken: refreshToken,
-        };
-      } else {
-        return { message: UserStatus.Invalid_password };
-      }
-    } else {
+    if (!findUser) {
       return { message: "User not found" };
     }
+    const isPasswordMatched = await bcrypt.compare(
+      data.password,
+      findUser.password
+    );
+    if (!isPasswordMatched) {
+      return { message: UserStatus.Invalid_password };
+    }
+    const refreshToken = generateRefreshToken(findUser?.id);
+    return {
+      message: UserStatus.Password_matched,
+      refreshToken: refreshToken,
+    };
   }
 
-  async useLogoutUser(refreshToken: string) {
+  async useLogoutUser(refreshToken: string): Promise<string> {
     const decode: Payload = jwt.verify(
       refreshToken,
       process.env.JWT_SECRET || "secret"
     ) as Payload;
     console.log(decode);
     const useLogoutUser = this.userRepository.findById(decode.id);
-    return useLogoutUser;
+    if (!useLogoutUser) {
+      return UserStatus.Not_found;
+    }
+    return UserStatus.Success;
   }
 
-  async useRefreshTokenUser(refreshToken: string) {
+  async useRefreshTokenUser(refreshToken: string): Promise<IFindByID> {
     const decode: Payload = jwt.verify(
       refreshToken,
       process.env.JWT_SECRET || "secret"

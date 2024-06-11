@@ -8,7 +8,7 @@ export interface ITicketEntity {
   status: string;
   created_at: Date;
   updated_at: Date;
-  recipient: Date;
+  recipient: string;
   recipient_name: string;
   solve: string;
 }

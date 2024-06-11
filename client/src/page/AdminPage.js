@@ -91,7 +91,7 @@ function AdminPage() {
             <div className="summary-status-card">
               <div className="info">
                 <h1 className='light'>Pending</h1>
-                {statusInfo && <span className='extralight'>{statusInfo.pending}&nbsp;รายการ</span>}
+                {statusInfo && <span className='extralight'>{statusInfo.pending ? statusInfo.pending: 0}&nbsp;รายการ</span>}
               </div>
               <div className="status-img pending">
                 <img src={Group} alt="pending" />
@@ -100,7 +100,7 @@ function AdminPage() {
             <div className="summary-status-card">
               <div className="info">
                 <h1 className='light'>Accepted</h1>
-                {statusInfo && <span className='extralight'>{statusInfo.accepted}&nbsp;รายการ</span>}
+                {statusInfo && <span className='extralight'>{statusInfo.accepted ? statusInfo.accepted : 0}&nbsp;รายการ</span>}
               </div>
               <div className="status-img accepted">
                 <img src={Meeting_Time} alt="accepted" />
@@ -110,7 +110,7 @@ function AdminPage() {
             <div className="summary-status-card">
               <div className="info">
                 <h1 className='light'>Success</h1>
-                {statusInfo && <span className='extralight'>{statusInfo.success}&nbsp;รายการ</span>}
+                {statusInfo && <span className='extralight'>{statusInfo.success ? statusInfo.success : 0}&nbsp;รายการ</span>}
               </div>
               <div className="status-img success">
                 <img src={Ok} alt="success" />
@@ -119,7 +119,7 @@ function AdminPage() {
             <div className="summary-status-card">
               <div className="info">
                 <h1 className='light'>Rejected</h1>
-                {statusInfo && <span className='extralight'>{statusInfo.reject}&nbsp;รายการ</span>}
+                {statusInfo && <span className='extralight'>{statusInfo.reject ? statusInfo.reject :0}&nbsp;รายการ</span>}
               </div>
               <div className="status-img reject">
                 <img src={Cancel} alt="reject" />

@@ -134,7 +134,7 @@ function LandingPage() {
         email: email,
         detail: detail,
         selectTopic: selectTopic,
-        file: src
+        img: src
       }
       const respone = await axios.post(`${API}/tickets`, info)
       if (respone.data.message == "Ticket created successfully") {

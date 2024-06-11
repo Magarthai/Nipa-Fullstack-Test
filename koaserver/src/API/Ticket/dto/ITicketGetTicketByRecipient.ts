@@ -1,4 +1,4 @@
-export interface ITicketSendEmailNotificationRequest {
+export interface ITicketGetTicketByRecipient {
   email: string;
   status: string;
   name: string;
@@ -6,7 +6,4 @@ export interface ITicketSendEmailNotificationRequest {
   time: string;
   recipient: string;
   solve: string;
-  created_at: Date;
-  selectTopic: string;
-  detail: string;
 }

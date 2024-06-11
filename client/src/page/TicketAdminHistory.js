@@ -29,11 +29,11 @@ function AdminPage() {
       const info = {
         id: userData.id,
       };
-      const respone = await axios.get(`${API}/recipients/${info.id}`);
+      const respone = await axios.get(`${API}/recipients/${info.id}/tickets`);
       if (respone.data) {
         console.log(respone.data, "XD");
         if (respone.data.message == "Ticket fetch successfully") {
-          setData(respone.data.ticket);
+          setData(respone.data.ticket.data);
         }
       }
 
@@ -288,7 +288,7 @@ function AdminPage() {
                         <p>ผู้รับเรื่อง : {ticket.recipient_name}</p>
                         <p>
                           อัพเดตเวลา :&nbsp;
-                          {new Date(ticket.updatedAt).toLocaleString()}
+                          {new Date(ticket.updated_at).toLocaleString()}
                         </p>
                       </>
                     )}

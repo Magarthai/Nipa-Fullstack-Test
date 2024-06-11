@@ -1,10 +1,12 @@
-export interface ITicketCreateRequest {
+export interface IGetTicketByRecipientRespone {
   name: string;
   email: string;
   detail: string;
   selectTopic: string;
   img: string;
-  created_at: Date;
+  createdAt: Date;
   status: string;
   file: string;
+  created_at: Date;
+  updated_at: Date;
 }
