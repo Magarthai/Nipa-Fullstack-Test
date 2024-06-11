@@ -30,5 +30,5 @@
   "ts-node": {
     "esm": true
  },
-  "include": ["./src/*", "./test/*", "knexfile.ts"]
+  "include": ["./src/**/*", "./test/**/*", "knexfile.ts"]
 }

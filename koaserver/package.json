@@ -40,7 +40,7 @@
   "version": "1.0.0",
   "main": "index.ts",
   "scripts": {
-    "test": "mocha test/**/*.spec.ts --config=.mocharc.json  --exit",
+    "test": "mocha",
     "test:unit": "mocha --config=.mocharc.json",
     "start": "node -r ts-node/register -r tsconfig-paths/register src/index.ts",
     "dev": "nodemon --watch \"**/*\" -e ts,tsx --exec node -r tsconfig-paths/register -r ts-node/register --inspect ./src/index.ts"
