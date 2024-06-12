@@ -1,12 +1,12 @@
 export interface ITicketUpdateRespone {
+  id: number;
   name: string;
   email: string;
   detail: string;
   selectTopic: string;
   img: string;
-  createdAt: Date;
   status: string;
-  file: string;
   created_at: Date;
+  solve: string;
   updated_at: Date;
 }

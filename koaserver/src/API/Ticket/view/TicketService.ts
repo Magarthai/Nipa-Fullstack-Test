@@ -57,7 +57,7 @@ export class TicketService {
     return { message: "success", data: data };
   }
 
-  async getTicketById(ticketId: string): Promise<ITicketEntity> {
+  async getTicketById(ticketId: number): Promise<ITicketEntity> {
     const result = await this.ticketRepositorys.findTicketByID(ticketId);
     if (!result) {
       throw new TicketNotFoundError();
@@ -66,7 +66,7 @@ export class TicketService {
   }
 
   async updateStatusTicket(
-    ticketId: string,
+    ticketId: number,
     data: ITicketUpdateRequest
   ): Promise<IMessage> {
     const ticketData = await this.getTicketById(ticketId);
@@ -82,7 +82,7 @@ export class TicketService {
   }
 
   async closeTicketById(
-    id: string,
+    id: number,
     closingTicket: {
       data: ITicketCloseRequest;
     }
@@ -100,9 +100,10 @@ export class TicketService {
       return { message: TicketUpdateStatus.ALREADY_CLOSE };
     }
     console.log("check");
-    const updatedTicket = await db("ticket")
-      .where({ id: data.id })
-      .update(update);
+    const updatedTicket = await this.ticketRepositorys.updateTicketById(
+      data.id,
+      update
+    );
     return {
       message: TicketUpdateStatus.SUCCESS,
       ticket: updatedTicket,

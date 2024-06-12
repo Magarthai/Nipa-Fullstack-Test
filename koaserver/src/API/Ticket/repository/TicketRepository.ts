@@ -25,8 +25,17 @@ export interface ITicketRepository {
     status: string
   ): Promise<ITicketGetTicketByStatusRequest[]>;
   updateStatusTicket(data: ITicketUpdateRequest): Promise<ITicketUpdateRespone>;
-  findTicketByID(id: string): Promise<ITicketEntity>;
+  findTicketByID(id: number): Promise<ITicketEntity>;
+  updateTicketById(
+    id: number,
+    data: IUpdateDataRequest
+  ): Promise<ITicketUpdateRequest>;
   createTicket(ticket: ITicketCreateRequest): Promise<ITicketCreateRespone>;
+}
+
+interface IUpdateDataRequest {
+  solve: string;
+  status: string;
 }
 
 @Service()
@@ -53,11 +62,27 @@ export class TicketRepository implements ITicketRepository {
     }
   }
 
+  async updateTicketById(
+    id: number,
+    data: IUpdateDataRequest
+  ): Promise<ITicketUpdateRequest> {
+    try {
+      const updatedTicket: ITicketUpdateRequest = await this.database
+        .clone()
+        .where({ id: id })
+        .update(data);
+      return updatedTicket;
+    } catch (err) {
+      throw err;
+    }
+  }
+
   async updateStatusTicket(
     data: ITicketUpdateRequest
   ): Promise<ITicketUpdateRespone> {
     try {
-      const ticketData: ITicketUpdateRespone = await db("ticket")
+      const ticketData: ITicketUpdateRespone = await this.database
+        .clone()
         .update(data)
         .where("id", data.id);
       return ticketData;
@@ -66,7 +91,7 @@ export class TicketRepository implements ITicketRepository {
     }
   }
 
-  async findTicketByID(id: string): Promise<ITicketEntity> {
+  async findTicketByID(id: number): Promise<ITicketEntity> {
     try {
       const ticketData = await this.database.clone().where("id", id).first();
       return ticketData;
@@ -101,11 +126,12 @@ export class MockTicketRepository implements ITicketRepository {
       detail: "test",
       selectTopic: "testTopic",
       img: "http://",
-      recipient: "test",
-      recipient_name: "test",
-      status: "pending",
+      recipient: null,
+      recipient_name: null,
+      status: "accepted",
       created_at: new Date("2024-06-07 09:12:28.764133+07"),
       updated_at: new Date("2024-06-07 15:02:57.81708+07"),
+      solve: "",
     },
     {
       id: 2,
@@ -119,8 +145,34 @@ export class MockTicketRepository implements ITicketRepository {
       status: "success",
       created_at: new Date("2024-06-07 09:12:28.764133+07"),
       updated_at: new Date("2024-06-07 15:02:57.81708+07"),
+      solve: "",
     },
   ];
+  updateTicketById(
+    id: number,
+    data: IUpdateDataRequest
+  ): Promise<ITicketUpdateRequest> {
+    const oldData = this.defaultTicketData;
+    oldData.forEach((ticket, index) => {
+      if (ticket.id === id) {
+        oldData[index].status === data.status;
+        oldData[index].solve === data.solve;
+        oldData[index].updated_at === new Date();
+      }
+    });
+    const findData: ITicketList = oldData.find((ticket) => {
+      return (ticket.id = id);
+    });
+
+    const newData = {
+      id: findData.id,
+      status: findData.status,
+      recipient: findData.recipient,
+      recipient_name: findData.recipient_name,
+      solve: findData.solve,
+    };
+    return Promise.resolve(newData);
+  }
 
   listTicketByStatus(
     status: string
@@ -135,10 +187,27 @@ export class MockTicketRepository implements ITicketRepository {
   updateStatusTicket(
     data: ITicketUpdateRequest
   ): Promise<ITicketUpdateRespone> {
-    throw new Error("Method not implemented.");
+    const oldData = this.defaultTicketData;
+    oldData.forEach((ticket, index) => {
+      if (ticket.id === data.id) {
+        oldData[index].status === data.status;
+        oldData[index].solve === data.solve;
+        oldData[index].updated_at === new Date();
+        oldData[index].recipient === data.recipient;
+        oldData[index].recipient_name === data.recipient_name;
+      }
+    });
+    const newData = oldData.find((ticket) => {
+      ticket.id = data.id;
+    });
+    return Promise.resolve(newData);
   }
-  findTicketByID(id: string): Promise<ITicketEntity> {
-    throw new Error("Method not implemented.");
+  findTicketByID(id: number): Promise<ITicketEntity> {
+    const ticket = this.defaultTicketData.find((ticket) => {
+      return (ticket.id = id);
+    });
+    console.log(ticket);
+    return Promise.resolve(ticket);
   }
   createTicket(ticket: ITicketCreateRequest): Promise<ITicketCreateRespone> {
     const ticketData = {

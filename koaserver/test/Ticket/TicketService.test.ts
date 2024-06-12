@@ -10,6 +10,8 @@ import { TicketService } from "@app/API/Ticket/view/TicketService";
 import { equal } from "assert";
 import { ITicketList } from "@app/API/Ticket/dto/ITicketList";
 import { ITicketCreateRequest } from "@app/API/Ticket/dto/ITicketCreateRequest";
+import { TicketStatus } from "@app/API/Ticket/enum/TicketStatus";
+import { TicketUpdateStatus } from "@app/API/Ticket/enum/TicketUpdateStatus";
 export const TicketServiceTest = () => {
   describe("TicketService", function () {
     before(() => {
@@ -43,6 +45,24 @@ export const TicketServiceTest = () => {
         };
         const createdTicket = await ticketService.createTicket(newTicket);
         createdTicket.data.id.should.to.deep.equal(3);
+      });
+    });
+
+    describe("closeTicketById", function () {
+      it("should reutrn updated ticket with new status", async function () {
+        const updateData = {
+          data: {
+            updateStatus: "",
+            id: 1,
+            status: "reject",
+            solve: "solve problem",
+            recipient: "2",
+            recipient_name: "test recipient",
+          },
+        };
+        const updated = await ticketService.closeTicketById(2, updateData);
+        console.log(updated.ticket.recipient);
+        updated.message.should.equal(TicketUpdateStatus.SUCCESS);
       });
     });
   });

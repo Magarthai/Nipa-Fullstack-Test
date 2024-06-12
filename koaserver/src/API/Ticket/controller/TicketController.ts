@@ -69,7 +69,7 @@ export class TicketController {
   @Put("/:id")
   async updateStatus(
     @Body() ticket: ITicketUpdateRequest,
-    @Param("id") id: string
+    @Param("id") id: number
   ): Promise<IMessage> {
     const update: ITicketUpdateRequest = {
       status: ticket.updateStatus,
@@ -95,7 +95,7 @@ export class TicketController {
   @Put("/close/:id")
   async close(
     @Body() ticket: ITicketCloseRequest,
-    @Param("id") id: string
+    @Param("id") id: number
   ): Promise<ICloseTicketById> {
     const update: ITicketCloseRequest = {
       status: ticket.updateStatus,

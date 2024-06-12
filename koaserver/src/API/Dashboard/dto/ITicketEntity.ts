@@ -2,7 +2,7 @@ export interface ITicketEntity {
   id: number;
   name: string;
   email: string;
-  detial: string;
+  detail: string;
   selectTopic: string;
   img: string;
   status: string;

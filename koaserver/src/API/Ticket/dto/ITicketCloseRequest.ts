@@ -1,6 +1,6 @@
 export interface ITicketCloseRequest {
   updateStatus: string;
-  id: string;
+  id: number;
   status: string;
   solve: string;
 }

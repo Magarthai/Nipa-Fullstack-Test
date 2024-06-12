@@ -6,8 +6,9 @@ export interface ITicketList {
   selectTopic: string;
   img: string;
   created_at: Date;
-  recipient: string;
-  recipient_name: string;
+  recipient: string | null;
+  recipient_name: string | null;
   updated_at: Date;
+  solve: string;
   status: string;
 }
