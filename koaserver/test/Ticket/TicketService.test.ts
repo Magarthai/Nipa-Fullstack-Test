@@ -1,44 +1,49 @@
-import { assert, expect } from "chai";
-import sinon from "sinon";
+import "reflect-metadata";
+import chai, { assert, expect } from "chai";
 
 import Container, { Inject } from "typedi";
-import { MockTicketRepository } from "../../src/API/Ticket/repository/TicketRepository";
-
+import {
+  TicketRepository,
+  MockTicketRepository,
+} from "../../src/API/Ticket/repository/TicketRepository";
+import { TicketService } from "@app/API/Ticket/view/TicketService";
+import { equal } from "assert";
+import { ITicketList } from "@app/API/Ticket/dto/ITicketList";
+import { ITicketCreateRequest } from "@app/API/Ticket/dto/ITicketCreateRequest";
 export const TicketServiceTest = () => {
-  describe("UserService", function () {
-    describe("listAllTicket", function async() {
-      it("should return ticket list 2 lenght");
-      const ticketRepository = Container.get(MockTicketRepository);
-      const data = ticketRepository.listAllTicket();
-      const expectData = [
-        {
-          id: 1,
-          name: "mock",
-          email: "test1234",
-          detail: "test",
-          selectTopic: "testTopic",
-          img: "http://",
-          recipient: "test",
-          recipient_name: "test",
+  describe("TicketService", function () {
+    before(() => {
+      chai.should();
+    });
+    Container.set(TicketRepository, new MockTicketRepository());
+    const ticketService = Container.get(TicketService);
+    describe("listAllTicket", function () {
+      it("should return ticket list of length 2", async function () {
+        const data = await ticketService.useListAllTicket();
+        data.length.should.equal(2);
+      });
+    });
+
+    describe("getTicketByStatus", function () {
+      it("should return ticket list that status equal success", async function () {
+        const data = await ticketService.listTicketByStatus("success");
+        data.data[0].status.should.equal("success");
+      });
+    });
+
+    describe("createTicket", function () {
+      it("should return ticket list with new data", async function () {
+        const newTicket: ITicketCreateRequest = {
+          name: "newTicket",
+          email: "magargame@gmail.com",
+          detail: "newproblem",
+          img: "https://www.",
           status: "pending",
-          created_at: new Date("2024-06-07 09:12:28.764133+07"),
-          updated_at: new Date("2024-06-07 15:02:57.81708+07"),
-        },
-        {
-          id: 2,
-          name: "mock2",
-          email: "test21234",
-          detail: "test2",
-          selectTopic: "testTopic2",
-          img: "http://2",
-          recipient: "test2",
-          recipient_name: "test2",
-          status: "success",
-          created_at: new Date("2024-06-07 09:12:28.764133+07"),
-          updated_at: new Date("2024-06-07 15:02:57.81708+07"),
-        },
-      ];
-      expect(data);
+          selectTopic: "topic",
+        };
+        const createdTicket = await ticketService.createTicket(newTicket);
+        createdTicket.data.id.should.to.deep.equal(3);
+      });
     });
   });
 };

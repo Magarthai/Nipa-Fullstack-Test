@@ -1,9 +1,13 @@
 export interface ITicketGetTicketByStatusRequest {
-  email: string;
-  status: string;
+  id: number;
   name: string;
-  topic: string;
-  time: string;
+  email: string;
+  detail: string;
+  selectTopic: string;
+  img: string;
   recipient: string;
-  solve: string;
+  recipient_name: string;
+  status: string;
+  created_at: Date;
+  updated_at: Date;
 }

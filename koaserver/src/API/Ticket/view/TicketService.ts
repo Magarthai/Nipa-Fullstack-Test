@@ -6,7 +6,10 @@ import {
   ITicketUpdateRequest,
   GenericResponse,
 } from "../dto/ITicketUpdateRequest";
-import { TicketRepository } from "../repository/TicketRepository";
+import {
+  MockTicketRepository,
+  TicketRepository,
+} from "../repository/TicketRepository";
 import { ITicketGetTicketByStatusRequest } from "../dto/ITicketGetTicketByStatusRequest";
 import { TicketStatus } from "../enum/TicketStatus";
 const nodemailer = require("nodemailer");
@@ -50,7 +53,7 @@ export class TicketService {
   async listTicketByStatus(
     status: string
   ): Promise<GenericResponse<ITicketGetTicketByStatusRequest[]>> {
-    const data = await this.ticketRepositorys.getTicketByStatus(status);
+    const data = await this.ticketRepositorys.listTicketByStatus(status);
     return { message: "success", data: data };
   }
 

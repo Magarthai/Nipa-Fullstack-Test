@@ -18,9 +18,12 @@ import { IGetTicketByRecipientRespone } from "../dto/IGetTicketByRecipientRespon
 import { ITicketCreateRespone } from "../dto/ITicketCreateRespone";
 import { ITicketEntity } from "@app/API/Dashboard/dto/ITicketEntity";
 import { ICountGroupByStatus } from "@app/API/Dashboard/repository/DashboardRepository";
+import { create } from "domain";
 export interface ITicketRepository {
   listAllTicket(): Promise<ITicketList[]>;
-  getTicketByStatus(status: string): Promise<ITicketGetTicketByStatusRequest[]>;
+  listTicketByStatus(
+    status: string
+  ): Promise<ITicketGetTicketByStatusRequest[]>;
   updateStatusTicket(data: ITicketUpdateRequest): Promise<ITicketUpdateRespone>;
   findTicketByID(id: string): Promise<ITicketEntity>;
   createTicket(ticket: ITicketCreateRequest): Promise<ITicketCreateRespone>;
@@ -36,7 +39,7 @@ export class TicketRepository implements ITicketRepository {
     const data = await this.database.clone();
     return data;
   }
-  async getTicketByStatus(
+  async listTicketByStatus(
     status: string
   ): Promise<ITicketGetTicketByStatusRequest[]> {
     try {
@@ -88,8 +91,9 @@ export class TicketRepository implements ITicketRepository {
   }
 }
 
+@Service()
 export class MockTicketRepository implements ITicketRepository {
-  private defaultUserData: ITicketList[] = [
+  private defaultTicketData: ITicketList[] = [
     {
       id: 1,
       name: "mock",
@@ -118,15 +122,16 @@ export class MockTicketRepository implements ITicketRepository {
     },
   ];
 
-  listAllTicket(): Promise<ITicketList[]> {
-    const Ticket: ITicketList[] = this.defaultUserData;
-    return Promise.resolve(Ticket);
-  }
-  getTicketByStatus(
+  listTicketByStatus(
     status: string
   ): Promise<ITicketGetTicketByStatusRequest[]> {
-    throw new Error("Method not implemented.");
+    const Tickets = this.defaultTicketData.filter((ticket) => {
+      return ticket.status == "success";
+    });
+
+    return Promise.resolve(Tickets);
   }
+
   updateStatusTicket(
     data: ITicketUpdateRequest
   ): Promise<ITicketUpdateRespone> {
@@ -136,6 +141,24 @@ export class MockTicketRepository implements ITicketRepository {
     throw new Error("Method not implemented.");
   }
   createTicket(ticket: ITicketCreateRequest): Promise<ITicketCreateRespone> {
-    throw new Error("Method not implemented.");
+    const ticketData = {
+      ...ticket,
+      id: 3,
+      created_at: new Date(),
+      updated_at: new Date(),
+      recipient: "",
+      recipient_name: "",
+    };
+
+    const newListData = [...this.defaultTicketData, ticketData];
+    const responeData: any = newListData.filter((ticket) => {
+      return ticket.id == 3;
+    });
+    return Promise.resolve(responeData[0]);
+  }
+
+  listAllTicket(): Promise<ITicketList[]> {
+    const Ticket = this.defaultTicketData;
+    return Promise.resolve(Ticket);
   }
 }

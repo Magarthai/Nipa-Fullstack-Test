@@ -4,7 +4,5 @@ export interface ITicketCreateRequest {
   detail: string;
   selectTopic: string;
   img: string;
-  created_at: Date;
   status: string;
-  file: string;
 }

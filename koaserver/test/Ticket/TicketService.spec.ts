@@ -1,3 +1,3 @@
-import { TicketServiceTest } from "./TicketService.test";
+import { TicketServiceTest } from "./ticketService.test";
 
 describe("TicketService", TicketServiceTest);

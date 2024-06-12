@@ -19,6 +19,7 @@
     "noUnusedParameters": false,
     "noUnusedLocals": false,
     "allowUnreachableCode": false,
+    "forceConsistentCasingInFileNames": true,
     "esModuleInterop": true,
     "types": ["@types/node","@types/mocha"],
     "typeRoots": ["./typings", "./node_modules", "./node_modules/@types"], 

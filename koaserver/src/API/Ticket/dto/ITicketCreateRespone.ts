@@ -1,4 +1,5 @@
 export interface ITicketCreateRespone {
+  id: number;
   name: string;
   email: string;
   detail: string;
