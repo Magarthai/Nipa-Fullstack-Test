@@ -11,7 +11,7 @@ export class RecipientService {
 
   async getTicketByRecipient(
     id: string
-  ): Promise<GenericRecipientRespone<IGetTicketByRecipientRespone>> {
+  ): Promise<GenericRecipientRespone<IGetTicketByRecipientRespone[]>> {
     const data = await this.recipientRepositorys.findTicketByRecipient(id);
     return { message: "success", data: data };
   }

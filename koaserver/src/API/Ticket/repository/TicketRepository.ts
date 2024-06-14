@@ -17,8 +17,10 @@ import { ITicketUpdateRespone } from "../dto/ITicketUpdateRespone";
 import { IGetTicketByRecipientRespone } from "../dto/IGetTicketByRecipientRespone";
 import { ITicketCreateRespone } from "../dto/ITicketCreateRespone";
 import { ITicketEntity } from "@app/API/Dashboard/dto/ITicketEntity";
-import { ICountGroupByStatus } from "@app/API/Dashboard/repository/DashboardRepository";
+
 import { create } from "domain";
+import MockDatabase from "@app/db/MockDatabase";
+
 export interface ITicketRepository {
   listAllTicket(): Promise<ITicketList[]>;
   listTicketByStatus(
@@ -118,7 +120,7 @@ export class TicketRepository implements ITicketRepository {
 
 @Service()
 export class MockTicketRepository implements ITicketRepository {
-  private defaultTicketData: ITicketList[] = [
+  public defaultTicketData: ITicketList[] = [
     {
       id: 1,
       name: "mock",
@@ -148,11 +150,13 @@ export class MockTicketRepository implements ITicketRepository {
       solve: "",
     },
   ];
+
+  public mockTicketDatabase = MockDatabase;
   updateTicketById(
     id: number,
     data: IUpdateDataRequest
   ): Promise<ITicketUpdateRequest> {
-    const oldData = this.defaultTicketData;
+    const oldData = this.mockTicketDatabase.ticket;
     oldData.forEach((ticket, index) => {
       if (ticket.id === id) {
         oldData[index].status === data.status;
@@ -177,8 +181,8 @@ export class MockTicketRepository implements ITicketRepository {
   listTicketByStatus(
     status: string
   ): Promise<ITicketGetTicketByStatusRequest[]> {
-    const Tickets = this.defaultTicketData.filter((ticket) => {
-      return ticket.status == "success";
+    const Tickets = this.mockTicketDatabase.ticket.filter((ticket) => {
+      return ticket.status == status;
     });
 
     return Promise.resolve(Tickets);
@@ -187,7 +191,7 @@ export class MockTicketRepository implements ITicketRepository {
   updateStatusTicket(
     data: ITicketUpdateRequest
   ): Promise<ITicketUpdateRespone> {
-    const oldData = this.defaultTicketData;
+    const oldData = this.mockTicketDatabase.ticket;
     oldData.forEach((ticket, index) => {
       if (ticket.id === data.id) {
         oldData[index].status === data.status;
@@ -203,31 +207,33 @@ export class MockTicketRepository implements ITicketRepository {
     return Promise.resolve(newData);
   }
   findTicketByID(id: number): Promise<ITicketEntity> {
-    const ticket = this.defaultTicketData.find((ticket) => {
+    const ticket = this.mockTicketDatabase.ticket.find((ticket) => {
       return (ticket.id = id);
     });
-    console.log(ticket);
     return Promise.resolve(ticket);
   }
   createTicket(ticket: ITicketCreateRequest): Promise<ITicketCreateRespone> {
+    const lastIndexOfData =
+      this.mockTicketDatabase.ticket[this.mockTicketDatabase.ticket.length - 1]
+        .id;
     const ticketData = {
       ...ticket,
-      id: 3,
+      id: lastIndexOfData + 1,
       created_at: new Date(),
       updated_at: new Date(),
       recipient: "",
       recipient_name: "",
     };
 
-    const newListData = [...this.defaultTicketData, ticketData];
+    const newListData = [...this.mockTicketDatabase.ticket, ticketData];
     const responeData: any = newListData.filter((ticket) => {
-      return ticket.id == 3;
+      return ticket.id == lastIndexOfData + 1;
     });
     return Promise.resolve(responeData[0]);
   }
 
   listAllTicket(): Promise<ITicketList[]> {
-    const Ticket = this.defaultTicketData;
+    const Ticket = this.mockTicketDatabase.ticket;
     return Promise.resolve(Ticket);
   }
 }

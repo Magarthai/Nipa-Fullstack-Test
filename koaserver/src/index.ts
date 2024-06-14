@@ -2,7 +2,7 @@ import "reflect-metadata";
 import { createKoaServer, useContainer } from "routing-controllers";
 
 // import { Container } from "typedi";
-import dotenv from "dotenv";
+
 import { ErrorMiddleware } from "./middleware/ErrorMiddleware";
 import { UserController } from "./API/User/controller/UserController";
 import bodyParser from "koa-bodyparser";
@@ -11,7 +11,7 @@ import { DashboardControllers } from "./API/Dashboard/controller/DashboardContro
 import { TicketController } from "./API/Ticket/controller/TicketController";
 import { RecipeintController } from "./API/Recipient/controller/RecipeintController";
 import Container from "typedi";
-
+import dotenv from "dotenv";
 dotenv.config();
 const port = process.env.PORT || 3000;
 useContainer(Container);
@@ -19,7 +19,7 @@ useContainer(Container);
 const koaApp = createKoaServer({
   cors: {
     credentials: true,
-    origin: ["http://localhost:3000"],
+    origin: ["http://localhost:5173"],
   },
   defaultErrorHandler: false,
   controllers: [

@@ -15,7 +15,9 @@ export class RecipeintController {
   @Get("/:recipient_id/tickets")
   async getTicketByRecipient(
     @Param("recipient_id") recipient_id: string
-  ): Promise<GenericGetTicketByRecipientRespone<IGetTicketByRecipientRespone>> {
+  ): Promise<
+    GenericGetTicketByRecipientRespone<IGetTicketByRecipientRespone[]>
+  > {
     const fetchTicketById = await this.recipientServices.getTicketByRecipient(
       recipient_id
     );

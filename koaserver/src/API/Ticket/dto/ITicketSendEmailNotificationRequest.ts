@@ -9,4 +9,5 @@ export interface ITicketSendEmailNotificationRequest {
   created_at: Date;
   selectTopic: string;
   detail: string;
+  status_text?: string;
 }

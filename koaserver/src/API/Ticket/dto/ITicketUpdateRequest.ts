@@ -4,6 +4,7 @@ export interface ITicketUpdateRequest {
   recipient: string;
   recipient_name: string;
   solve: string;
+  updateStatus?: string;
 }
 
 export interface GenericResponse<T> {

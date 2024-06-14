@@ -25,6 +25,7 @@ import { UserStatus } from "../enum/UserStatus";
 import { CreateUserError } from "@app/error/CreateUserError";
 import { IListAllUserDataRespone } from "../dto/IListAllUserDataRespone";
 import { IFindByID } from "../dto/IFindByID";
+
 @Service()
 @JsonController()
 export class UserController {
@@ -33,7 +34,7 @@ export class UserController {
 
   @Get("/users")
   @OnUndefined(UserNotFoundError)
-  async listAllUser(): Promise<IListAllUserDataRespone> {
+  async listAllUser(): Promise<IListAllUserDataRespone[]> {
     const data = await this.userService.useListAllUserData();
     return data;
   }
@@ -50,35 +51,75 @@ export class UserController {
     }
   }
 
+  // @Post("/login")
+  // async login(
+  //   @Ctx() ctx: Context,
+  //   @Body() user: ILoginUserRequest
+  // ): Promise<string> {
+  //   const login = await this.userService.useLoginUser(user);
+  //   console.log("controller", login);
+  //   if (login.message === UserStatus.Password_matched) {
+  //     try {
+  //       ctx.cookies.set("refreshToken", login.refreshToken, {
+  //         httpOnly: true,
+  //         sameSite: "none",
+  //       });
+  //     } catch (err) {
+  //       console.log(err);
+  //     }
+  //     return "User logged in successfully";
+  //   } else if (login.message === UserStatus.Invalid_password) {
+  //     return "Invalid password";
+  //   } else {
+  //     return "User not found";
+  //   }
+  // }
+
   @Post("/login")
   async login(
     @Ctx() ctx: Context,
     @Body() user: ILoginUserRequest
-  ): Promise<string> {
+  ): Promise<{ message: string; token?: string }> {
     const login = await this.userService.useLoginUser(user);
     console.log("controller", login);
     if (login.message === UserStatus.Password_matched) {
       try {
-        ctx.cookies.set("refreshToken", login.refreshToken);
+        ctx.cookies.set("refreshToken", login.refreshToken, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === "production",
+          sameSite: "none",
+        });
       } catch (err) {
         console.log(err);
       }
-      return "User logged in successfully";
+      return {
+        message: "User logged in successfully",
+        token: login.refreshToken,
+      };
     } else if (login.message === UserStatus.Invalid_password) {
-      return "Invalid password";
+      return { message: "Invalid password" };
     } else {
-      throw new UserNotFoundError(404, "Not found user!", "Not found");
+      return { message: "User not found" };
     }
   }
   @Get("/refresh")
   async refreshToken(
     @CookieParam("refreshToken") refreshToken: string
   ): Promise<{ message: string; user: IFindByID }> {
-    if (!refreshToken) {
-      throw new TokenNotFoundError(404, "Refresh Token Not Found", "Not found");
-    } else {
-      const refresh = await this.userService.useRefreshTokenUser(refreshToken);
-      return { message: "success", user: refresh };
+    console.log(refreshToken);
+    try {
+      if (!refreshToken) {
+        console.log(refreshToken);
+        return { message: "Not Found User", user: undefined };
+      } else {
+        const refresh: IFindByID = (await this.userService.useRefreshTokenUser(
+          refreshToken
+        )) as IFindByID;
+        return { message: "success", user: refresh };
+      }
+    } catch (err) {
+      console.log(err);
+      return err;
     }
   }
 
@@ -88,7 +129,7 @@ export class UserController {
     @Ctx() ctx: Context
   ): Promise<string | undefined> {
     if (!refreshToken) {
-      throw new TokenNotFoundError(404, "Not found token!", "Not found");
+      throw new TokenNotFoundError();
     }
     const logout = await this.userService.useLogoutUser(refreshToken);
     if (logout == UserStatus.Not_found) {

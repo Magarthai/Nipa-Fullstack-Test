@@ -3,7 +3,7 @@ import { UserRepository } from "../repository/UserRepository";
 import { ICreateUserRequest } from "../dto/ICreateUserRequest";
 import { ILoginUserRequest } from "../dto/ILoginUserRequest";
 import bcrypt = require("bcrypt");
-import { UserDataListReturn } from "../repository/UserDataListReturn";
+import { UserDataListReturn } from "../dto/UserDataListReturn";
 import db from "@app/db/db";
 import { Knex } from "knex";
 import { generateRefreshToken } from "@app/utils/generateRefreshToken";
@@ -14,7 +14,10 @@ import { IListAllUserDataRespone } from "../dto/IListAllUserDataRespone";
 import { ICreateUserRespone } from "../dto/ICreateUserRespone";
 import { IFindByID } from "../dto/IFindByID";
 import { IEncryptedData } from "../dto/IEncryptedData";
-
+import { TokenNotFoundError } from "@app/error/TokenNotFound";
+import dotenv from "dotenv";
+import { TokenExpired } from "@app/error/TokenExpired";
+dotenv.config();
 @Service()
 export class UserService {
   database: Knex.QueryBuilder;
@@ -25,7 +28,7 @@ export class UserService {
   @Inject(() => UserRepository)
   private userRepository: UserRepository;
 
-  async useListAllUserData(): Promise<IListAllUserDataRespone> {
+  async useListAllUserData(): Promise<IListAllUserDataRespone[]> {
     const userData = this.userRepository.listAllUserData();
     return userData;
   }
@@ -55,10 +58,7 @@ export class UserService {
 
   async useLoginUser(
     data: ILoginUserRequest
-  ): Promise<
-    | { message: UserStatus; refreshToken: string }
-    | { message: string; refreshToken?: undefined }
-  > {
+  ): Promise<{ message: string; refreshToken?: string }> {
     const findUser = await this.userRepository.findByEmail(data.email);
     if (!findUser) {
       return { message: "User not found" };
@@ -82,20 +82,29 @@ export class UserService {
       refreshToken,
       process.env.JWT_SECRET || "secret"
     ) as Payload;
-    console.log(decode);
-    const useLogoutUser = this.userRepository.findById(decode.id);
+
+    const useLogoutUser = this.userRepository.findById(parseInt(decode.id));
     if (!useLogoutUser) {
       return UserStatus.Not_found;
     }
     return UserStatus.Success;
   }
 
-  async useRefreshTokenUser(refreshToken: string): Promise<IFindByID> {
-    const decode: Payload = jwt.verify(
-      refreshToken,
-      process.env.JWT_SECRET || "secret"
-    ) as Payload;
-    const useRefreshToken = this.userRepository.findById(decode.id);
-    return useRefreshToken;
+  async useRefreshTokenUser(refreshToken: string): Promise<IFindByID | string> {
+    if (!refreshToken) {
+      throw new TokenNotFoundError();
+    }
+    try {
+      const decode: Payload = jwt.verify(
+        refreshToken,
+        process.env.JWT_SECRET || "secret"
+      ) as Payload;
+      const useRefreshToken = await this.userRepository.findById(
+        parseInt(decode.id)
+      );
+      return useRefreshToken;
+    } catch (err) {
+      throw new TokenExpired();
+    }
   }
 }

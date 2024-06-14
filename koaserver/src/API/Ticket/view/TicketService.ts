@@ -6,21 +6,10 @@ import {
   ITicketUpdateRequest,
   GenericResponse,
 } from "../dto/ITicketUpdateRequest";
-import {
-  MockTicketRepository,
-  TicketRepository,
-} from "../repository/TicketRepository";
+import { TicketRepository } from "../repository/TicketRepository";
 import { ITicketGetTicketByStatusRequest } from "../dto/ITicketGetTicketByStatusRequest";
 import { TicketStatus } from "../enum/TicketStatus";
-const nodemailer = require("nodemailer");
-import db from "../../../db/db";
-import { ListTicketDataReturn } from "../dto/ListTicketDataReturn";
-
 import { ITicketList } from "../dto/ITicketList";
-import { ITicketGetTicketByRecipient } from "../dto/ITicketGetTicketByRecipient";
-import { IGetTicketByRecipientRespone } from "../dto/IGetTicketByRecipientRespone";
-import { ITicketUpdateRespone } from "../dto/ITicketUpdateRespone";
-import { IFindTicketByIDRespone } from "../dto/IFindTicketByIDRespone";
 import { ITicketEntity } from "@app/API/Dashboard/dto/ITicketEntity";
 import { TicketNotFoundError } from "@app/error/TicketNotFound";
 import { SendEmailDefination } from "../adapter/SendEmailAdapter";
@@ -29,6 +18,7 @@ import { IMessage } from "../dto/IMessage";
 import { ITicketCreateServiceRespone } from "../dto/ITicketCreateServiceRespone";
 import { TicketUpdateStatus } from "../enum/TicketUpdateStatus";
 import { ISendMailRespone } from "../dto/ISendMailRespone";
+import { TicketStatusError } from "@app/error/TicketStatusError";
 @Service()
 export class TicketService {
   @Inject()
@@ -46,14 +36,25 @@ export class TicketService {
   ): Promise<ITicketCreateServiceRespone> {
     const data = await this.ticketRepositorys.createTicket(ticket);
     const sendEmail =
-      await this.sendEmailDefination.sendCreateTicketNotification(data);
+      await this.sendEmailDefination.sendCreateTicketNotification(ticket);
     return { message: "success", data: data };
   }
 
   async listTicketByStatus(
     status: string
   ): Promise<GenericResponse<ITicketGetTicketByStatusRequest[]>> {
+    const listStatus = [
+      TicketStatus.ACCEPTED,
+      TicketStatus.PENDING,
+      TicketStatus.REJECT,
+      TicketStatus.SUCCESS,
+    ];
+    const check = listStatus.find((list) => list == status);
+    if (!check) {
+      throw new TicketStatusError();
+    }
     const data = await this.ticketRepositorys.listTicketByStatus(status);
+
     return { message: "success", data: data };
   }
 
@@ -73,9 +74,9 @@ export class TicketService {
     if (ticketData.recipient != null || ticketData.recipient_name != null) {
       return { message: "Already accepted" };
     }
-    console.log(data);
+
     await this.ticketRepositorys.updateStatusTicket(data);
-    console.log("test");
+
     return {
       message: "Success",
     };
@@ -99,7 +100,6 @@ export class TicketService {
     if (TicketData.status != TicketStatus.ACCEPTED) {
       return { message: TicketUpdateStatus.ALREADY_CLOSE };
     }
-    console.log("check");
     const updatedTicket = await this.ticketRepositorys.updateTicketById(
       data.id,
       update

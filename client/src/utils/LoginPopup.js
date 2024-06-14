@@ -4,12 +4,7 @@ import { useState } from 'react';
 import axios from 'axios'
 import { useNavigate } from "react-router-dom"
 import Swal from 'sweetalert2';
-import profile from '../img/Profile_1.png'
 import nipalogo from '../img/R_1.png'
-import nipalogo2 from '../img/Logo-EPc-2_-_Copy.png'
-import Dashboard from '../img/Control_Panel.png'
-import Ticket from '../img/Charity_Box.png'
-import History from '../img/Admin_Settings_Male.png'
 const LoginPopup = ({ open, onClose }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -29,6 +24,7 @@ const LoginPopup = ({ open, onClose }) => {
       withCredentials: true 
     });
 
+    
     if (response.data == "User logged in successfully") {
       Swal.fire({
         icon: "success",
@@ -43,11 +39,19 @@ const LoginPopup = ({ open, onClose }) => {
         } else {
         }
       });
-    } else {
+    } else if(response.data == "Invalid password"){
       Swal.fire({
         icon: "error",
         title: "ล็อคอินไม่สําเร็จ",
         text: "กรุณาลองใหม่อีกครั้ง!",
+        confirmButtonText: "ตกลง",
+        confirmButtonColor: '#263A50',
+      })
+    } else {
+      Swal.fire({
+        icon: "error",
+        title: "ล็อคอินไม่สําเร็จ",
+        text: "ไม่พบบัญชีนี้ในระบบ!",
         confirmButtonText: "ตกลง",
         confirmButtonColor: '#263A50',
       })
@@ -61,6 +65,7 @@ const LoginPopup = ({ open, onClose }) => {
 
   if (!open) return null
   return (
+    
     <div onClick={() => onClose()} className='loginpopup-container'>
       <div onClick={(e) => {e.stopPropagation()}} className="login-container">
         <div className="login-header ">

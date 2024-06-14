@@ -11,4 +11,5 @@ export interface ITicketEntity {
   recipient: string;
   recipient_name: string;
   solve: string;
+  count?: string;
 }

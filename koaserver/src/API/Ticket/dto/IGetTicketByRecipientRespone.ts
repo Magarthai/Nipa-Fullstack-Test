@@ -4,9 +4,7 @@ export interface IGetTicketByRecipientRespone {
   detail: string;
   selectTopic: string;
   img: string;
-  createdAt: Date;
   status: string;
-  file: string;
   created_at: Date;
   updated_at: Date;
 }

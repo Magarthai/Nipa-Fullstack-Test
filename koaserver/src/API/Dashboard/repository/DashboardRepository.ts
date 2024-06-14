@@ -6,10 +6,18 @@ import { TicketStatus } from "@app/API/Ticket/enum/TicketStatus";
 import knex, { Knex } from "knex";
 import { ITicketMapEnitity } from "../dto/ITicketMapEnitity";
 import { ITicketDataListOfMonthEnitityRespone } from "../dto/ITicketDataListOfMonthEnitityRespone";
+import { ICountGroupByStatus } from "../dto/ICountGroupByStatus";
+import MockDashboardData from "@app/db/MockDashboardData";
 export function formatDate(date: moment.Moment) {
   const thaiTime = moment(date).tz("Asia/Bangkok");
   const formattedDate = thaiTime.format("วันที่ DD");
   return formattedDate;
+}
+
+export interface IMockDashboardRepository {
+  listMonthTicket(): Promise<ITicketDataListOfMonthEnitityRespone[]>;
+  listTicketGroupByStatus(): Promise<ICountGroupByStatus[]>;
+  listTicketByRecipientID(id: number): Promise<ICountGroupByStatus[]>;
 }
 
 @Service()
@@ -82,10 +90,13 @@ export class DashboardRepository {
     }
   }
 
-  async listTicketByRecipientID(id: number): Promise<ITicketEntity[]> {
+  async listTicketByRecipientID(id: number): Promise<ICountGroupByStatus[]> {
     try {
-      const Tickets: ITicketEntity[] = await this.database
+      const Tickets: ICountGroupByStatus[] = await this.database
         .clone()
+        .count("*")
+        .select("status")
+        .groupBy("status")
         .where({ recipient: id });
 
       return Tickets;
@@ -95,7 +106,18 @@ export class DashboardRepository {
   }
 }
 
-export interface ICountGroupByStatus {
-  count: string | "0";
-  status: string;
+@Service()
+export class MockDashboardRepository implements IMockDashboardRepository {
+  listMonthTicket(): Promise<ITicketDataListOfMonthEnitityRespone[]> {
+    const ListOfMonthDashboard = MockDashboardData.ListOfMonthDashboard;
+    return Promise.resolve(ListOfMonthDashboard);
+  }
+  listTicketGroupByStatus(): Promise<ICountGroupByStatus[]> {
+    const ListCountGroup = MockDashboardData.ListCountGroup;
+    return Promise.resolve(ListCountGroup);
+  }
+  listTicketByRecipientID(id: number): Promise<ICountGroupByStatus[]> {
+    const ListCountGroup = MockDashboardData.ListCountGroup;
+    return Promise.resolve(ListCountGroup);
+  }
 }

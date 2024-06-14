@@ -58,11 +58,11 @@ function AdminPage() {
         email: data.email,
         topic: data.selectTopic,
         time: new Date(data.created_at).toLocaleString(),
-        status: statuText,
-        recipientId: userData.id,
+        status_text: statuText,
+        recipient: userData.id,
         updateStatus: status,
         solve: solve,
-        recipient: userData.fname + " " + userData.lname,
+        recipient_name: userData.fname + " " + userData.lname,
       };
       console.log(info);
       const updateStatus = await axios.put(

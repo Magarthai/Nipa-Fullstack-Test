@@ -1,7 +1,12 @@
 import { IGetTicketByRecipientRespone } from "@app/API/Ticket/dto/IGetTicketByRecipientRespone";
 import db from "@app/db/db";
+import MockDatabase from "@app/db/MockDatabase";
 import { Knex } from "knex";
 import { Service } from "typedi";
+
+export interface IRecipientRepository {
+  findTicketByRecipient(id: string): Promise<IGetTicketByRecipientRespone[]>;
+}
 
 @Service()
 export class RecipientRepository {
@@ -12,7 +17,7 @@ export class RecipientRepository {
 
   async findTicketByRecipient(
     id: string
-  ): Promise<IGetTicketByRecipientRespone> {
+  ): Promise<IGetTicketByRecipientRespone[]> {
     try {
       const data = await this.database
         .clone()
@@ -22,5 +27,17 @@ export class RecipientRepository {
     } catch (err) {
       throw err;
     }
+  }
+}
+
+@Service()
+export class MockRecipientRepository implements IRecipientRepository {
+  public mockTicketDatabase = MockDatabase;
+  findTicketByRecipient(id: string): Promise<IGetTicketByRecipientRespone[]> {
+    const filteredData = this.mockTicketDatabase.ticket.filter((ticket) => {
+      return (ticket.recipient = id);
+    });
+
+    return Promise.resolve(filteredData);
   }
 }

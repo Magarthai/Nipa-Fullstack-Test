@@ -73,8 +73,8 @@ export class TicketController {
   ): Promise<IMessage> {
     const update: ITicketUpdateRequest = {
       status: ticket.updateStatus,
-      recipient: ticket.recipientId,
-      recipient_name: ticket.recipient,
+      recipient: ticket.recipient,
+      recipient_name: ticket.recipient_name,
       id: id,
     } as ITicketUpdateRequest;
     const updateStatus = await this.ticketService.updateStatusTicket(
