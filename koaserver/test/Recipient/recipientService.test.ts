@@ -41,6 +41,52 @@ export const RecipientServiceTest = () => {
         console.log(getTicketByRecipient);
         getTicketByRecipient.data.length.should.equal(1);
       });
+
+      it("should return data length equal 0", async function () {
+        MockDatabase.ticket.push({
+          id: 1,
+          name: "mock",
+          email: "test1234",
+          detail: "test",
+          selectTopic: "testTopic",
+          img: "http://",
+          recipient: "1",
+          recipient_name: "recipient",
+          status: "accepted",
+          created_at: new Date("2024-06-07 09:12:28.764133+07"),
+          updated_at: new Date("2024-06-07 15:02:57.81708+07"),
+          solve: "",
+        });
+
+        const getTicketByRecipient =
+          await recipientServices.getTicketByRecipient("");
+
+        console.log(getTicketByRecipient);
+        getTicketByRecipient.data.length.should.equal(0);
+      });
+
+      it("should return data length equal 0 when get undefined value", async function () {
+        MockDatabase.ticket.push({
+          id: 1,
+          name: "mock",
+          email: "test1234",
+          detail: "test",
+          selectTopic: "testTopic",
+          img: "http://",
+          recipient: "1",
+          recipient_name: "recipient",
+          status: "accepted",
+          created_at: new Date("2024-06-07 09:12:28.764133+07"),
+          updated_at: new Date("2024-06-07 15:02:57.81708+07"),
+          solve: "",
+        });
+
+        const getTicketByRecipient =
+          await recipientServices.getTicketByRecipient(undefined);
+
+        console.log(getTicketByRecipient);
+        getTicketByRecipient.data.length.should.equal(0);
+      });
     });
   });
 };

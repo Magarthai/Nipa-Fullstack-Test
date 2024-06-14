@@ -47,30 +47,6 @@ export class UserController {
     }
   }
 
-  // @Post("/login")
-  // async login(
-  //   @Ctx() ctx: Context,
-  //   @Body() user: ILoginUserRequest
-  // ): Promise<string> {
-  //   const login = await this.userService.useLoginUser(user);
-  //   console.log("controller", login);
-  //   if (login.message === UserStatus.Password_matched) {
-  //     try {
-  //       ctx.cookies.set("refreshToken", login.refreshToken, {
-  //         httpOnly: true,
-  //         sameSite: "none",
-  //       });
-  //     } catch (err) {
-  //       console.log(err);
-  //     }
-  //     return "User logged in successfully";
-  //   } else if (login.message === UserStatus.Invalid_password) {
-  //     return "Invalid password";
-  //   } else {
-  //     return "User not found";
-  //   }
-  // }
-
   @Post("/login")
   async login(
     @Ctx() ctx: Context,
@@ -82,7 +58,6 @@ export class UserController {
       try {
         ctx.cookies.set("refreshToken", login.refreshToken, {
           httpOnly: true,
-          secure: process.env.NODE_ENV === "production",
           sameSite: "none",
         });
       } catch (err) {
@@ -98,6 +73,7 @@ export class UserController {
       return { message: "User not found" };
     }
   }
+
   @Get("/refresh")
   async refreshToken(
     @CookieParam("refreshToken") refreshToken: string
