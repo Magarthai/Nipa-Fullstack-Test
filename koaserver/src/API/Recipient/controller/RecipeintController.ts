@@ -1,11 +1,9 @@
 import { Param, Get, JsonController } from "routing-controllers";
-
-import { TicketService } from "../../Ticket/view/TicketService";
 import { Inject, Service } from "typedi";
-
 import { RecipientService } from "../view/RecipientService";
 import { IGetTicketByRecipientRespone } from "@app/API/Ticket/dto/IGetTicketByRecipientRespone";
 import { GenericGetTicketByRecipientRespone } from "./GenericGetTicketByRecipientRespone";
+
 @Service()
 @JsonController("/recipients")
 export class RecipeintController {

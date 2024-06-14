@@ -1,5 +1,3 @@
-import { IUserDataEntity } from "@app/API/User/dto/IUserDataEntity";
-import { ITicketList } from "../API/Ticket/dto/ITicketList";
 import { ITicketDataListOfMonthEnitityRespone } from "@app/API/Dashboard/dto/ITicketDataListOfMonthEnitityRespone";
 import { ICountGroupByStatus } from "@app/API/Dashboard/dto/ICountGroupByStatus";
 

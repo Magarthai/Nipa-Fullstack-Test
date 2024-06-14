@@ -1,8 +1,6 @@
 import { Service } from "typedi";
 import { ITicketSendEmailNotificationRequest } from "../dto/ITicketSendEmailNotificationRequest";
 import { ITicketCreateRequest } from "../dto/ITicketCreateRequest";
-import { ITicketUpdateRespone } from "../dto/ITicketUpdateRespone";
-import { IFindTicketByIDRespone } from "../dto/IFindTicketByIDRespone";
 const nodemailer = require("nodemailer");
 import dotenv from "dotenv";
 dotenv.config();

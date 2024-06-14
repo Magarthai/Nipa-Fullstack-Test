@@ -3,7 +3,6 @@ import { UserRepository } from "../repository/UserRepository";
 import { ICreateUserRequest } from "../dto/ICreateUserRequest";
 import { ILoginUserRequest } from "../dto/ILoginUserRequest";
 import bcrypt = require("bcrypt");
-import { UserDataListReturn } from "../dto/UserDataListReturn";
 import db from "@app/db/db";
 import { Knex } from "knex";
 import { generateRefreshToken } from "@app/utils/generateRefreshToken";
@@ -18,6 +17,7 @@ import { TokenNotFoundError } from "@app/error/TokenNotFound";
 import dotenv from "dotenv";
 import { TokenExpired } from "@app/error/TokenExpired";
 dotenv.config();
+
 @Service()
 export class UserService {
   database: Knex.QueryBuilder;

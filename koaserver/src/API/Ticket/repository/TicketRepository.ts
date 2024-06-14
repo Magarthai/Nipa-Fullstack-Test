@@ -5,16 +5,11 @@ import { ITicketSendEmailNotificationRequest } from "../dto/ITicketSendEmailNoti
 import { ListTicketDataReturn } from "../dto/ListTicketDataReturn";
 import dotenv from "dotenv";
 dotenv.config();
-const nodemailer = require("nodemailer");
 import db from "../../../db/db";
 import { Service } from "typedi";
-import { TicketStatus } from "../enum/TicketStatus";
-import { Knex } from "knex";
 import { ITicketList } from "../dto/ITicketList";
 import { ITicketGetTicketByStatusRequest } from "../dto/ITicketGetTicketByStatusRequest";
-import { IFindTicketByIDRespone } from "../dto/IFindTicketByIDRespone";
 import { ITicketUpdateRespone } from "../dto/ITicketUpdateRespone";
-import { IGetTicketByRecipientRespone } from "../dto/IGetTicketByRecipientRespone";
 import { ITicketCreateRespone } from "../dto/ITicketCreateRespone";
 import { ITicketEntity } from "@app/API/Dashboard/dto/ITicketEntity";
 

@@ -1,17 +1,11 @@
 import { response } from "express";
 import {
-  Controller,
   Param,
   Body,
   Get,
   Post,
   Put,
-  Delete,
   JsonController,
-  Res,
-  Req,
-  CookieParam,
-  OnUndefined,
 } from "routing-controllers";
 
 import { ITicketCreateRequest } from "../dto/ITicketCreateRequest";
@@ -19,7 +13,7 @@ import { TicketService } from "../view/TicketService";
 import { ITicketUpdateRequest } from "../dto/ITicketUpdateRequest";
 import { ITicketCloseRequest } from "../dto/ITicketCloseRequest";
 import { ITicketSendEmailNotificationRequest } from "../dto/ITicketSendEmailNotificationRequest";
-import Container, { Inject, Service } from "typedi";
+import { Inject, Service } from "typedi";
 import { TicketNotFoundError } from "@app/error/TicketNotFound";
 import { ITicketList } from "../dto/ITicketList";
 import { ITicketGetTicketByStatusRequest } from "../dto/ITicketGetTicketByStatusRequest";

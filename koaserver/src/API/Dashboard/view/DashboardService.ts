@@ -1,14 +1,10 @@
 import { Inject, Service } from "typedi";
-import {
-  DashboardRepository,
-  formatDate,
-} from "../repository/DashboardRepository";
+import { DashboardRepository } from "../repository/DashboardRepository";
 import { ICountGroupByStatus } from "../dto/ICountGroupByStatus";
 import { ITicketDataListOfMonthEnitityRespone } from "../dto/ITicketDataListOfMonthEnitityRespone";
-import { ITicketEntity } from "../dto/ITicketEntity";
-import moment from "moment-timezone";
 import { TicketStatus } from "@app/API/Ticket/enum/TicketStatus";
 import { IStatusRespone } from "../dto/IStatusRespone";
+
 @Service()
 export class DashboardService {
   @Inject()

@@ -4,12 +4,8 @@ import {
   JsonController,
   Get,
   Post,
-  Param,
-  Delete,
   Body,
   CookieParam,
-  Res,
-  Req,
   Ctx,
   OnUndefined,
 } from "routing-controllers";

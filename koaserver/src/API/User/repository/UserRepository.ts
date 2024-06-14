@@ -2,17 +2,12 @@ import { Service } from "typedi";
 import bcrypt = require("bcrypt");
 import db from "../../../db/db";
 import { Knex } from "knex";
-import { ICreateUserRequest } from "../dto/ICreateUserRequest";
-import { ILoginUserRequest } from "../dto/ILoginUserRequest";
-import { UserStatus } from "../enum/UserStatus";
 import { IFindByEmail } from "../dto/IFindByEmail";
 import { IFindByID } from "../dto/IFindByID";
 import { IListAllUserDataRespone as IListAllUserDataRespone } from "../dto/IListAllUserDataRespone";
 import { ICreateUserRespone } from "../dto/ICreateUserRespone";
 import { IEncryptedData } from "../dto/IEncryptedData";
 import { UserDataListReturn } from "../dto/UserDataListReturn";
-import { create } from "domain";
-import { IUserDataEntity } from "../dto/IUserDataEntity";
 import MockDatabase from "@app/db/MockDatabase";
 
 interface IUserRepository {

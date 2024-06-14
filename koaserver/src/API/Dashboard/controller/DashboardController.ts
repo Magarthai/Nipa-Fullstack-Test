@@ -1,22 +1,8 @@
 import { response } from "express";
-import {
-  Controller,
-  Param,
-  Body,
-  Get,
-  Post,
-  Put,
-  Delete,
-  JsonController,
-  Res,
-  Req,
-  CookieParam,
-} from "routing-controllers";
+import { Param, Get, JsonController } from "routing-controllers";
 import { DashboardService } from "../view/DashboardService";
 import { Inject, Container, Service } from "typedi";
-import { error } from "console";
 import { IStatusRespone } from "../dto/IStatusRespone";
-import { ITicketEntity } from "../dto/ITicketEntity";
 import { ITicketDataListOfMonthEnitityRespone } from "../dto/ITicketDataListOfMonthEnitityRespone";
 
 @Service()

@@ -1,4 +1,4 @@
-import { Service, Inject, Container } from "typedi";
+import { Service, Inject } from "typedi";
 import { ITicketCreateRequest } from "../dto/ITicketCreateRequest";
 import { ITicketCloseRequest } from "../dto/ITicketCloseRequest";
 import { ITicketSendEmailNotificationRequest } from "../dto/ITicketSendEmailNotificationRequest";

@@ -1,9 +1,7 @@
 import moment from "moment-timezone";
-import { ITicketEntity } from "../dto/ITicketEntity";
 import { Service } from "typedi";
 import db from "../../../db/db";
-import { TicketStatus } from "@app/API/Ticket/enum/TicketStatus";
-import knex, { Knex } from "knex";
+import { Knex } from "knex";
 import { ITicketMapEnitity } from "../dto/ITicketMapEnitity";
 import { ITicketDataListOfMonthEnitityRespone } from "../dto/ITicketDataListOfMonthEnitityRespone";
 import { ICountGroupByStatus } from "../dto/ICountGroupByStatus";
