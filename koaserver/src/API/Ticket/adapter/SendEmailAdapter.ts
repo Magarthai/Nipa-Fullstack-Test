@@ -24,7 +24,7 @@ export class SendEmailDefination {
           <h1 style="margin: 20px;">สวัสดีคุณ ${data.name}</h1>
           <p style="margin-left: 20px">หัวข้อที่แจ้ง : ${data.topic}</p>
           <p style="margin-left: 20px">วันที่แจ้ง : ${data.time}</p>
-          <p style="margin-left: 20px">ผู้ที่รับเรื่อง : ${data.recipient}</p>
+          <p style="margin-left: 20px">ผู้ที่รับเรื่อง : ${data.recipient_name}</p>
           <p style="margin-left: 20px">อัพเดตสถานะ : ${data.status_text}</p>
           <p style="margin-left: 20px">รายละเอียด : ${data.solve}</p>
           `,
@@ -48,7 +48,6 @@ export class SendEmailDefination {
   }
 
   async sendCreateTicketNotification(data: ITicketCreateRequest) {
-    console.log(data);
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {

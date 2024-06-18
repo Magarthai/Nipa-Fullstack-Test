@@ -37,8 +37,6 @@ export const RecipientServiceTest = () => {
 
         const getTicketByRecipient =
           await recipientServices.getTicketByRecipient("1");
-
-        console.log(getTicketByRecipient);
         getTicketByRecipient.data.length.should.equal(1);
       });
 
@@ -61,7 +59,6 @@ export const RecipientServiceTest = () => {
         const getTicketByRecipient =
           await recipientServices.getTicketByRecipient("");
 
-        console.log(getTicketByRecipient);
         getTicketByRecipient.data.length.should.equal(0);
       });
 
@@ -84,7 +81,6 @@ export const RecipientServiceTest = () => {
         const getTicketByRecipient =
           await recipientServices.getTicketByRecipient(undefined);
 
-        console.log(getTicketByRecipient);
         getTicketByRecipient.data.length.should.equal(0);
       });
     });

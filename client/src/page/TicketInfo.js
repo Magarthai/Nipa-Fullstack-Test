@@ -52,13 +52,13 @@ function AdminPage() {
       } else {
         statuText = "ไม่สามารถแก้ไข้ปัญหาได้";
       }
-      console.log(data)
       const info = {
         name: data.name,
         email: data.email,
         topic: data.selectTopic,
         time: new Date(data.created_at).toLocaleString(),
         status_text: statuText,
+        status: status,
         recipient: userData.id,
         updateStatus: status,
         solve: solve,

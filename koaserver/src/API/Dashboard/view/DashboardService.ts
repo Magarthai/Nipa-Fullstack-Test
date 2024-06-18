@@ -20,8 +20,6 @@ export class DashboardService {
     { name: string; value: number; fill: string }[]
   > {
     const Tickets = await this.dashboardRepositorys.listTicketGroupByStatus();
-    console.log(Tickets);
-
     const success = Tickets.find(
       (ticket: ICountGroupByStatus) => ticket.status == TicketStatus.SUCCESS
     );

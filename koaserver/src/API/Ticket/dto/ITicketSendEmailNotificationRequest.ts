@@ -10,4 +10,5 @@ export interface ITicketSendEmailNotificationRequest {
   selectTopic: string;
   detail: string;
   status_text?: string;
+  recipient_name: string;
 }

@@ -96,6 +96,7 @@ export class TicketController {
       solve: ticket.solve,
       id: id,
     } as ITicketCloseRequest;
+    console.log(update);
     const closeTicket = await this.ticketService.closeTicketById(id, {
       data: update,
     });
